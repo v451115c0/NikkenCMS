@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class NikkenCMSController extends Controller{
     public function login(){
+        return "Hola mundo";
         session()->forget('tokenPass');
         session()->forget('tokenUser');
         return view('NikkenCMS.login');
