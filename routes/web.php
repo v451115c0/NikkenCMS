@@ -1,0 +1,14 @@
+<?php
+
+//use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+/*=== NikkenCMS ===*/
+Route::get('NikkenCMS/login', 'NikkenCMS\NikkenCMSController@login');
+Route::get('NikkenCMS/authLogin', 'NikkenCMS\NikkenCMSController@authLogin');
+Route::get('NikkenCMS/{view}', 'NikkenCMS\NikkenCMSController@getViwe');
+Route::get('NikkenCMSpro/getActions', 'NikkenCMS\NikkenCMSController@getActions');
+Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes_sap_encrypt');
