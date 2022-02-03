@@ -1,12 +1,18 @@
 // Funciones generales
 $("#passwordInput").hide();
-$("#inputEmail").focus();
-$("#inputEmail").val('');
-//$("#sap_code").keypress(validateNumber);
-$("#userInfoMK").hide();
-$("#nNombreMNK, #btnnNombreMNK").hide();
+
 $(document).ready(function() {
     $('.dropify').dropify();
+    $('#allCountries').prop('checked', true);
+    $('#allRanges').prop('checked', true);
+    $("#unlimitedNDate").prop('checked', true);
+    $("#forAllNSite").prop('checked', true);
+    catchCheckboxDates();
+    catchCheckboxForAllUsers();
+    $("#inputEmail").focus();
+    $("#inputEmail").val('');
+    $("#userInfoMK").hide();
+    $("#nNombreMNK, #btnnNombreMNK").hide();
 });
 var userType = {
     'CI': 'Influencer',
@@ -32,7 +38,7 @@ function hideLoadingIcon(element){
     element.removeClass('lds-hourglass');
 }
 
-/*function validateNumber(event) {
+function validateNumber(event) {
     var key = window.event ? event.keyCode : event.which;
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 13) {
         var funcion = event;
@@ -44,7 +50,38 @@ function hideLoadingIcon(element){
     else {
         return true;
     }
-}*/
+}
+
+function alert(tittle, html, type){
+    swal({
+        title: tittle,
+        text: html,
+        type: type,
+        padding: '2em'
+    });
+}
+
+function disabled(control){
+    control.attr('disabled', true);
+}
+
+function enabled(control){
+    control.attr('disabled', false);
+}
+
+function required(msg){
+    var error = {
+        'title': 'Error',
+        'style': 'flat',
+        'message': msg,
+        'icon': 'danger-3',
+    };
+    
+    var n4 = new notifi(error);
+    n4.show();
+    timeout();
+}
+
 
 // Login
 function login(){
@@ -75,7 +112,7 @@ function login(){
             },
             success: function (response) {
                 if(response === '1'){
-                    $(location).attr('href', 'home');
+                    $(location).attr('href', 'NikkenCMS/home');
                 }
                 else{
                     $("#validating").removeClass('lds-hourglass');
@@ -139,27 +176,6 @@ $('#inputPassword').keypress(function(event){
         }
     }
 });
-
-function disabled(control){
-    control.attr('disabled', true);
-}
-
-function enabled(control){
-    control.attr('disabled', false);
-}
-
-function required(msg){
-    var error = {
-        'title': 'Error',
-            'style': 'flat',
-        'message': msg,
-        'icon': 'danger-3',
-    };
-    
-    var n4 = new notifi(error);
-    n4.show();
-    timeout();
-}
 
 var timeHide = "";
 function timeout(){
@@ -389,550 +405,98 @@ function graphVisitas(plataforma){
     });
 }
 
-function validateQuery(){
-    var query = $("#queryval").val();
-
-    if (query.indexOf('FROM') != -1) {
-        var tableName = query.substr(query.indexOf('FROM'), query.length).trim();
-        tableName = tableName.split(' ');
-        tableName = tableName[1].trim();
-        showQueryLog('Validando Query...');
-        getHeaderTableQuery(tableName);
-    }
-    else{
-        alert('No se encuentra el texto buscado');
-    }
-}
-
-function getHeaderTableQuery(tableName){
-    $.ajax({
-        type: "get",
-        url: "getActions",
-        data: {
-            action: 'getHeaderTableQuery',
-            parameters: {
-                tableName: tableName
-            }
-        },
-        beforeSend: function(){
-            $("#tabQueryHeaders").empty();
-            showQueryLog('Obteniendo estructura de la tabla...');
-        },
-        success: function (response) {
-            var ths = "";
-            //var dataJson = JSON.parse(json);
-            for(let x = 0; x < response.length; x++){
-                ths += "<th scope='col'>" + response[x]['Field'] + "</th>";
-                //dataJson['data'].push
-            }
-            $("#tabQueryHeaders").html(ths);
-            //console.log(dataJson);
-            ejecQueryFromWeb();
-        }
-    });
-}
-
-function ejecQueryFromWeb(){
-    var query = $("#queryval").val();
-    $.ajax({
-        type: "get",
-        url: "getActions",
-        data: {
-            action: 'ejecQueryFromWeb',
-            parameters: {
-                query: window.btoa(query.trim())
-            }
-        },
-        dataType: 'json',
-        beforeSend: function(){
-            showQueryLog('Mostrando datos...');
-        },
-        success: function (response) {
-            var val = [];
-            for(let x = 0; x < response.length; x++){
-                console.log(response[0]);
-            }
-            var dataa = [
-                    [
-                        48111,
-                        "2012-10-24 00:00:00",
-                        "2",
-                        1,
-                        "CI",
-                        9845903,
-                        "{\"StartKit\":5}",
-                        "BLANCO ORTIZ  PAULA",
-                        "Diamante Real",
-                        "Distrito Federal",
-                        9280403,
-                        "GARZA GONZALEZ  CARMEN LUCIA",
-                        "nikkenmailpv@gmail.com",
-                        "5522670210",
-                        "5522670210",
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        "wBhYGY9Y7IZX0uKmCsRLPvQrRjYyuhZX",
-                        "2021-05-07 23:55:41",
-                        null,
-                        1
-                    ]
-                ]
-            $('#tabQuery').DataTable({
-                destroy: true,
-                paging: false,
-                data: dataa,
-                dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
-                buttons: {
-                    buttons: [
-                        { 
-                            extend: 'excel', 
-                            className: 'btn btn-primary', 
-                            text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
-                        },
-                    ]
-                },
-            });
-        }
-    });
-}
-
-function showQueryLog(event){
-    $("#queryLog").text('');
-    $("#queryLog").text(event);
-}
-
-/*=== MOKUTEKI ===*/
-function getDataSaleMK(){
-    var sap_code = $("#sap_code").val();
-    $.ajax({
-        type: "get",
-        url: "/NikkenCMSpro/getActions",
-        data: {
-            action: 'getDataSaleMK',
-            parameters: {
-                sap_code: sap_code
-            }
-        },
-        beforeSend: function(){
-            $("#loadingDataSale").empty();
-            showLoadingIcon($("#loadingDataSale"));
-            $("#sap_code_info").text(sap_code);
-            $("#userInfoMK").hide(1000);
-            $("#nameUserMK, #idUserMK, #emaiUserMK, #paisUserMK, #sap_codeUserMK, #typeUserMK, #rankUserMK, #registUserMK, #updateUserMK, #statusUserMK, #lockedUserMK, #idVentaMK").text('');
-        },
-        success: function (response) {
-            if(response === 'error'){
-                hideLoadingIcon($("#loadingDataSale"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                            '</div>';
-                $("#loadingDataSale").html(html);
-            }
-            else{
-                $("#nNombreMNK, #btnnNombreMNK").hide();
-                hideLoadingIcon($("#loadingDataSale"));
-                $("#nameUserMK").text(response['user'][0]['name']);
-                $("#idUserMK").text(response['user'][0]['id']);
-                $("#emaiUserMK").text(response['user'][0]['email']);
-                $("#paisUserMK").text(countries[response['user'][0]['country_id']]);
-                $("#sap_codeUserMK").text(response['user'][0]['sap_code']);
-                $("#typeUserMK").text(userType[response['user'][0]['client_type']]);
-                $("#rankUserMK").text(response['user'][0]['rank']);
-                $("#registUserMK").text(response['user'][0]['created_at']);
-                $("#updateUserMK").text(response['user'][0]['updated_at']);
-                $("#statusUserMK").text((response['user'][0]['status'] == 1) ? 'Activo': 'inactivo');
-                $("#lockedUserMK").text((response['user'][0]['locked'] == 0) ? 'No': 'Si');
-                $("#idVentaMK").text(response['products'][0]['sale_id']);
-                $("#userInfoMK").show(1000);
-                getDataSaleMKSale(response['user'][0]['id']);
-                getDataSaleMKProducts(response['products'][0]['sale_id']);
-            }
-        },
-        error: function(){
-            hideLoadingIcon($("#loadingDataSale"));
-            var html = '<div class="alert text-white bg-danger" role="alert">' +
-                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                            '<button type="button" class="close" onclick="getDataSaleMK();">' +
-                                'Reintentar' +
-                            '</button>' +
-                        '</div>';
-            $("#loadingDataSale").html(html);
-            $("#userInfoMK").hide(1000);
-        }
-    });
-}
-
-function getDataSaleMKSale(idUserMK){
-    $("#dataSaleMK").DataTable({
-        destroy: true,
-        lengthChange: false,
-        ordering: true,
-        info: false,
-        destroy: true,
-        ajax: "/NikkenCMSpro/getActions?action=getDataSaleMKSale&parameters[user_id]=" + idUserMK,
-        columns: [
-            { data: 'id', className: 'text-center' },
-            { data: 'reference_code', className: 'text-center' },
-            { data: 'user_id', className: 'text-center' },
-            { data: 'country_id', className: 'text-center' },
-            { data: 'type_of_sale', className: 'text-center' },
-            { data: 'status', className: 'text-center' },
-            { data: 'subtotal', className: 'text-center' },
-            { data: 'tax', className: 'text-center' },
-            { data: 'total', className: 'text-center' },
-        ],
-        language: {
-            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
-        },
-        createdRow: function( row, data, dataIndex ){
-            console.log("estatus: " + data['status'] + " | venta: " + data['id']);
-            if(data['status'] === "pagada"){
-                $(row).children(':nth-child(6)').addClass('bg-success');
-            }
-            else if(data['status'] === "standby"){
-                $(row).children(':nth-child(6)').addClass('bg-warning');
-            }
-            else if(data['status'] === "cancelada"){
-                $(row).children(':nth-child(6)').addClass('bg-danger');
-            }
-            else if(data['status'] === "abierta"){
-                $(row).children(':nth-child(6)').addClass('bg-info');
-            }
-        }
-    });
-}
-
-function getDataSaleMKPayment(){
-
-}
-
-function getDataSaleMKProducts(idVentaMK){
-    $("#dataSaleProductMK").DataTable({
-        destroy: true,
-        lengthChange: false,
-        ordering: true,
-        info: false,
-        destroy: true,
-        ajax: "/NikkenCMSpro/getActions?action=getDataSaleMKProducts&parameters[sale_id]=" + idVentaMK,
-        columns: [
-            { data: 'sale_id', className: 'text-center' },
-            { data: 'sku', className: 'text-center' },
-            { data: 'name', className: 'text-center' },
-            { data: 'quantity', className: 'text-center' },
-            { data: 'price', className: 'text-center' },
-            { data: 'subtotal', className: 'text-center' },
-            { data: 'tax', className: 'text-center' },
-            { data: 'total', className: 'text-center' },
-        ],
-        language: {
-            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
-        }
-    });
-}
-
-// Cambio de nombre MyNIKKEN
-function getDataUser(){
-    var sap_code = $("#sap_code").val();
-    if(sap_code.trim() === ''){
-        swal({
-            title: '',
-            icon: 'info',
-            html:'Ingresa el sap_code o código de influencer',
-            type: 'info',
-            padding: '2em',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        })
-    }
-    else{
-        $.ajax({
-            type: "get",
-            url: "/NikkenCMSpro/getActions",
-            data: {
-                action: 'getDataUser',
-                parameters: {
-                    sap_code: sap_code
-                }
-            },
-            beforeSend: function(){
-                $('#sap_code_info, #nameUserMNK, #nNameUserMNK').text('');
-                $("#loadingDataSale").empty();
-                showLoadingIcon($("#loadingDataSale"));
-                $("#nNombreMNK, #btnnNombreMNK").hide(1000);
-                $("#sap_code_info").text(sap_code);
-                disabled($("#sap_code"));
-            },
-            success: function (response) {
-                if(response === 'error'){
-                    hideLoadingIcon($("#loadingDataSale"));
-                    var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                    '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                                '</div>';
-                    $("#loadingDataSale").html(html);
-                }
-                else{
-                    hideLoadingIcon($("#loadingDataSale"));
-                    $("#nNombreMNK, #btnnNombreMNK").show(1000);
-                    $("#nameUserMNK").text(response[0]['AssociateName']);
-                }
-            },
-            error: function(){
-                hideLoadingIcon($("#loadingDataSale"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                                '<button type="button" class="close" onclick="getDataSaleMK();">' +
-                                    'Reintentar' +
-                                '</button>' +
-                            '</div>';
-                $("#loadingDataSale").html(html);
-                $("#userInfoMK").hide(1000);
-            }
-        });
-    }
-}
-
-function changeNameMNK(origen){
-    var sap_code = $("#sap_code").val();
-    var nuevoNombre = $("#nNombreMNK").val();
-    if(sap_code.trim() === '' || nuevoNombre.trim() === '' && origen === ''){
-        swal({
-            title: '',
-            icon: 'info',
-            html:'Ingresa el un nombre',
-            type: 'info',
-            padding: '2em',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        })
-    }
-    else{
-        $.ajax({
-            type: "get",
-            url: "/NikkenCMSpro/getActions",
-            data: {
-                action: 'changeNameMNK',
-                parameters: {
-                    sap_code: sap_code,
-                    nuevoNombre: nuevoNombre,
-                    origen: origen
-                }
-            },
-            beforeSend: function(){
-                $("#loadingDataSale").empty();
-                showLoadingIcon($("#loadingDataSale"));
-            },
-            success: function (response) {
-                if(response === 'error'){
-                    hideLoadingIcon($("#loadingDataSale"));
-                    var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                    '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                                '</div>';
-                    $("#loadingDataSale").html(html);
-                }
-                else{
-                    hideLoadingIcon($("#loadingDataSale"));
-                    $("#nNameUserMNK").text(response[0]['AssociateName']);
-                    swal({
-                        title: '',
-                        icon: 'ok',
-                        html:'Se cambio el nombre correctamente',
-                        type: 'success',
-                        padding: '2em',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    })
-                }
-            },
-            error: function(){
-                hideLoadingIcon($("#loadingDataSale"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                                '<button type="button" class="close" onclick="getDataSaleMK();">' +
-                                    'Reintentar' +
-                                '</button>' +
-                            '</div>';
-                $("#loadingDataSale").html(html);
-                $("#userInfoMK").hide(1000);
-            }
-        });
-    }
-}
-
-// Notificaciones MyNIKKEN
-function saveNotification(){
-    var titulo = $("#alertTittle").val();
-    var alertDate = $("#alertDate").val();
-    var mensaje = $("#alertMsg").val();
-
-    if(titulo.trim() == '' || alertDate.trim() == '' || mensaje.trim() == ''){
-        swal({
-            title: 'Ups...!',
-            text: "Todos los campos son requeridos",
-            type: 'error',
-            padding: '2em'
-        })
-    }
-    else{
-        var data = {titulo:titulo, alertDate:alertDate, mensaje:mensaje};
-        $.ajax({
-            type: "GET",
-            url: "/addNotifyMyNikken",
-            data: data,
-            cache:false,
-            contentType: false,
-            processData: false,
-            beforeSend: function(){
-                $("#alertTittle").attr('disabled', true);
-                $("#alertDate").attr('disabled', true);
-                $("#alertMsg").attr('disabled', true);
-                $("#btnsave").attr('disabled', true);
-            },
-            success: function (response) {
-                if(response == 'add'){
-                    swal({
-                        title: 'OK!',
-                        text: "La alerta ha sido guardada y se publicara en breve en MyNikken",
-                        type: 'success',
-                        padding: '2em'
-                    })
-                    $("#alertTittle").attr('disabled', false);
-                    $("#alertDate").attr('disabled', false);
-                    $("#alertMsg").attr('disabled', false);
-                    $("#alertTittle").val('');
-                    $("#alertDate").val('');
-                    $("#alertMsg").val('');
-                    $("#btnsave").attr('disabled', false);
-                }
-                else{
-                    swal({
-                        title: 'Ups...!',
-                        text: "No fue posible guardar la informaciÃ³n.",
-                        type: 'error',
-                        padding: '2em'
-                    })
-                }
-            },
-            fail: function(){
-                if(response == 'add'){
-                    swal({
-                        title: 'OK!',
-                        text: "La alerta ha sido guardada y se publicara en breve en MyNikken",
-                        type: 'success',
-                        padding: '2em'
-                    })
-                }
-                else{
-                    swal({
-                        title: 'Ups...!',
-                        text: "No fue posible guardar la informaciÃ³n.",
-                        type: 'error',
-                        padding: '2em'
-                    })
-                }
-            }
-        });
-    }
-}
-
-$('#saveAlertForm').on('submit', function(e) {
-    console.log('event form init');
+$('#nSite').on('submit', function(e) {
     // evito que propague el submit
     e.preventDefault();
     //deshabilitamos el boton para que solo se haga una peticion de registro
-    $("#btneventc").attr('disabled', true);
+    disabled($("#btnsave"));
 
     // agrego la data del form a formData
     var formData = new FormData(this);
-    formData.append('_token', $('input[name=_token]').val());
-    var titulo = $("#alertTittle").val();
-    var alertDate = $("#alertDate").val();
-    var mensaje = $("#alertMsg").val();
-
-    if(titulo.trim() == '' || alertDate.trim() == '' || mensaje.trim() == ''){
-        swal({
-            title: 'Ups...!',
-            text: "Todos los campos son requeridos",
-            type: 'error',
-            padding: '2em'
-        })
-    }
-    else{
-        $.ajax({
-            type:'POST',
-            url: '/addNotifyMyNikken',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            beforeSend: function(){
-                $("#alertTittle").attr('disabled', true);
-                $("#alertDate").attr('disabled', true);
-                $("#alertMsg").attr('disabled', true);
-                $("#btnsave").attr('disabled', true);
-            },
-            success:function(data){
-                if(data == 'add'){
-                    swal({
-                        title: 'OK!',
-                        text: "La alerta ha sido guardada y se publicara en breve en MyNikken",
-                        type: 'success',
-                        padding: '2em'
-                    })
-                    $("#alertTittle").attr('disabled', false);
-                    $("#alertDate").attr('disabled', false);
-                    $("#alertMsg").attr('disabled', false);
-                    $('#saveAlertForm').trigger('reset');
-                    $("#btnsave").attr('disabled', false);
-                    setDate();
-                }
-                else{
-                    swal({
-                        title: 'Ups...!',
-                        text: "No fue posible guardar la informaciÃ³n.",
-                        type: 'error',
-                        padding: '2em'
-                    })
-                    $("#alertTittle").attr('disabled', false);
-                    $("#alertDate").attr('disabled', false);
-                    $("#alertMsg").attr('disabled', false);
-                    $("#btnsave").attr('disabled', false);
-                    setDate();
-                }
-            },
-            error: function(jqXHR, text, error){
-                Swal.fire({
-                    type: 'error',
-                    title: 'Error',
-                    text: 'Error al guardar la informaciÃ³n',
-                })
-                $("#alertTittle").attr('disabled', false);
-                $("#alertDate").attr('disabled', false);
-                $("#alertMsg").attr('disabled', false);
-                $("#btnsave").attr('disabled', false);
-                setDate()
+    //formData.append('_token', $('input[name=_token]').val());
+    var utltarget = $("#urlAction").val();
+    $.ajax({
+        type:'POST',
+        url: utltarget,
+        data: formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        beforeSend: function(){
+            $("div[id=loadingIcon]").addClass('lds-hourglass');
+            disabled($("#nameNSite"));
+            disabled($("#URLNSite"));
+            disabled($("#customSwitch2"));
+            disabled($("#dateStartNSite"));
+            disabled($("#dateEndNSite"));
+            disabled($("#unlimitedNDate"));
+            disabled($("#tagNSite"));
+            disabled($("#iconNsite"));
+            disabled($("#allCountries"));
+            disabled($("#chckCol"));
+            disabled($("#chckMex"));
+            disabled($("#chckPer"));
+            disabled($("#chckCri"));
+            disabled($("#chckEcu"));
+            disabled($("#chckSlv"));
+            disabled($("#chckGtm"));
+            disabled($("#chckPan"));
+            disabled($("#chckChl"));
+        },
+        success:function(data){
+            if(data == 'added'){
+                alert('OK!', "El micrositio se agregó correctamente", 'success');
+                $('#nSite').trigger('reset');
+                $(".dropify-clear").trigger("click");
             }
-        });
-    }
-});
-
-$('#comunicados').DataTable({
-	destroy: true,
-	info: false,
-	pageLength: 13,
-	searching: true,
-    ordering: false,
-	lengthChange: false,
-    "language": {
-        "paginate": { "previous": "<i class='flaticon-arrow-left-1'></i>", "next": "<i class='flaticon-arrow-right'></i>" },
-        "info": "Showing page _PAGE_ of _PAGES_"
-    }
+            else{
+                alert('Ups...!', "No fue posible guardar la información.", 'error');
+            }
+            enabled($("#btnsave"));
+            $("#loadingIcon").removeClass('lds-hourglass');
+            enabled($("#nameNSite"));
+            enabled($("#URLNSite"));
+            enabled($("#customSwitch2"));
+            enabled($("#dateStartNSite"));
+            enabled($("#dateEndNSite"));
+            enabled($("#unlimitedNDate"));
+            enabled($("#tagNSite"));
+            enabled($("#iconNsite"));
+            enabled($("#allCountries"));
+            enabled($("#chckCol"));
+            enabled($("#chckMex"));
+            enabled($("#chckPer"));
+            enabled($("#chckCri"));
+            enabled($("#chckEcu"));
+            enabled($("#chckSlv"));
+            enabled($("#chckGtm"));
+            enabled($("#chckPan"));
+            enabled($("#chckChl"));
+        },
+        error: function(jqXHR, text, error){
+            $("#loadingIcon").removeClass('lds-hourglass');
+            alert('Ups...!', "No fue posible guardar la información.", 'error');
+            enabled($("#nameNSite"));
+            enabled($("#URLNSite"));
+            enabled($("#customSwitch2"));
+            enabled($("#dateStartNSite"));
+            enabled($("#dateEndNSite"));
+            enabled($("#unlimitedNDate"));
+            enabled($("#tagNSite"));
+            enabled($("#iconNsite"));
+            enabled($("#allCountries"));
+            enabled($("#chckCol"));
+            enabled($("#chckMex"));
+            enabled($("#chckPer"));
+            enabled($("#chckCri"));
+            enabled($("#chckEcu"));
+            enabled($("#chckSlv"));
+            enabled($("#chckGtm"));
+            enabled($("#chckPan"));
+            enabled($("#chckChl"));
+            enabled($("#btnsave"));
+        }
+    });
 });
 
 function setDate(){
@@ -942,319 +506,40 @@ function setDate(){
         return local.toJSON().slice(0,10);
     });
     
-    $('#alertDate').val(new Date().toDateInputValue());
+    $('#dateStartNSite').val(new Date().toDateInputValue());
 }
-setDate()
+setDate();
 
 $("#allCountries").change(function () {
     $("#chckCol, #chckMex, #chckPer, #chckCri, #chckEcu, #chckSlv, #chckGtm, #chckPan, #chckChl").prop('checked', $(this).prop("checked"));
 });
 
-/* añadir kit a venta para cambio de contraseña */
-function addKitInicioTV(){
-    var sap_code = $("#sap_code").val();
-    $.ajax({
-        type: "get",
-        url: "/NikkenCMSpro/getActions",
-        data: {
-            action: 'addKitInicioTV',
-            parameters: {
-                sap_code: sap_code,
-            }
-        },
-        beforeSend: function(){
-            $("#loadingData").empty();
-            showLoadingIcon($("#loadingData"));
-            $('#kitVal, #nKitVal').text('');
-        },
-        success: function (response) {
-            if(response === 'error'){
-                hideLoadingIcon($("#loadingData"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                            '</div>';
-                $("#loadingData").html(html);
-            }
-            else{
-                hideLoadingIcon($("#loadingData"));
-                $("#kitVal").text(response['sale_id']);
-                if(response['kit'] == 0){
-                    $("#nKitVal").text("No se pudo agregar kit");
-                    swal({
-                        title: '',
-                        icon: 'error',
-                        html:'No se pudo agregar kit',
-                        type: 'error',
-                        padding: '2em',
-                    })
-                }
-                else if(response['kit'] == 0){
-                    $("#nKitVal").text("Kit Agregado");
-                    swal({
-                        title: '',
-                        icon: 'ok',
-                        html:'Se agrego el kit correctamente',
-                        type: 'success',
-                        padding: '2em',
-                    })
-                }
-                else{
-                    $("#nKitVal").text("Ya se encontro kit");
-                    swal({
-                        title: '',
-                        icon: 'ok',
-                        html:'Ya se encontro kit',
-                        type: 'success',
-                        padding: '2em',
-                    })
-                }
-            }
-        },
-        error: function(){
-            hideLoadingIcon($("#loadingData"));
-            var html = '<div class="alert text-white bg-danger" role="alert">' +
-                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                            '<button type="button" class="close" onclick="getDataSaleMK();">' +
-                                'Reintentar' +
-                            '</button>' +
-                        '</div>';
-            $("#loadingData").html(html);
-        }
-    })
+$("#allRanges").change(function () {
+    $("#chckDIR, #chckEXE, #chckPLA, #chckORO, #chckPLO, #chckDIA, #chckDRL").prop('checked', $(this).prop("checked"));
+});
+
+function catchCheckboxDates(){
+    var status = $("#unlimitedNDate").prop('checked');
+    if(status){
+        disabled($("#dateStartNSite"));
+        disabled($("#dateEndNSite"));
+        $("#dateStartNSite, #dateEndNSite").removeAttr('required');
+    }
+    else{
+        enabled($("#dateStartNSite"));
+        enabled($("#dateEndNSite"));
+        $("#dateStartNSite, #dateEndNSite").attr('required', 'required');
+    }
 }
 
-function TVLoadLogVueltaAcasa(){
-    var sap_code = $("#sap_code").val();
-    $.ajax({
-        type: "get",
-        url: "/NikkenCMSpro/getActions",
-        data: {
-            action: 'TVLoadLogVueltaAcasa',
-            parameters: {}
-        },
-        beforeSend: function(){
-            $("#loadingData").empty();
-            showLoadingIcon($("#loadingData"));
-            $('#logCronContent').text('');
-        },
-        success: function (response) {
-            if(response === 'error'){
-                hideLoadingIcon($("#loadingData"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                            '</div>';
-                $("#loadingData").html(html);
-            }
-            else{
-                hideLoadingIcon($("#loadingData"));
-                $('#logCronContent').html(response);
-            }
-        },
-        error: function(){
-            hideLoadingIcon($("#loadingData"));
-            var html = '<div class="alert text-white bg-danger" role="alert">' +
-                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                            '<button type="button" class="close" onclick="TVLoadLogVueltaAcasa();">' +
-                                'Reintentar' +
-                            '</button>' +
-                        '</div>';
-            $("#loadingData").html(html);
-        }
-    })
-}
-
-function users_cell_phone_update(){
-    $('#users_cell_phone_update').DataTable({
-        destroy: true,
-        lengthChange: false,
-        ordering: false,
-        info: false,
-        ajax: "/NikkenCMSpro/getActions?action=getdataWhatsapp",
-        columns: [
-            { data: 'id', className: 'text-center' },
-            { data: 'sap_code', className: 'text-center' },
-            { data: 'nombre', className: 'text-center' },
-            { data: 'area_code', className: 'text-center' },
-            { data: 'cell_phone', className: 'text-center' },
-            { data: 'updated_on_sql_server', className: 'text-center' },
-            { data: 'use_as_my_principal_phone', className: 'text-center' },
-            { data: 'created_at', className: 'text-center' },
-            { data: 'updated_at', className: 'text-center' },
-            { 
-                data: 'updated_at',
-                className: 'text-center',
-                render: function(data, type, row){
-                    return '<a href="javascript:void(0)" data-toggle="modal" data-target=".modalUpdate" onclick="loadDataWSTVuser(' + row.id + ', ' + row.sap_code + ')"><i class="ri-ball-pen-fill text-success pr-1" style="font-size: 20px"></i></a>' +
-                    '<a href="javascript:void(0)"><i class="ri-delete-bin-5-line text-danger" style="font-size: 20px" onclick="deleteDataWSTV((' + row.id + '))"></i></a>';
-                }
-            },
-        ],
-        language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json",
-            "paginate": { "previous": "<i class='flaticon-arrow-left-1'></i>", "next": "<i class='flaticon-arrow-right'></i>" },
-            "info": "Showing page _PAGE_ of _PAGES_",
-            "search": "Buscar",
-        }
-    });
-}
-users_cell_phone_update();
-
-function loadDataWSTVuser(id, sap_code){
-    $.ajax({
-        type: "get",
-        url: "/NikkenCMSpro/getActions",
-        data: {
-            action: 'loadDataWSTVuser',
-            parameters: {
-                id: id
-            }
-        },
-        beforeSend: function(){
-            $("#loadingdiv").empty();
-            showLoadingIcon($("#loadingdiv"));
-            $("#sap_code").val(sap_code);
-            $("#idCI").val(sap_code);
-            $("#country_code, #numberCell, #Update_On_SQL_server, #Use_As_My_Principal_phone").attr('disabled', false);
-            $("#sap_code, #nombreuser, #country_code, #numberCell, #Update_On_SQL_server, #Use_As_My_Principal_phone").val('');
-        },
-        success: function (response) {
-            if(response === 'error'){
-                hideLoadingIcon($("#loadingdiv"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                            '</div>';
-                $("#loadingdiv").html(html);
-            }
-            else{
-                hideLoadingIcon($("#loadingdiv"));
-                $("#idreg").val(id);
-                $("#sap_code").val(response[0]['sap_code']);
-                $("#nombreuser").val(response[0]['nombre']);
-                $("#country_code").val(response[0]['area_code']);
-                $("#numberCell").val(response[0]['cell_phone']);
-                $("#Update_On_SQL_server").val(response[0]['updated_on_sql_server']);
-                $("#Use_As_My_Principal_phone").val(response[0]['use_as_my_principal_phone']);
-            }
-        },
-        error: function(){
-            hideLoadingIcon($("#loadingdiv"));
-            var html = '<div class="alert text-white bg-danger" role="alert">' +
-                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                            '<button type="button" class="close" onclick="loadDataWSTVuser(' + id + ',' + sap_code + ')">' +
-                                'Reintentar' +
-                            '</button>' +
-                        '</div>';
-            $("#loading").html(html);
-        }
-    });
-}
-
-function updateDataWSTV(){
-    var id = $("#idreg").val();
-    var country_code = $("#country_code").val();
-    var numberCell = $("#numberCell").val();
-    var Update_On_SQL_server = $("#Update_On_SQL_server").val();
-    var Use_As_My_Principal_phone = $("#Use_As_My_Principal_phone").val();
-
-    $.ajax({
-        type: "get",
-        url: "/NikkenCMSpro/getActions",
-        data: {
-            action: 'updateDataWSTV',
-            parameters: {
-                id: id,
-                country_code: country_code,
-                numberCell: numberCell,
-                Update_On_SQL_server: Update_On_SQL_server,
-                Use_As_My_Principal_phone: Use_As_My_Principal_phone,
-            }
-        },
-        beforeSend: function(){
-            $("#loadingdiv").empty();
-            showLoadingIcon($("#loadingdiv"));
-            $("#sap_code").val(sap_code);
-            $("#country_code, #numberCell, #Update_On_SQL_server, #Use_As_My_Principal_phone").attr('disabled', true);
-        },
-        success: function (response) {
-            if(response === 'error'){
-                hideLoadingIcon($("#loadingdiv"));
-                var html = '<div class="alert text-white bg-danger" role="alert">' +
-                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
-                            '</div>';
-                $("#loadingdiv").html(html);
-            }
-            else{
-                hideLoadingIcon($("#loadingdiv"));
-                $("#idreg, #sap_code, #nombreuser, #country_code, #numberCell, #Update_On_SQL_server, #Use_As_My_Principal_phone").val('');
-                $("#closeModal").trigger('click');
-                users_cell_phone_update();
-            }
-        },
-        error: function(){
-            hideLoadingIcon($("#loadingdiv"));
-            var html = '<div class="alert text-white bg-danger" role="alert">' +
-                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
-                            '<button type="button" class="close" onclick="loadDataWSTVuser(' + id + ',' + sap_code + ')">' +
-                                'Reintentar' +
-                            '</button>' +
-                        '</div>';
-            $("#loading").html(html);
-        }
-    });
-}
-
-function deleteDataWSTV(id){
-    swal({
-        title: "Eliminar registro",
-        text: "¿Desea el registro de la tabla?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        padding: '2em',
-        reverseButtons: true
-    }).then(function(result) {
-        if (result.value) {
-            $.ajax({
-                type: "get",
-                url: "/NikkenCMSpro/getActions",
-                data: {
-                    action: 'deleteDataWSTV',
-                    parameters: {
-                        id: id,
-                    }
-                },
-                beforeSend: function(){
-                    $("#log").text('Procesando...');
-                },
-                success: function (response) {
-                    $("#log").text('');
-                    swal({
-                        title: '',
-                        icon: 'ok',
-                        html:'Se elimino el registro correctamente.' ,
-                        type: 'success',
-                        padding: '2em',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    });
-                    users_cell_phone_update();
-                },
-                fail: function(){
-                    $("#log").text('');
-                    swal({
-                        title: '',
-                        icon: 'info',
-                        html:'Ocurrio un error al eliminar el registro, intente nuevamente',
-                        type: 'error',
-                        padding: '2em',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    })
-                }
-            });
-        }
-    })
+function catchCheckboxForAllUsers(){
+    var status = $("#forAllNSite").prop('checked');
+    if(status){
+        $("#allowedUsersNsite").attr('readonly', 'readonly');
+        $("#allowedUsersNsite").val('todos');
+    }
+    else{
+        $("#allowedUsersNsite").removeAttr('readonly');
+        $("#allowedUsersNsite").val('');
+    }
 }

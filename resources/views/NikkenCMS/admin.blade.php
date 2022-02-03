@@ -4,6 +4,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <title>CMS Nikken LATAM</title>
         <link rel="shortcut icon" href="{{ asset('cmsNikken/images/favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('cmsNikken/css/bootstrap.min.css') }}">
@@ -16,8 +17,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_zero_config.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_html5.css') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('fproh/plugins/sweetalerts/sweetalert2.min.css') }}"/>
-		<link rel="stylesheet" type="text/css" href="{{ asset('fproh/plugins/sweetalerts/sweetalert.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('fpro/css/dropify/dropify.css') }}">
     </head>
@@ -55,34 +56,19 @@
                                 <a href="{{ url('NikkenCMS/home') }}" class="iq-waves-effect"><i class="ri-home-8-line"></i><span>Dashboard</span></a>
                             </li>
                             <li>
-                                <a href="#mokuteki" class="iq-waves-effect collapsed"  data-toggle="collapse" aria-expanded="false"><i class="ri-award-fill"></i><span>MOKUTEKI</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                                <ul id="mokuteki" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li><a href="{{ url('NikkenCMS/valSaleMK') }}"><i class="ri-shopping-cart-line"></i>Validar ventas</a></li>
-                                </ul>
-                            </li>
-                            <li>
                                 <a href="#myNIKKEN" class="iq-waves-effect collapsed"  data-toggle="collapse" aria-expanded="false"><i class="ri-funds-fill"></i><span>MyNikken</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                                 <ul id="myNIKKEN" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li><a href="{{ url('NikkenCMS/mnkChangeName') }}"><i class="ri-user-settings-fill"></i>Cambio de Nombre</a></li>
                                     <li>
                                         <ul>
                                             <li>
-                                                <a href="#sub-menu" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-notification-4-fill"></i><span>Notificaciones</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                                                <a href="#sub-menu" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-window-line"></i><span>Herramientas de Negocio</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                                                 <ul id="sub-menu" class="iq-submenu iq-submenu-data collapse">
-                                                    <li><a href="{{ url('NikkenCMS/mnkNotify') }}"><i class="ri-notification-4-fill"></i>Crear Notificación</a></li>
-                                                    <li><a href="{{ url('NikkenCMS/mnkNotify') }}"><i class="ri-notification-4-fill"></i>Ver notificaciones</a></li>
+                                                    <li><a href="{{ url('NikkenCMS/businessTools') }}"><i class="ri-article-line"></i>Nuevo Micro-sitio</a></li>
+                                                    <li><a href="{{ url('NikkenCMS/businessToolsAdmin') }}"><i class="ri-links-line"></i>Administrar</a></li>
                                                 </ul>
                                             </li>
                                         </ul>
                                     </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#tv" class="iq-waves-effect collapsed"  data-toggle="collapse" aria-expanded="false"><i class="ri-store-2-line"></i><span>TV</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                                <ul id="tv" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li><a href="{{ url('NikkenCMS/tvKitInicio') }}"><i class="ri-briefcase-fill"></i>Kit de inicio</a></li>
-                                    <li><a href="{{ url('NikkenCMS/tvVueltaCasa') }}"><i class="ri-home-8-line"></i>Vuelta a Casa</a></li>
-                                    <li><a href="{{ url('NikkenCMS/updateWs') }}"><i class="ri-whatsapp-line"></i>WhatsApp TV</a></li>
                                 </ul>
                             </li>
                             <li><a href="todo.html" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Todo</span></a></li>
@@ -206,7 +192,7 @@
                                                 </div>
                                             </a>
                                             <div class="d-inline-block w-100 text-center p-3">
-                                                <a class="btn btn-primary dark-btn-primary" href="{{ URL('NikkenCMS/login') }}" role="button">Cerrar Sesión<i class="ri-login-box-line ml-2"></i></a>
+                                                <a class="btn btn-primary dark-btn-primary" href="{{ URL('login') }}" role="button">Cerrar Sesión<i class="ri-login-box-line ml-2"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -279,7 +265,7 @@
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/jszip.min.js') }}"></script>
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/buttons.print.min.js') }}"></script>
-	    <script src="{{ asset('fproh/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+	    <script src="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
         <script src="{{ asset('fpro/js/dropify/dropify.js') }}"></script>
         <script src="{{ asset('cmsNikken/js/cmsNikken.js') }}"></script>
     </body>

@@ -91,6 +91,18 @@ return [
             'prefix_indexes' => true,
         ],
 
+        '173' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST_173', 'localhost'),
+            'port' => env('DB_PORT_173', '1433'),
+            'database' => env('DB_DATABASE_173', 'forge'),
+            'username' => env('DB_USERNAME_173', 'forge'),
+            'password' => env('DB_PASSWORD_173', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*
