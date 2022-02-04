@@ -212,6 +212,35 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                    <div class="iq-header-title">
+                                        <h4 class="card-title text-center w-100">Aplica para MyNIKKEN y NIKKEN APP?:</h4>
+                                    </div>
+                                </div>
+                                <div class="iq-card-body row">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group mt-2">
+                                            <div class="n-chk">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" id="allSistem" name="allSistem" checked>
+                                                    <label class="custom-control-label" for="allSistem">Todas las plataformas</label>
+                                                </div>
+                                                <label class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" name="chckNINNEAPP" id="chckNINNEAPP" onchange="$('#allSistem').prop('checked', false)" checked>
+                                                    <span class="custom-control-label"></span><span class="new-chk-content">NIKKEN APP</span>
+                                                </label>
+                                                <label class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" name="chckMyNIKKEN" id="chckMyNIKKEN" onchange="$('#allSistem').prop('checked', false)" checked>
+                                                    <span class="custom-control-label"></span><span class="new-chk-content">MyNIKKEN</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <center>
                         <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Guardar alerta">

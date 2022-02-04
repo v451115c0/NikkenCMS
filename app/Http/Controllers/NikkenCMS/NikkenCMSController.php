@@ -168,6 +168,8 @@ class NikkenCMSController extends Controller{
         $chckDIA = (request()->chckDIA == 'on') ? 'DIA': null;
         $chckDRL = (request()->chckDRL == 'on') ? 'DRL': null;
         $rangos = $chckDIR . ', ' . $chckEXE . ', ' . $chckPLA . ', ' . $chckORO . ', ' . $chckPLO . ', ' . $chckDIA . ', ' . $chckDRL;
+        $chckNINNEAPP = (request()->chckNINNEAPP === 'on') ? 1 : 0;
+        $chckMyNIKKEN = (request()->chckMyNIKKEN === 'on') ? 1 : 0;
 
         if ($request->has('iconNsite') && request()->iconNsite) {
             $path = request()->file('iconNsite')->store(
@@ -182,7 +184,7 @@ class NikkenCMSController extends Controller{
             $dateEndNSite = "2050-12-31 23:59:59";
         }
         
-        $insert = "INSERT INTO LAT_MyNIKKEN.dbo.Buscador_Mynikken VALUES ('$nameNSite', '$tagNSite', '$URLNSite', '$dateStartNSite', '$dateEndNSite', '$iconNsite', '$concatSap_codeNSite', '$country', '$allowedUsersNsite', '$rangos', '$onClickNSite');";
+        $insert = "INSERT INTO LAT_MyNIKKEN.dbo.Buscador_Mynikken VALUES ('$nameNSite', '$tagNSite', '$URLNSite', '$dateStartNSite', '$dateEndNSite', '$iconNsite', '$concatSap_codeNSite', '$country', '$allowedUsersNsite', '$rangos', '$onClickNSite', $chckNINNEAPP, $chckMyNIKKEN);";
         
         $conexion = \DB::connection('173');
             $data = $conexion->insert($insert);

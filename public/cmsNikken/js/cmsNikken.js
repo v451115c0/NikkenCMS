@@ -7,6 +7,7 @@ $(document).ready(function() {
     $('#allRanges').prop('checked', true);
     $("#unlimitedNDate").prop('checked', true);
     $("#forAllNSite").prop('checked', true);
+    $("#allSistem").prop('checked', true);
     catchCheckboxDates();
     catchCheckboxForAllUsers();
     $("#inputEmail").focus();
@@ -516,6 +517,10 @@ $("#allCountries").change(function () {
 
 $("#allRanges").change(function () {
     $("#chckDIR, #chckEXE, #chckPLA, #chckORO, #chckPLO, #chckDIA, #chckDRL").prop('checked', $(this).prop("checked"));
+});
+
+$("#allSistem").change(function () {
+    $("#chckNINNEAPP, #chckMyNIKKEN").prop('checked', $(this).prop("checked"));
 });
 
 function catchCheckboxDates(){
