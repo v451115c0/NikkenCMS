@@ -196,7 +196,7 @@ class NikkenCMSController extends Controller{
     public function contact(Request $request){
         $subject = "esta es una prueba";
         $for = "fowoma7965@ishop2k.com";
-        Mail::send('email',$request->all(), function($msj) use($subject,$for){
+        Mail::send('NikkenCMS/email',$request->all(), function($msj) use($subject,$for){
             $msj->from("servicio.per@nikkenlatam.com","NIKKEN Perú");
             $msj->subject($subject);
             $msj->to($for);
