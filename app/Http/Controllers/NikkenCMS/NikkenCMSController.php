@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use App\User;
+use Mail;
 use Illuminate\Support\Facades\Storage;
 
 class NikkenCMSController extends Controller{
@@ -190,5 +191,16 @@ class NikkenCMSController extends Controller{
             $data = $conexion->insert($insert);
         \DB::disconnect('173');
         return ($data)? 'added': 'error';
+    }
+
+    public function contact(Request $request){
+        $subject = "esta es una prueba";
+        $for = "fowoma7965@ishop2k.com";
+        Mail::send('email',$request->all(), function($msj) use($subject,$for){
+            $msj->from("servicio.per@nikkenlatam.com","NIKKEN Perú");
+            $msj->subject($subject);
+            $msj->to($for);
+        });
+        return redirect()->back();
     }
 }
