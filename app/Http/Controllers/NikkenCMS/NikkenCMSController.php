@@ -201,6 +201,6 @@ class NikkenCMSController extends Controller{
             $msj->subject($subject);
             $msj->to($for);
         });
-        return redirect()->back();
+        return "correo enviado";
     }
 }
