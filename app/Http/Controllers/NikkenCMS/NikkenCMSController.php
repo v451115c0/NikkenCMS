@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use App\User;
 use Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class NikkenCMSController extends Controller{
     //Declaramos las configuraciones de amazon s3
