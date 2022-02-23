@@ -196,11 +196,15 @@ class NikkenCMSController extends Controller{
 
     public function contact(){
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
-
-        echo $response->getStatusCode(); // 200
-        echo $response->getHeaderLine('content-type'); // 'application/json; charset=utf8'
-        echo $response->getBody(); // '{"id": 1420053, "name": "guzzle", ...}'
+        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
+            'form_params' => [
+                'username' => 'crojas@nikkenlatam.com',
+                'password' => 'P4w5W0rT',
+                'grant_type' => 'password',
+            ]
+        ]);
+        $response->getHeaderLine('x-www-form-urlencoded'); // 'application/json; charset=utf8'
+        return $response->getBody(); // '{"id": 1420053, "name": "guzzle", ...}'
 
         // Send an asynchronous request.
         /*$request = new \GuzzleHttp\Psr7\Request('GET', 'http://httpbin.org');
