@@ -202,6 +202,7 @@ class NikkenCMSController extends Controller{
             'password' => 'P4w5W0rT',
             'grant_type' => 'password',
         ]);
+        return \Response::json($response);
         return $response;
     }
 }
