@@ -206,6 +206,8 @@ class NikkenCMSController extends Controller{
         $response->getHeaderLine('x-www-form-urlencoded');
         $token =  $response->getBody();
 
-        return gettype($token);
+        $array = json_decode(json_encode($token), true);
+
+        return gettype($array);
     }
 }
