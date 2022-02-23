@@ -196,7 +196,7 @@ class NikkenCMSController extends Controller{
 
     public function contact(){
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('PSOT', 'https://api.github.com/repos/guzzle/guzzle');
+        $response = $client->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
 
         echo $response->getStatusCode(); // 200
         echo $response->getHeaderLine('content-type'); // 'application/json; charset=utf8'
