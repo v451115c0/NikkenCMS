@@ -203,30 +203,9 @@ class NikkenCMSController extends Controller{
                 'grant_type' => 'password',
             ]
         ]);
-        $response->getHeaderLine('x-www-form-urlencoded'); // 'application/json; charset=utf8'
-        return $response->getBody(); // '{"id": 1420053, "name": "guzzle", ...}'
+        $response->getHeaderLine('x-www-form-urlencoded');
+        $response->getBody();
 
-        // Send an asynchronous request.
-        /*$request = new \GuzzleHttp\Psr7\Request('GET', 'http://httpbin.org');
-        $promise = $client->sendAsync($request)->then(function ($response) {
-            echo 'I completed! ' . $response->getBody();
-        });
-
-        $promise->wait();*/
-
-        /*
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/x-www-form-urlencoded'
-        ])->post('https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
-            'username' => 'crojas@nikkenlatam.com',
-            'password' => 'P4w5W0rT',
-            'grant_type' => 'password',
-        ]);
-        $response = $request->send();
-   
-        dd($response);
         return \Response::json($response);
-        return $response;
-        */
     }
 }
