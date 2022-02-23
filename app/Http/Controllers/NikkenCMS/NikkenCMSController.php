@@ -194,13 +194,13 @@ class NikkenCMSController extends Controller{
     }
 
     public function contact(Request $request){
-        $subject = "esta es una prueba";
-        $for = request()->for;
-        Mail::send('NikkenCMS/email',$request->all(), function($msj) use($subject,$for){
-            $msj->from("servicio.per@nikkenlatam.com","NIKKEN Perú");
-            $msj->subject($subject);
-            $msj->to($for);
-        });
-        return "correo enviado";
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        ])->post('http://example.com/users', [
+            'username' => 'crojas@nikkenlatam.com',
+            'password' => 'P4w5W0rT',
+            'grant_type' => 'password',
+        ]);
+        return $response;
     }
 }
