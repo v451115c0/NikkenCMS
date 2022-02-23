@@ -208,6 +208,6 @@ class NikkenCMSController extends Controller{
 
         $array = json_decode(json_encode($token), true);
 
-        return gettype($array);
+        return $array;
     }
 }
