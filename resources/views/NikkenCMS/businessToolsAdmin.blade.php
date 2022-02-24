@@ -15,7 +15,7 @@
                 <div class="iq-card-body">
                     <div class="row">
                         <div class="col-lg-12 col-md-12" style="overflow: auto;">
-                            <table class="table-sm" width="100%">
+                            <table id="microSitesTab" class="table-sm" width="100%">
                                 <thead>
                                   <th>#</th>
                                   <th>Heading</th>
