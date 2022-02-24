@@ -9,7 +9,6 @@
     <div class="col-lg-12 col-md-12">
         <form id="nSite" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-            <input type="hidden"name="urlAction" id="urlAction" value="{{ route('addMicroSitio') }}">
             <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                 <div class="iq-card-header d-flex justify-content-between">
                     <h4 class="card-title text-center w-8">Nuevo Micro-sitio</h4>
@@ -149,7 +148,7 @@
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group mb-1">
-                                <label for="iconNsite">Aploica para estos Códigos <b>(separados por coma)</b>:</label>
+                                <label for="iconNsite">Aplica para estos Códigos <b>(separados por coma)</b>:</label>
                                 <textarea id="allowedUsersNsite" name="allowedUsersNsite" rows="5" class="form-control" required></textarea>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="forAllNSite" name="forAllNSite" checked onchange="catchCheckboxForAllUsers()">
