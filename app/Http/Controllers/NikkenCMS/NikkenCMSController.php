@@ -87,6 +87,9 @@ class NikkenCMSController extends Controller{
             case 'addMicroSitio':
                 return $this->addMicroSitio($parameters);
                 break;
+            case 'getSitesFilter':
+                return $this->getSitesFilter($parameters);
+                break;
         }
     }
 
@@ -194,18 +197,10 @@ class NikkenCMSController extends Controller{
         return ($data)? 'added': 'error';
     }
 
-    public function contact(){
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
-            'form_params' => [
-                'username' => 'crojas@nikkenlatam.com',
-                'password' => 'P4w5W0rT',
-                'grant_type' => 'password',
-            ]
-        ]);
-        $response->getHeaderLine('x-www-form-urlencoded');
-        $token =  $response->getBody()->getContents();
-
-        echo '<pre>' . var_export($token->getBody()->getContents(), true) . '</pre>';
+    public function getSitesFilter(){
+        $conexion = \DB::connection('173');
+            $data = $conexion->select("SELECT DISTINCT(Plataforma) FROM RETOS_ESPECIALES.dbo.Metricas_Nikken;");
+        \DB::disconnect('173');
+        return $data;
     }
 }

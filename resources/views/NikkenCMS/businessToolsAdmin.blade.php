@@ -2,8 +2,8 @@
 
 @section('content')
 <ol class="breadcrumb bg-primary">
-    <li class="breadcrumitem"><a href="{{ url('NikkenCMS/home') }}" class="text-white"><i class="ri-home-4-line mr-1 float-left"></i>Home</a></li>
-    <li class="breadcrumitem active text-white" aria-current="page">Herramientas de Negocio</li>
+    <li class="breadcrumb-item"><a href="{{ url('NikkenCMS/home') }}" class="text-white"><i class="ri-home-4-line mr-1 float-left"></i>Home</a></li>
+    <li class="breadcrumb-item active text-white" aria-current="page">Herramientas de Negocio</li>
 </ol>
 <div class="row">
     <div class="col-lg-12 col-md-12">
@@ -29,42 +29,20 @@
                                   <th>Heading</th>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <th>1</th>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                  </tr>
-                                  <tr>
-                                    <th>2</th>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                  </tr>
-                                  <tr>
-                                    <th>3</th>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                    <td>Cell</td>
-                                  </tr>
+                                  @for ($i = 1; $i < 50; $i++)
+                                    <tr>
+                                        <th>{{ $i }}</th>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                    </tr>
+                                  @endfor
                                 </tbody>
                               </table>
                         </div>

@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="col-lg-12" hidden>
+    <div class="col-lg-12">
         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div class="iq-card-header d-flex justify-content-between">
                 <div class="iq-header-title">

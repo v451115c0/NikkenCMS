@@ -83,6 +83,27 @@ function required(msg){
     timeout();
 }
 
+function number_format(number, decimals, dec_point, thousands_point) {
+    if (number == null || !isFinite(number)) {
+        throw new TypeError("number is not valid");
+    }
+    if (!decimals) {
+        var len = number.toString().split('.').length;
+        decimals = len > 1 ? len : 0;
+    }
+    if (!dec_point) {
+        dec_point = '.';
+    }
+    if (!thousands_point) {
+        thousands_point = ',';
+    }
+    number = parseFloat(number).toFixed(decimals);
+    number = number.replace(".", dec_point);
+    var splitNum = number.split(dec_point);
+    splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_point);
+    number = splitNum.join(dec_point);
+    return number;
+}
 
 // Login
 function login(){
@@ -187,28 +208,6 @@ function timeout(){
 }
 
 /*=== home ===*/
-function number_format(number, decimals, dec_point, thousands_point) {
-    if (number == null || !isFinite(number)) {
-        throw new TypeError("number is not valid");
-    }
-    if (!decimals) {
-        var len = number.toString().split('.').length;
-        decimals = len > 1 ? len : 0;
-    }
-    if (!dec_point) {
-        dec_point = '.';
-    }
-    if (!thousands_point) {
-        thousands_point = ',';
-    }
-    number = parseFloat(number).toFixed(decimals);
-    number = number.replace(".", dec_point);
-    var splitNum = number.split(dec_point);
-    splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_point);
-    number = splitNum.join(dec_point);
-    return number;
-}
-
 function top5Activos(plataforma){
     $("#platformName").text(plataforma);
     $.ajax({
@@ -266,8 +265,54 @@ function top5Activos(plataforma){
         }
     });
 }
-if ( $("#contentTop5Activos").length > 0 ) {
-    top5Activos($("#actvitieSite").val());
+if ($("#contentTop5Activos").length > 0 ) {
+    getSitesFilter();
+}
+
+function getSitesFilter(){
+    $.ajax({
+        type: "get",
+        url: "/NikkenCMSpro/getActions",
+        data: {
+            action: 'getSitesFilter',
+        },
+        beforeSend: function(){
+            $("div[id=loadingIcon]").addClass('lds-hourglass');
+            $("#contentTop5Activos").empty();
+            $("#graphVisitas").empty();
+            $('#actvitieSite option').remove();
+        },
+        success: function (response) {
+            if(response === 'error'){
+                $("#loadingIcon").removeClass('lds-hourglass');
+                var html = '<div class="alert text-white bg-danger" role="alert">' +
+                                '<div class="iq-alert-text"><a href="login">Inicar sesión</a></div>' +
+                            '</div>';
+                $("#contentTop5Activos").html(html);
+                $("#loadingIcon").removeClass('lds-hourglass');
+            }
+            else{
+                for(x = 0; x < response.length; x++){
+                    $('#actvitieSite').append($('<option>', {
+                        value: response[x]['Plataforma'],
+                        text: response[x]['Plataforma']
+                    }));
+                }
+                $("#loadingIcon").removeClass('lds-hourglass');
+                top5Activos($("#actvitieSite").val());
+            }
+        },
+        error: function(){
+            $("#loadingIcon").removeClass('lds-hourglass');
+            var html = '<div class="alert text-white bg-danger" role="alert">' +
+                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
+                            '<button type="button" class="close" onclick="getSitesFilter()">' +
+                                'Reintentar' +
+                            '</button>' +
+                        '</div>';
+            $("#contentTop5Activos").html(html);
+        }
+    });
 }
 
 function graphVisitas(plataforma){
