@@ -1,6 +1,33 @@
 @extends('NikkenCMS.' . session('tokenUserType'))
 
 @section('content')
+<style>
+    #actvitieSite {
+        background-color: rgb(196, 191, 191);
+    }
+    #actvitieSite .form-control {
+        border: 1px solid #ccc;
+        color: #888ea8;
+        font-size: 15px;
+    }
+    .input-group-text {
+        background-color: #f3f4f7;
+        border-color: #e9ecef;
+        color: #6156ce;
+    }
+    select.form-control {
+        display: inline-block;
+        width: 100%;
+        height: calc(2.25rem + 2px);
+        vertical-align: middle;
+        background: #fff url(../fpro/img/arrow-down.png) no-repeat right .75rem center ;
+        background-size: 13px 14px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    select.form-control::-ms-expand { display: none; }
+</style>
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
