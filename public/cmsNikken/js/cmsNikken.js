@@ -593,3 +593,109 @@ function catchCheckboxForAllUsers(){
         $("#allowedUsersNsite").val('');
     }
 }
+
+/*=== Administrador de buscador / material nikkenAPP-MyNIKKEN ===*/
+if ($("#tabBusinessTools").length > 0 ) {
+    getDataBuscador();
+}
+
+function getDataBuscador(){
+    $("#tabBusinessTools").dataTable({
+        destroy: true,
+        ordering: false,
+        ajax:{
+            type: "get",
+            url: "/NikkenCMSpro/getActions",
+            data: {
+                action: 'getDataBuscador',
+            },
+        },
+        columns: [
+            { data: 'Reto', className: 'text-center' },
+            { data: 'Tag', className: 'text-center' },
+            { data: 'URL', className: 'text-center' },
+            { data: 'FechaInicio', className: 'text-center' },
+            { data: 'FechaFinzalizar', className: 'text-center' },
+            { data: 'icono', className: 'text-center' },
+            {
+                data: 'concat_sap_code',
+                render: function(data, type, row){
+                    if(row.concat_sap_code == 1){
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-success">Aplica</span>';
+                    }
+                    else{
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-danger">No Aplica</span>';
+                    }
+                }
+            },
+            { 
+                data: 'showFor',
+                className: 'text-center',
+                render: function(data, type, row){
+                    return '<p style="max-width: 150px !important">' + row.showFor + '</p>';
+                }
+            },
+            { data: 'rangos', className: 'text-center' },
+            { data: 'onclick', className: 'text-center' },
+            {
+                data: 'NikkenApp',
+                className: 'text-center',
+                render: function(data, type, row){
+                    if(row.NikkenApp == 1){
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-success">Aplica</span>';
+                    }
+                    else{
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-danger">No Aplica</span>';
+                    }
+                }
+            },
+            {
+                data: 'MyNikken',
+                className: 'text-center',
+                render: function(data, type, row){
+                    if(row.MyNikken == 1){
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-success">Aplica</span>';
+                    }
+                    else{
+                        return '<span class="mb-2 ml-2 badge badge-pills badge-danger">No Aplica</span>';
+                    }
+                }
+            },
+            {
+                data: 'MyNikken',
+                className: 'text-center',
+                render: function(data, type, row){
+                    return '<button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target=".editSite" onclick="loadDataEditSite(' + row.ID + ')"><i class="ri-pencil-fill pr-0"></i></button> <button type="button" class="btn btn-danger"><i class="ri-delete-bin-fill pr-0"></i></button>';
+                }
+            }
+        ],
+    });
+}
+
+function loadDataEditSite(id){
+    $.ajax({
+        type: "GET",
+        url: "/NikkenCMSpro/getActions",
+        data: {
+            action: 'loadDataEditSite',
+            parameters: {
+                idSite: id
+            }
+        },
+        success: function (response) {
+            $("#nameNSite").val(response[0]['Reto']);
+            $("#idNSite").val(response[0]['ID']);
+            $("#URLNSite").val(response[0]['URL']);
+
+            $("#dateStartNSite").val(response[0]['FechaInicio']);
+            $("#dateEndNSite").val(response[0]['FechaFinzalizar']);
+
+            $("#tagNSite").val(response[0]['Tag']);
+            $("#onClickNSite").val(response[0]['onclick']);
+            $("#currentIcon").attr('src', response[0]['icono']);
+        },
+        error: function(){
+            
+        }
+    });
+}

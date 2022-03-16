@@ -90,6 +90,12 @@ class NikkenCMSController extends Controller{
             case 'getSitesFilter':
                 return $this->getSitesFilter($parameters);
                 break;
+            case 'getDataBuscador':
+                return $this->getDataBuscador();
+                break;
+            case 'loadDataEditSite':
+                return $this->loadDataEditSite($parameters);
+                break;
         }
     }
 
@@ -129,16 +135,6 @@ class NikkenCMSController extends Controller{
                 $data[12] = $conexion->select("SELECT count(distinct Associateid) AS total FROM RETOS_ESPECIALES.dbo.Metricas_Nikken WHERE Fecha > '$year-12-01' AND Fecha < '$year-12-31' and Plataforma = '$plataforma';");
             \DB::disconnect('173');
             return $data;
-        }
-    }
-
-    public function businessTools($parameters){
-        if(empty(session('tokenPass'))){
-            return "error";
-        }
-        else{
-            
-            return "hola";
         }
     }
 
@@ -202,5 +198,28 @@ class NikkenCMSController extends Controller{
             $data = $conexion->select("SELECT DISTINCT(Plataforma) FROM RETOS_ESPECIALES.dbo.Metricas_Nikken;");
         \DB::disconnect('173');
         return $data;
+    }
+
+    public function getDataBuscador(){
+        $conexion = \DB::connection('173');
+            $data = $conexion->select("SELECT * FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken;");
+        \DB::disconnect('173');
+        $data = [
+            'data' => $data,
+        ];
+        return $data;
+    }
+
+    public function loadDataEditSite($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['idSite'];
+            $conexion = \DB::connection('173');
+                $data = $conexion->select("SELECT * FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken WHERE ID = $id;");
+            \DB::disconnect('173');
+            return $data;
+        }
     }
 }
