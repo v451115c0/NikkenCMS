@@ -283,7 +283,7 @@
                                             </div>
                                         </div>
                                         <center>
-                                            <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" data-dismiss="modal" name="btnsave" value="Actualizar alerta">
+                                            <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Actualizar alerta">
                                             <br>
                                             <div id="loadingIcon"></div>
                                         </center>
