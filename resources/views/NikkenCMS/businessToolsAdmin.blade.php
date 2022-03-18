@@ -48,8 +48,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="nSite" method="POST" enctype="multipart/form-data">
+                            <form id="editSite" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                                <input type="hidden"name="urlAction" id="urlAction" value="{{ route('editMicrosito') }}">
                                 <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                                     <div class="iq-card-header d-flex justify-content-between">
                                         <h4 class="card-title text-center w-8">Nuevo Micro-sitio</h4>
@@ -71,6 +72,10 @@
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="URLNSite" name="URLNSite" placeholder="https://... / #modal" required>
                                                     </div>
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input" id="concatSap_codeNSite" name="concatSap_codeNSite" checked>
+                                                        <label class="custom-control-label" for="concatSap_codeNSite">Concatenar Código ABI/Influencer</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4">
@@ -91,16 +96,16 @@
                                             </div>
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="tagNSite">Tags* <br><b>(separado por coma ','</b>):</label>
-                                                    <div class="col-sm-10">
+                                                    <label class="control-label col-sm-3 align-self-center mb-0" for="tagNSite">Tags* <br><b>(separado por coma ','</b>):</label>
+                                                    <div class="col-sm-9">
                                                         <input type="text" class="form-control" id="tagNSite" name="tagNSite" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="onClickNSite">Evento al click <br><b>(separar por ';')</b>:</label>
-                                                    <div class="col-sm-10">
+                                                    <label class="control-label col-sm-3 align-self-center mb-0" for="onClickNSite">Evento al click <br><b>(separar por ';')</b>:</label>
+                                                    <div class="col-sm-9">
                                                         <input type="text" class="form-control" id="onClickNSite" name="onClickNSite">
                                                     </div>
                                                 </div>
@@ -110,13 +115,13 @@
                                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                                 <div class="form-group mb-1">
                                                     <label for="iconNsite">Icono actual</label><br>
-                                                    <img src="" id="currentIcon">
+                                                    <img src="" id="currentIcon" width="100%">
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                                 <div class="form-group mb-1">
                                                     <label for="iconNsite">Nuevo icono</label>
-                                                    <input type="file" class="dropify" data-max-file-size="3M" name="iconNsite"/ required>
+                                                    <input type="file" class="dropify" data-max-file-size="3M" name="iconNsite"/>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-md-6 col-lg-6">
@@ -278,7 +283,7 @@
                                             </div>
                                         </div>
                                         <center>
-                                            <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Guardar alerta">
+                                            <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" data-dismiss="modal" name="btnsave" value="Actualizar alerta">
                                             <br>
                                             <div id="loadingIcon"></div>
                                         </center>

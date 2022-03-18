@@ -9,6 +9,7 @@
     <div class="col-lg-12 col-md-12">
         <form id="nSite" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+            <input type="hidden"name="urlAction" id="urlAction" value="{{ route('addMicroSitio') }}">
             <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                 <div class="iq-card-header d-flex justify-content-between">
                     <h4 class="card-title text-center w-8">Nuevo Micro-sitio</h4>
@@ -242,7 +243,7 @@
                         </div>
                     </div>
                     <center>
-                        <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Guardar alerta">
+                        <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Guardar sitio">
                         <br>
                         <div id="loadingIcon"></div>
                     </center>

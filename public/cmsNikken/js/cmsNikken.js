@@ -452,6 +452,7 @@ function graphVisitas(plataforma){
 }
 
 $('#nSite').on('submit', function(e) {
+    var utltarget = $("#urlAction").val();
     // evito que propague el submit
     e.preventDefault();
     //deshabilitamos el boton para que solo se haga una peticion de registro
@@ -460,7 +461,6 @@ $('#nSite').on('submit', function(e) {
     // agrego la data del form a formData
     var formData = new FormData(this);
     //formData.append('_token', $('input[name=_token]').val());
-    var utltarget = $("#urlAction").val();
     $.ajax({
         type:'POST',
         url: utltarget,
@@ -665,7 +665,8 @@ function getDataBuscador(){
                 data: 'MyNikken',
                 className: 'text-center',
                 render: function(data, type, row){
-                    return '<button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target=".editSite" onclick="loadDataEditSite(' + row.ID + ')"><i class="ri-pencil-fill pr-0"></i></button> <button type="button" class="btn btn-danger"><i class="ri-delete-bin-fill pr-0"></i></button>';
+                    return  '<button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target=".editSite" onclick="loadDataEditSite(' + row.ID + ')"><i class="ri-pencil-fill pr-0"></i></button>' + 
+                            '<button type="button" class="btn btn-danger" onclick="deleteSite(' + row.ID + ')"><i class="ri-delete-bin-fill pr-0"></i></button>';
                 }
             }
         ],
@@ -696,6 +697,122 @@ function loadDataEditSite(id){
         },
         error: function(){
             
+        }
+    });
+}
+
+$('#editSite').on('submit', function(e) {
+    var utltarget = $("#urlAction").val();
+    // evito que propague el submit
+    e.preventDefault();
+    //deshabilitamos el boton para que solo se haga una peticion de registro
+    disabled($("#btnsave"));
+
+    // agrego la data del form a formData
+    var formData = new FormData(this);
+    //formData.append('_token', $('input[name=_token]').val());
+    $.ajax({
+        type:'POST',
+        url: utltarget,
+        data: formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        beforeSend: function(){
+            $("div[id=loadingIcon]").addClass('lds-hourglass');
+            disabled($("#nameNSite"));
+            disabled($("#URLNSite"));
+            disabled($("#customSwitch2"));
+            disabled($("#dateStartNSite"));
+            disabled($("#dateEndNSite"));
+            disabled($("#unlimitedNDate"));
+            disabled($("#tagNSite"));
+            disabled($("#iconNsite"));
+            disabled($("#allCountries"));
+            disabled($("#chckCol"));
+            disabled($("#chckMex"));
+            disabled($("#chckPer"));
+            disabled($("#chckCri"));
+            disabled($("#chckEcu"));
+            disabled($("#chckSlv"));
+            disabled($("#chckGtm"));
+            disabled($("#chckPan"));
+            disabled($("#chckChl"));
+        },
+        success:function(data){
+            if(data == 'added'){
+                alert('OK!', "El micrositio se agregó correctamente", 'success');
+                $('#nSite').trigger('reset');
+                $(".dropify-clear").trigger("click");
+            }
+            else{
+                alert('Ups...!', "No fue posible guardar la información.", 'error');
+            }
+            enabled($("#btnsave"));
+            $("#loadingIcon").removeClass('lds-hourglass');
+            enabled($("#nameNSite"));
+            enabled($("#URLNSite"));
+            enabled($("#customSwitch2"));
+            enabled($("#dateStartNSite"));
+            enabled($("#dateEndNSite"));
+            enabled($("#unlimitedNDate"));
+            enabled($("#tagNSite"));
+            enabled($("#iconNsite"));
+            enabled($("#allCountries"));
+            enabled($("#chckCol"));
+            enabled($("#chckMex"));
+            enabled($("#chckPer"));
+            enabled($("#chckCri"));
+            enabled($("#chckEcu"));
+            enabled($("#chckSlv"));
+            enabled($("#chckGtm"));
+            enabled($("#chckPan"));
+            enabled($("#chckChl"));
+            getDataBuscador();
+        },
+        error: function(jqXHR, text, error){
+            $("#loadingIcon").removeClass('lds-hourglass');
+            alert('Ups...!', "No fue posible guardar la información.", 'error');
+            enabled($("#nameNSite"));
+            enabled($("#URLNSite"));
+            enabled($("#customSwitch2"));
+            enabled($("#dateStartNSite"));
+            enabled($("#dateEndNSite"));
+            enabled($("#unlimitedNDate"));
+            enabled($("#tagNSite"));
+            enabled($("#iconNsite"));
+            enabled($("#allCountries"));
+            enabled($("#chckCol"));
+            enabled($("#chckMex"));
+            enabled($("#chckPer"));
+            enabled($("#chckCri"));
+            enabled($("#chckEcu"));
+            enabled($("#chckSlv"));
+            enabled($("#chckGtm"));
+            enabled($("#chckPan"));
+            enabled($("#chckChl"));
+            enabled($("#btnsave"));
+            getDataBuscador();
+        }
+    });
+});
+
+function deleteSite(id){
+    $.ajax({
+        type: "GET",
+        url: "/NikkenCMSpro/getActions",
+        data: {
+            action: 'deleteSite',
+            parameters: {
+                idSite: id
+            }
+        },
+        success: function (response) {
+            alert('OK', 'Sitio eliminado correctamente.', 'success');
+            getDataBuscador();
+        },
+        error: function(){
+            getDataBuscador();
         }
     });
 }

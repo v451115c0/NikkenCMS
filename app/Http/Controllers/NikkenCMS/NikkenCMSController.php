@@ -96,6 +96,9 @@ class NikkenCMSController extends Controller{
             case 'loadDataEditSite':
                 return $this->loadDataEditSite($parameters);
                 break;
+            case 'deleteSite':
+                return $this->deleteSite($parameters);
+                break;
         }
     }
 
@@ -221,5 +224,74 @@ class NikkenCMSController extends Controller{
             \DB::disconnect('173');
             return $data;
         }
+    }
+
+    function editMicrosito(Request $request){
+        $idNSite = request()->idNSite;
+        $urlAction = request()->urlAction;
+        $nameNSite = request()->nameNSite;
+        $URLNSite = trim(request()->URLNSite);
+        $concatSap_codeNSite = (request()->concatSap_codeNSite == 'on' || trim(request()->URLNSite) != 'javascript:void(0);') ? 1: 0;
+        $dateStartNSite = str_replace("T", " ", request()->dateStartNSite);
+        $dateEndNSite = str_replace("T", " ", request()->dateEndNSite);
+        $unlimitedNDate = request()->unlimitedNDate;
+        $tagNSite = request()->tagNSite;
+        $chckCol = (request()->chckCol=='on')? 1: null;
+        $chckMex = (request()->chckMex=='on')? 2: null;
+        $chckPer = (request()->chckPer=='on')? 3: null;
+        $chckCri = (request()->chckCri=='on')? 8: null;
+        $chckEcu = (request()->chckEcu=='on')? 4: null;
+        $chckSlv = (request()->chckSlv=='on')? 7: null;
+        $chckGtm = (request()->chckGtm=='on')? 6: null;
+        $chckPan = (request()->chckPan=='on')? 5: null;
+        $chckChl = (request()->chckChl=='on')? 10: null;
+        $country = $chckCol . ', ' .$chckMex . ', ' .$chckPer . ', ' .$chckCri . ', ' .$chckEcu . ', ' .$chckSlv . ', ' .$chckGtm . ', ' .$chckPan . ', ' .$chckChl;
+
+        $iconNsite = "https://micrositios.s3.us-west-1.amazonaws.com/CmsSRC/Icono-MasterDay.png";
+        $conexion = \DB::connection('173');
+            $data = $conexion->select("SELECT icono FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken WHERE ID = $idNSite");
+        \DB::disconnect('173');
+        $iconNsite = $data[0]->icono;
+
+        $onClickNSite = request()->onClickNSite;
+        $allowedUsersNsite = (trim(request()->allowedUsersNsite) == '') ? 'todos' : trim(request()->allowedUsersNsite);
+        $chckDIR = (request()->chckDIR == 'on') ? 'DIR': null;
+        $chckEXE = (request()->chckEXE == 'on') ? 'EXE': null;
+        $chckPLA = (request()->chckPLA == 'on') ? 'PLA': null;
+        $chckORO = (request()->chckORO == 'on') ? 'ORO': null;
+        $chckPLO = (request()->chckPLO == 'on') ? 'PLO': null;
+        $chckDIA = (request()->chckDIA == 'on') ? 'DIA': null;
+        $chckDRL = (request()->chckDRL == 'on') ? 'DRL': null;
+        $rangos = $chckDIR . ', ' . $chckEXE . ', ' . $chckPLA . ', ' . $chckORO . ', ' . $chckPLO . ', ' . $chckDIA . ', ' . $chckDRL;
+        $chckNINNEAPP = (request()->chckNINNEAPP === 'on') ? 1 : 0;
+        $chckMyNIKKEN = (request()->chckMyNIKKEN === 'on') ? 1 : 0;
+
+        if ($request->has('iconNsite') && request()->iconNsite) {
+            $path = request()->file('iconNsite')->store(
+                NikkenCMSController::S3_SLIDERS_FOLDER,
+                NikkenCMSController::S3_OPTIONS
+            );
+            $full_path = Storage::disk('s3')->url($path);
+            $iconNsite = $full_path;
+        }
+        if($unlimitedNDate == 'on'){
+            $dateStartNSite = "2000-01-01 01:00:00";
+            $dateEndNSite = "2050-12-31 23:59:59";
+        }
+        
+        $insert = "UPDATE LAT_MyNIKKEN.dbo.Buscador_Mynikken SET Reto = '$nameNSite', Tag = '$tagNSite', URL = '$URLNSite', FechaInicio = '$dateStartNSite', FechaFinzalizar = '$dateEndNSite', icono = '$iconNsite', concat_sap_code = '$concatSap_codeNSite', pais = '$country', showFor = '$allowedUsersNsite', rangos = '$rangos', onclick = '$onClickNSite', NikkenApp = '$chckNINNEAPP', MyNikken = '$chckMyNIKKEN' WHERE ID = $idNSite";
+        
+        $conexion = \DB::connection('173');
+            $data = $conexion->update($insert);
+        \DB::disconnect('173');
+        return ($data)? 'added': 'error';
+    }
+
+    public function deleteSite($parameters){
+        $id = $parameters['idSite'];
+        $conexion = \DB::connection('173');
+            $data = $conexion->delete("DELETE FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken WHERE ID = $id;");
+        \DB::disconnect('173');
+        return ($data) ? 1 : 0;
     }
 }
