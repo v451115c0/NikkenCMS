@@ -281,6 +281,7 @@ function getSitesFilter(){
             $("#contentTop5Activos").empty();
             $("#graphVisitas").empty();
             $('#actvitieSite option').remove();
+            $('#plataformaTabFilter option').remove();
         },
         success: function (response) {
             if(response === 'error'){
@@ -294,6 +295,10 @@ function getSitesFilter(){
             else{
                 for(x = 0; x < response.length; x++){
                     $('#actvitieSite').append($('<option>', {
+                        value: response[x]['Plataforma'],
+                        text: response[x]['Plataforma']
+                    }));
+                    $('#plataformaTabFilter').append($('<option>', {
                         value: response[x]['Plataforma'],
                         text: response[x]['Plataforma']
                     }));
@@ -556,42 +561,40 @@ function setDate(){
 }
 setDate();
 
-$("#allCountries").change(function () {
-    $("#chckCol, #chckMex, #chckPer, #chckCri, #chckEcu, #chckSlv, #chckGtm, #chckPan, #chckChl").prop('checked', $(this).prop("checked"));
-});
+function getDatattableMetricas(){
+    var mes = $("#mesConsultaTabFilter").val();
+    var plataforma = $("#plataformaTabFilter").val();
+    var pais = $("#paisTabFilter").val();
+    var rango = $("#rangoTabFilter").val();
+    var clave = $("#clave").val();
 
-$("#allRanges").change(function () {
-    $("#chckDIR, #chckEXE, #chckPLA, #chckORO, #chckPLO, #chckDIA, #chckDRL").prop('checked', $(this).prop("checked"));
-});
-
-$("#allSistem").change(function () {
-    $("#chckNINNEAPP, #chckMyNIKKEN").prop('checked', $(this).prop("checked"));
-});
-
-function catchCheckboxDates(){
-    var status = $("#unlimitedNDate").prop('checked');
-    if(status){
-        disabled($("#dateStartNSite"));
-        disabled($("#dateEndNSite"));
-        $("#dateStartNSite, #dateEndNSite").removeAttr('required');
-    }
-    else{
-        enabled($("#dateStartNSite"));
-        enabled($("#dateEndNSite"));
-        $("#dateStartNSite, #dateEndNSite").attr('required', 'required');
-    }
-}
-
-function catchCheckboxForAllUsers(){
-    var status = $("#forAllNSite").prop('checked');
-    if(status){
-        $("#allowedUsersNsite").attr('readonly', 'readonly');
-        $("#allowedUsersNsite").val('todos');
-    }
-    else{
-        $("#allowedUsersNsite").removeAttr('readonly');
-        $("#allowedUsersNsite").val('');
-    }
+    $("#tabMetricas").dataTable({
+        destroy: true,
+        ordering: false,
+        deferRender: true,
+        ajax:{
+            type: "get",
+            url: "/NikkenCMSpro/getActions",
+            data: {
+                action: 'getDatattableMetricas',
+                parameters: {
+                    mes: mes,
+                    plataforma: plataforma,
+                    pais: pais,
+                    rango: rango,
+                    clave: clave.trim(),
+                }
+            },
+        },
+        columns: [
+            { data: 'Associateid', className: 'text-center' },
+            { data: 'Rango', className: 'text-center' },
+            { data: 'Pais', className: 'text-center' },
+            { data: 'Fecha', className: 'text-center' },
+            { data: 'Plataforma', className: 'text-center' },
+            { data: 'Accion', className: 'text-center' },
+        ],
+    });
 }
 
 /*=== Administrador de buscador / material nikkenAPP-MyNIKKEN ===*/
@@ -815,4 +818,42 @@ function deleteSite(id){
             getDataBuscador();
         }
     });
+}
+
+$("#allCountries").change(function () {
+    $("#chckCol, #chckMex, #chckPer, #chckCri, #chckEcu, #chckSlv, #chckGtm, #chckPan, #chckChl").prop('checked', $(this).prop("checked"));
+});
+
+$("#allRanges").change(function () {
+    $("#chckDIR, #chckEXE, #chckPLA, #chckORO, #chckPLO, #chckDIA, #chckDRL").prop('checked', $(this).prop("checked"));
+});
+
+$("#allSistem").change(function () {
+    $("#chckNINNEAPP, #chckMyNIKKEN").prop('checked', $(this).prop("checked"));
+});
+
+function catchCheckboxDates(){
+    var status = $("#unlimitedNDate").prop('checked');
+    if(status){
+        disabled($("#dateStartNSite"));
+        disabled($("#dateEndNSite"));
+        $("#dateStartNSite, #dateEndNSite").removeAttr('required');
+    }
+    else{
+        enabled($("#dateStartNSite"));
+        enabled($("#dateEndNSite"));
+        $("#dateStartNSite, #dateEndNSite").attr('required', 'required');
+    }
+}
+
+function catchCheckboxForAllUsers(){
+    var status = $("#forAllNSite").prop('checked');
+    if(status){
+        $("#allowedUsersNsite").attr('readonly', 'readonly');
+        $("#allowedUsersNsite").val('todos');
+    }
+    else{
+        $("#allowedUsersNsite").removeAttr('readonly');
+        $("#allowedUsersNsite").val('');
+    }
 }

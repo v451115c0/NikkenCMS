@@ -99,6 +99,9 @@ class NikkenCMSController extends Controller{
             case 'deleteSite':
                 return $this->deleteSite($parameters);
                 break;
+            case 'getDatattableMetricas':
+                return $this->getDatattableMetricas($parameters);
+                break;
         }
     }
 
@@ -293,5 +296,25 @@ class NikkenCMSController extends Controller{
             $data = $conexion->delete("DELETE FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken WHERE ID = $id;");
         \DB::disconnect('173');
         return ($data) ? 1 : 0;
+    }
+
+    function getDatattableMetricas($parameters){
+        $mes = $parameters['mes'];
+        $andMes = ($mes == 'todos') ? "": " AND Fecha BETWEEN '$mes-01' AND '$mes-30'";
+        $plataforma = $parameters['plataforma'];
+        $pais = $parameters['pais'];
+        $andPais = ($pais == 'latam') ? '': " AND Pais = '$pais'";
+        $rango = $parameters['rango'];
+        $andRango = ($rango == 'todos') ? '': " AND Rango = '$rango'";
+        $stringClave = $parameters['clave'];
+        $andClave = ($stringClave == '') ? '': " AND Accion LIKE '%$stringClave%'";
+
+        $conexion = \DB::connection('173');
+            $data = $conexion->select("SELECT * FROM RETOS_ESPECIALES.dbo.Metricas_Nikken WHERE Plataforma = '$plataforma' $andMes $andPais $andRango $andClave ORDER BY Fecha DESC;");
+        \DB::disconnect('173');
+        $data = [
+            'data' => $data,
+        ];
+        return $data;
     }
 }

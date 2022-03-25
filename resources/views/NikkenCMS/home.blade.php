@@ -38,8 +38,6 @@
                 <div class="form-group w-100">
                     <label for="actvitieSite">Selecciona la plataforma</label>
                     <select class="form-control" id="actvitieSite" onchange="top5Activos(this.value)">
-                        <option value="MyNIKKEN_prod">MyNIKKEN_prod</option>
-                        <option value="Mokuteki PLUS">Mokuteki PLUS</option>
                     </select>
                 </div>
                 <a class="btn dark-icon btn-primary rounded-pill text-white mt-3 mr-3 ml-3" onclick="top5Activos($('#actvitieSite').val());">Actualizar</a>
@@ -77,32 +75,18 @@
                 <div class="iq-header-title">
                     <h4 class="card-title">Metricas</h4>
                 </div>
-                <div class="iq-card-header-toolbar d-flex align-items-center">
-                    <div class="dropdown">
-                        <span class="dropdown-toggle" id="dropdownMenuButton3" data-toggle="dropdown">
-                            <i class="ri-more-fill"></i>
-                        </span>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton3" style="">
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ri-eye-fill mr-2"></i>View</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ri-printer-fill mr-2"></i>Print</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="iq-card-body">
                 <div class="row" >
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="form-group">
                             <label>Mes de descarga</label>
-                            <select class="form-control form-control-sm mb-3">
+                            <select class="form-control form-control-sm mb-3" id="mesConsultaTabFilter">
                                 <option value="todos" selected disabled>Selecciona un mes de consulta</option>
-                                <option value="todos">Todos los registros</option>
+                                <option value="todos">Todos los meses</option>
                                 @php
                                     $añoAct = date('o');
-                                    $añoAct = $añoAct - 1;
+                                    $añoAct = $añoAct;
                                     for($i=date('o'); $i>=$añoAct; $i--){
                                         for ($e=12; $e>=1; $e--){
                                             $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -110,7 +94,7 @@
                                             if($i == date("Y")){
                                                 if($e <= date("n")){
                                                     echo '
-                                                        <option value="'.$i.$e.'">'.$mes.' '.$i.'</option>
+                                                        <option value="'. $i . '-0'. $e .'">'.$mes.' '.$i.'</option>
                                                     '; 
                                                 }
                                             }
@@ -122,7 +106,7 @@
                                                 }
                                                 else{
                                                     echo '
-                                                        <option value="'.$i.$e.'">'.$mes.' '.$i.'</option>
+                                                        <option value="'.$i . '-0'. $e.'">'.$mes.' '.$i.'</option>
                                                     '; 
                                                 }
                                             }
@@ -134,40 +118,59 @@
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                            <label>Small</label>
-                            <select class="form-control form-control-sm mb-3">
-                                <option selected="">Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <label>Plataforma:</label>
+                            <select class="form-control form-control-sm mb-3" id="plataformaTabFilter">
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                            <label>Small</label>
-                            <select class="form-control form-control-sm mb-3">
-                                <option selected="">Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <label>País:</label>
+                            <select class="form-control form-control-sm mb-3" id="paisTabFilter">
+                                <option value="latam" selected>Todos los países</option>
+                                <option value="CHL">CHL</option>
+                                <option value="CL">CL</option>
+                                <option value="COL">COL</option>
+                                <option value="CRI">CRI</option>
+                                <option value="ECU">ECU</option>
+                                <option value="GTM">GTM</option>
+                                <option value="MEX">MEX</option>
+                                <option value="PAN">PAN</option>
+                                <option value="PER">PER</option>
+                                <option value="SLV">SLV</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                            <label>Small</label>
-                            <select class="form-control form-control-sm mb-3">
-                                <option selected="">Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <label>Rango:</label>
+                            <select class="form-control form-control-sm mb-3" id="rangoTabFilter">
+                                <option value="todos">Todos los rangos</option>
+                                <option value="BRC">BRC</option>
+                                <option value="DIA">DIA</option>
+                                <option value="DIR">DIR</option>
+                                <option value="DRL">DRL</option>
+                                <option value="EXE">EXE</option>
+                                <option value="ORO">ORO</option>
+                                <option value="PLA">PLA</option>
+                                <option value="PLO">PLO</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group row">
+                            <label class="control-label col-sm-3 align-self-center mb-0" for="clave">palabra clave:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="clave" name="clave" placeholder="palabra clave para filtrado (opcional)" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-2">
+                        <a class="btn dark-icon btn-primary rounded-pill text-white mr-3 ml-3" onclick="getDatattableMetricas();">Actualizar</a>
                     </div>
                 </div>
                 <div class="table-responsive" >
-                    <table class="table mb-0 table-borderless table-sm">
+                    <table class="table mb-0 table-borderless table-sm" id="tabMetricas">
                         <thead>
                             <tr>
                                 <th scope="col">Código de usuario</th>
@@ -180,26 +183,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <textarea class="form-control" id="queryval" rows="2"></textarea>
-                        </div>
-                        <button class="btn btn-primary" onclick="validateQuery()">Ejecutar Query (F5)</button>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <p id="queryLog"></p>
-                    </div>
-                </div>
-                <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%"></table>
-                <div class="table-responsive mt-4">
-                    <table class="table mb-0 table-borderless table-sm table-striped" id="tabQuery">
-                        <thead>
-                            <tr id="tabQueryHeaders">
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+                
             </div>
         </div>
     </div>
