@@ -22,6 +22,7 @@
                                 <th>Nombre de Sitio</th>
                                 <th>Tag</th>
                                 <th>URL</th>
+                                <th>Icono</th>
                                 <th>Mostrar desde</th>
                                 <th>Mostrar hasta</th>
                                 <th>Concatenar id de usuario</th>

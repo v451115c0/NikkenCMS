@@ -594,6 +594,16 @@ function getDatattableMetricas(){
             { data: 'Plataforma', className: 'text-center' },
             { data: 'Accion', className: 'text-center' },
         ],
+        buttons: {
+            buttons: [
+                { 
+                    extend: 'excel', 
+                    className: 'btn dark-icon btn-primary rounded-pill text-white mr-3 ml-3 btnExcel',
+                    text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
+                },
+            ]
+        },
+        dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
     });
 }
 
@@ -617,20 +627,24 @@ function getDataBuscador(){
             { data: 'Reto', className: 'text-center' },
             { data: 'Tag', className: 'text-center' },
             { data: 'URL', className: 'text-center' },
-            { data: 'FechaInicio', className: 'text-center' },
-            { data: 'FechaFinzalizar', className: 'text-center' },
-            { data: 'icono', className: 'text-center' },
             {
-                data: 'concat_sap_code',
+                data: 'icono',
+                className: 'text-center',
                 render: function(data, type, row){
-                    if(row.concat_sap_code == 1){
-                        return '<span class="mb-2 ml-2 badge badge-pills badge-success">Aplica</span>';
-                    }
-                    else{
-                        return '<span class="mb-2 ml-2 badge badge-pills badge-danger">No Aplica</span>';
-                    }
+                    var icono = row.icono;
+                    return "<img src=" + icono + " width='100%'>";
                 }
             },
+            { data: 'FechaInicio', className: 'text-center' },
+            { data: 'FechaFinzalizar', className: 'text-center' },
+            {
+                data: 'concat_sap_code',
+                className: 'text-center',
+                render: function(data, type, row){
+                    return (row.concat_sap_code == 1 || row.concat_sap_code == true) ? 'Si' : 'NO';
+                }
+            },
+            { data: 'pais', className: 'text-center' },
             { 
                 data: 'showFor',
                 className: 'text-center',
