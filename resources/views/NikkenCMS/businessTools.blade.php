@@ -77,11 +77,12 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group mb-1">
-                                <label for="iconNsite"></label>
-                                <input type="file" class="dropify" data-max-file-size="3M" name="iconNsite"/ required>
+                                <label for="iconNsite">Icono del sitio <b>(1MB maximo)</b>: </label>
+                                <input type="file" class="dropify" data-max-file-size="1M" data-allowed-file-extensions="png jpg jpeg"  name="iconNsite"/ required>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6">
@@ -147,6 +148,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group mb-1">
                                 <label for="iconNsite">Aplica para estos Códigos <b>(separados por coma)</b>:</label>
