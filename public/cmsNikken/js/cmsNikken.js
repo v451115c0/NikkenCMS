@@ -456,98 +456,109 @@ function graphVisitas(plataforma){
     });
 }
 
+/*=== Agregar sitios a buscador MyNIKKEN ===*/
+
 $('#nSite').on('submit', function(e) {
     var utltarget = $("#urlAction").val();
     // evito que propague el submit
     e.preventDefault();
-    //deshabilitamos el boton para que solo se haga una peticion de registro
-    disabled($("#btnsave"));
 
-    // agrego la data del form a formData
-    var formData = new FormData(this);
-    //formData.append('_token', $('input[name=_token]').val());
-    $.ajax({
-        type:'POST',
-        url: utltarget,
-        data: formData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        beforeSend: function(){
-            $("div[id=loadingIcon]").addClass('lds-hourglass');
-            disabled($("#nameNSite"));
-            disabled($("#URLNSite"));
-            disabled($("#customSwitch2"));
-            disabled($("#dateStartNSite"));
-            disabled($("#dateEndNSite"));
-            disabled($("#unlimitedNDate"));
-            disabled($("#tagNSite"));
-            disabled($("#iconNsite"));
-            disabled($("#allCountries"));
-            disabled($("#chckCol"));
-            disabled($("#chckMex"));
-            disabled($("#chckPer"));
-            disabled($("#chckCri"));
-            disabled($("#chckEcu"));
-            disabled($("#chckSlv"));
-            disabled($("#chckGtm"));
-            disabled($("#chckPan"));
-            disabled($("#chckChl"));
-        },
-        success:function(data){
-            if(data == 'added'){
-                alert('OK!', "El micrositio se agregó correctamente", 'success');
-                $('#nSite').trigger('reset');
-                $(".dropify-clear").trigger("click");
-            }
-            else{
+    if($("#chckCol").prop('checked') != true || $("#chckMex").prop('checked') != true || $("#chckPer").prop('checked') != true || $("#chckCri").prop('checked') != true || $("#chckEcu").prop('checked') != true || $("#chckSlv").prop('checked') != true || $("#chckGtm").prop('checked') != true || $("#chckPan").prop('checked') != true || $("#chckChl").prop('checked') != true){
+        alert('Ups...!', "Se debe selccionar por lo menos un país.", 'error');
+    }
+    else if($("#chckDIR").prop('checked') != true || $("#chckEXE").prop('checked') != true || $("#chckPLA").prop('checked') != true || $("#chckORO").prop('checked') != true || $("#chckPLO").prop('checked') != true || $("#chckDIA").prop('checked') != true || $("#chckDRL").prop('checked') != true){
+        alert('Ups...!', "Se debe selccionar por lo menos un rango.", 'error');
+    }
+    else{
+        //deshabilitamos el boton para que solo se haga una peticion de registro
+        disabled($("#btnsave"));
+
+        // agrego la data del form a formData
+        var formData = new FormData(this);
+        //formData.append('_token', $('input[name=_token]').val());
+        $.ajax({
+            type:'POST',
+            url: utltarget,
+            data: formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            beforeSend: function(){
+                $("div[id=loadingIcon]").addClass('lds-hourglass');
+                disabled($("#nameNSite"));
+                disabled($("#URLNSite"));
+                disabled($("#customSwitch2"));
+                disabled($("#dateStartNSite"));
+                disabled($("#dateEndNSite"));
+                disabled($("#unlimitedNDate"));
+                disabled($("#tagNSite"));
+                disabled($("#iconNsite"));
+                disabled($("#allCountries"));
+                disabled($("#chckCol"));
+                disabled($("#chckMex"));
+                disabled($("#chckPer"));
+                disabled($("#chckCri"));
+                disabled($("#chckEcu"));
+                disabled($("#chckSlv"));
+                disabled($("#chckGtm"));
+                disabled($("#chckPan"));
+                disabled($("#chckChl"));
+            },
+            success:function(data){
+                if(data == 'added'){
+                    alert('OK!', "El micrositio se agregó correctamente", 'success');
+                    $('#nSite').trigger('reset');
+                    $(".dropify-clear").trigger("click");
+                }
+                else{
+                    alert('Ups...!', "No fue posible guardar la información.", 'error');
+                }
+                enabled($("#btnsave"));
+                $("#loadingIcon").removeClass('lds-hourglass');
+                enabled($("#nameNSite"));
+                enabled($("#URLNSite"));
+                enabled($("#customSwitch2"));
+                enabled($("#dateStartNSite"));
+                enabled($("#dateEndNSite"));
+                enabled($("#unlimitedNDate"));
+                enabled($("#tagNSite"));
+                enabled($("#iconNsite"));
+                enabled($("#allCountries"));
+                enabled($("#chckCol"));
+                enabled($("#chckMex"));
+                enabled($("#chckPer"));
+                enabled($("#chckCri"));
+                enabled($("#chckEcu"));
+                enabled($("#chckSlv"));
+                enabled($("#chckGtm"));
+                enabled($("#chckPan"));
+                enabled($("#chckChl"));
+            },
+            error: function(jqXHR, text, error){
+                $("#loadingIcon").removeClass('lds-hourglass');
                 alert('Ups...!', "No fue posible guardar la información.", 'error');
+                enabled($("#nameNSite"));
+                enabled($("#URLNSite"));
+                enabled($("#customSwitch2"));
+                enabled($("#dateStartNSite"));
+                enabled($("#dateEndNSite"));
+                enabled($("#unlimitedNDate"));
+                enabled($("#tagNSite"));
+                enabled($("#iconNsite"));
+                enabled($("#allCountries"));
+                enabled($("#chckCol"));
+                enabled($("#chckMex"));
+                enabled($("#chckPer"));
+                enabled($("#chckCri"));
+                enabled($("#chckEcu"));
+                enabled($("#chckSlv"));
+                enabled($("#chckGtm"));
+                enabled($("#chckPan"));
+                enabled($("#chckChl"));
+                enabled($("#btnsave"));
             }
-            enabled($("#btnsave"));
-            $("#loadingIcon").removeClass('lds-hourglass');
-            enabled($("#nameNSite"));
-            enabled($("#URLNSite"));
-            enabled($("#customSwitch2"));
-            enabled($("#dateStartNSite"));
-            enabled($("#dateEndNSite"));
-            enabled($("#unlimitedNDate"));
-            enabled($("#tagNSite"));
-            enabled($("#iconNsite"));
-            enabled($("#allCountries"));
-            enabled($("#chckCol"));
-            enabled($("#chckMex"));
-            enabled($("#chckPer"));
-            enabled($("#chckCri"));
-            enabled($("#chckEcu"));
-            enabled($("#chckSlv"));
-            enabled($("#chckGtm"));
-            enabled($("#chckPan"));
-            enabled($("#chckChl"));
-        },
-        error: function(jqXHR, text, error){
-            $("#loadingIcon").removeClass('lds-hourglass');
-            alert('Ups...!', "No fue posible guardar la información.", 'error');
-            enabled($("#nameNSite"));
-            enabled($("#URLNSite"));
-            enabled($("#customSwitch2"));
-            enabled($("#dateStartNSite"));
-            enabled($("#dateEndNSite"));
-            enabled($("#unlimitedNDate"));
-            enabled($("#tagNSite"));
-            enabled($("#iconNsite"));
-            enabled($("#allCountries"));
-            enabled($("#chckCol"));
-            enabled($("#chckMex"));
-            enabled($("#chckPer"));
-            enabled($("#chckCri"));
-            enabled($("#chckEcu"));
-            enabled($("#chckSlv"));
-            enabled($("#chckGtm"));
-            enabled($("#chckPan"));
-            enabled($("#chckChl"));
-            enabled($("#btnsave"));
-        }
-    });
+        });
+    }
 });
 
 function setDate(){
