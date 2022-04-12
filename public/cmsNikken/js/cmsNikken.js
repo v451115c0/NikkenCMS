@@ -463,11 +463,14 @@ $('#nSite').on('submit', function(e) {
     // evito que propague el submit
     e.preventDefault();
 
-    if($("#chckCol").prop('checked') != true || $("#chckMex").prop('checked') != true || $("#chckPer").prop('checked') != true || $("#chckCri").prop('checked') != true || $("#chckEcu").prop('checked') != true || $("#chckSlv").prop('checked') != true || $("#chckGtm").prop('checked') != true || $("#chckPan").prop('checked') != true || $("#chckChl").prop('checked') != true){
+    if($("#chckCol").prop('checked') != true & $("#chckMex").prop('checked') != true & $("#chckPer").prop('checked') != true & $("#chckCri").prop('checked') != true & $("#chckEcu").prop('checked') != true & $("#chckSlv").prop('checked') != true & $("#chckGtm").prop('checked') != true & $("#chckPan").prop('checked') != true & $("#chckChl").prop('checked') != true){
         alert('Ups...!', "Se debe selccionar por lo menos un país.", 'error');
     }
-    else if($("#chckDIR").prop('checked') != true || $("#chckEXE").prop('checked') != true || $("#chckPLA").prop('checked') != true || $("#chckORO").prop('checked') != true || $("#chckPLO").prop('checked') != true || $("#chckDIA").prop('checked') != true || $("#chckDRL").prop('checked') != true){
+    else if($("#chckDIR").prop('checked') != true & $("#chckEXE").prop('checked') != true & $("#chckPLA").prop('checked') != true & $("#chckORO").prop('checked') != true & $("#chckPLO").prop('checked') != true & $("#chckDIA").prop('checked') != true & $("#chckDRL").prop('checked') != true){
         alert('Ups...!', "Se debe selccionar por lo menos un rango.", 'error');
+    }
+    else if($("#chckNINNEAPP").prop('checked') != true & $("#chckMyNIKKEN").prop('checked') != true){
+        alert('Ups...!', "Se debe selccionar por lo menos una plataforma.", 'error');
     }
     else{
         //deshabilitamos el boton para que solo se haga una peticion de registro
@@ -652,7 +655,7 @@ function getDataBuscador(){
                 data: 'concat_sap_code',
                 className: 'text-center',
                 render: function(data, type, row){
-                    return (row.concat_sap_code == 1 || row.concat_sap_code == true) ? 'Si' : 'NO';
+                    return (row.concat_sap_code == 1 & row.concat_sap_code == true) ? 'Si' : 'NO';
                 }
             },
             { data: 'pais', className: 'text-center' },
