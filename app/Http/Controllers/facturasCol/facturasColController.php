@@ -55,7 +55,7 @@ class facturasColController extends Controller{
         $response->getHeaderLine('x-www-form-urlencoded');
         $token =  $response->getBody()->getContents();
 
-        return $token;
+        return $token['access_token'];
         return "hola";
     }
 }
