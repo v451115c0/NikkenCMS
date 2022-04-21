@@ -45,7 +45,7 @@ class facturasColController extends Controller{
 
     public function downloadFactura(Request $request){
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
+        $response = $client->accept('application/json')->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
             'form_params' => [
                 'username' => 'crojas@nikkenlatam.com',
                 'password' => 'P4w5W0rT',
