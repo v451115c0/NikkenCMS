@@ -4,6 +4,7 @@ namespace App\Http\Controllers\facturasCol;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
 
 class facturasColController extends Controller{
@@ -54,7 +55,7 @@ class facturasColController extends Controller{
         $response->getHeaderLine('x-www-form-urlencoded');
         $token =  $response->getBody()->getContents();
 
-        return $response;
+        return $token;
         return "hola";
     }
 }
