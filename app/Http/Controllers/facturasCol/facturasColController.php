@@ -53,10 +53,9 @@ class facturasColController extends Controller{
             ]
         ]);
         $response->getHeaderLine('x-www-form-urlencoded');
-        //$token =  $response->getBody()->getContents();
 
-        $result = json_decode($response->getBody()); # '{"id": 1420053, "name": "guzzle", ...}'
-        return $result;
+        $token = json_decode($response->getBody());
+        return $token['access_token'];
         return "hola";
     }
 }
