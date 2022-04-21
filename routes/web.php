@@ -15,3 +15,7 @@ Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes
 Route::match(['get','post'],'addMicroSitio', 'NikkenCMS\NikkenCMSController@addMicroSitio')->name('addMicroSitio');
 Route::match(['get','post'],'editMicrosito', 'NikkenCMS\NikkenCMSController@editMicrosito')->name('editMicrosito');
 Route::get('enviarMail', 'NikkenCMS\NikkenCMSController@contact');
+
+Route::get('facturasCol/{sap_code}', 'facturasCol\facturasColController@indexFacturaCol');
+Route::get('getFacturasCol', 'facturasCol\facturasColController@getFacturasCol');
+Route::get('downloadFactura', 'facturasCol\facturasColController@downloadFactura');
