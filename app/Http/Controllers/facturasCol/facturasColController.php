@@ -60,8 +60,10 @@ class facturasColController extends Controller{
         $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $access_token,
-                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip, deflate, br',
+                'Connection' => 'keep-alive',
             ],
             'encoding' => [
                 'application/vnd.api+json',
