@@ -69,7 +69,11 @@ class facturasColController extends Controller{
                     "documentType" => 1,
                     "documentIdentification" => "SETT002452332"
                 ],
-            ]
+            ],
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
         ]);
         $response->getHeaderLine('raw');
         return $response->getBody();
