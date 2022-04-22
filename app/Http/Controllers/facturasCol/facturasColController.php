@@ -54,8 +54,7 @@ class facturasColController extends Controller{
         ]);
         $response->getHeaderLine('x-www-form-urlencoded');
         $access_token = json_decode($response->getBody());
-        return $access_token;
-        $access_token = $access_token['access_token'];
+        $access_token = $access_token->access_token;
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
