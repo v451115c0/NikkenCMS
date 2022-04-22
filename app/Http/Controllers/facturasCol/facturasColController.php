@@ -54,6 +54,7 @@ class facturasColController extends Controller{
         ]);
         $response->getHeaderLine('x-www-form-urlencoded');
         $access_token = json_decode($response->getBody());
+        return $access_token;
         $access_token = $access_token['access_token'];
 
         $client = new \GuzzleHttp\Client();
