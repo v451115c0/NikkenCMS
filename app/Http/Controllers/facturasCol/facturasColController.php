@@ -53,9 +53,28 @@ class facturasColController extends Controller{
             ]
         ]);
         $response->getHeaderLine('x-www-form-urlencoded');
+        $access_token = json_decode($response->getBody());
+        $access_token = $access_token['access_token'];
 
-        $token = json_decode($response->getBody());
-        return $token->access_token;
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
+            'headers' => [
+                'Authorization' => "$access_token"
+            ],
+            'form_params' => [
+                "signature" => "d14025b5413060c5905d55e0e16062add8d5b9fe85400d17c69a0fd25fde0399a5d7bc1191bb670ffc8165b3c2318744",
+                "customerIdentificationNumber" => "34041234",
+                "documentFileRequest" => [
+                    "documentFileType" => "Graphical Representation",
+                    "documentType" => 1,
+                    "documentIdentification" => "SETT002452332"
+                ],
+            ]
+        ]);
+        $response->getHeaderLine('raw');
+        $pdfb64 = json_decode($response->getBody());
+
+        return $pdfb64;
         return "hola";
     }
 }
