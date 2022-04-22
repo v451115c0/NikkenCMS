@@ -65,10 +65,6 @@ class facturasColController extends Controller{
                 'Accept-Encoding' => 'gzip, deflate, br',
                 'Connection' => 'keep-alive',
             ],
-            'encoding' => [
-                'application/vnd.api+json',
-                'text/plain' => JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION,
-            ],
             'form_params' => [
                 "signature" => "d14025b5413060c5905d55e0e16062add8d5b9fe85400d17c69a0fd25fde0399a5d7bc1191bb670ffc8165b3c2318744",
                 "customerIdentificationNumber" => "34041234",
