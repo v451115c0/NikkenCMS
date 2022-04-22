@@ -72,6 +72,7 @@ class facturasColController extends Controller{
             ]
         ]);
         $response->getHeaderLine('raw');
+        return $response->getBody();
         $pdfb64 = json_decode($response->getBody());
 
         return $pdfb64;
