@@ -59,13 +59,12 @@ class facturasColController extends Controller{
         # Be aware! The magic number (file signature) is not 100% reliable solution to validate PDF files
         # Moreover, if you get Base64 from an untrusted source, you must sanitize the PDF contents
         if (strpos($bin, '%PDF') !== 0) {
-        throw new Exception('Missing the PDF file signature');
+            throw new Exception('Missing the PDF file signature');
         }
 
+        return $bin;
         # Write the PDF contents to a local file
         $file = file_put_contents('file.pdf', $bin);
-
-        return $file;
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
