@@ -65,8 +65,7 @@ getFacturasCol();
 function downloadFactura(factura){
     $.ajax({
         type: "GET",
-        //url: "/downloadFactura",
-        url: "/getPDF",
+        url: "/downloadFactura",
         data: {
             factura:factura
         },
