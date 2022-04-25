@@ -70,13 +70,7 @@ function downloadFactura(factura){
             factura:factura
         },
         success: function (response) {
-            var a = document.createElement("a");
-            a.download = "prueba.pdf";
-            a.href = response;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            delete a;
+            alert(response);
         }
     });
 }
