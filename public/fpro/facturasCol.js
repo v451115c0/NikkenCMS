@@ -65,12 +65,18 @@ getFacturasCol();
 function downloadFactura(factura){
     $.ajax({
         type: "GET",
-        url: "/downloadFactura",
+        //url: "/downloadFactura",
+        url: "/getPDF",
         data: {
             factura:factura
         },
         success: function (response) {
-            alert(response);
+            var blob = new Blob([response]);
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = "factura.pdf";
+            link.click();
+            delete(a);
         }
     });
 }
