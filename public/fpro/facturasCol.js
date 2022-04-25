@@ -22,7 +22,7 @@ function getFacturasCol(){
                 data: 'NumAtCard',
                 className: 'text-center',
                 render: function(data, type, row){
-                    return '<a href="javascript:void(0)" title="Descargar PDF de mi factura" onclick="downloadFactura()">' +
+                    return '<a href="/getPDF" target="_blank" title="Descargar PDF de mi factura">' +
                     '<div class="badge badge-pill badge-success">' + 
                         '<h4>' +
                             '<i class="ri-file-pdf-line"></i>' +

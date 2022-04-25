@@ -34,5 +34,5 @@ Route::get('getPDF', function(){
 
     # Write the PDF contents to a local file
     file_put_contents('file.pdf', $bin);
-    return response()->file($bin);
+    return response()->file(public_path("file.pdf"));
 });
