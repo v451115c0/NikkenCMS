@@ -45,7 +45,7 @@ class facturasColController extends Controller{
         $anio = $periodo[0];
         $month = $periodo[1];
         $conexion = \DB::connection('170');
-            $data = $conexion->select("EXEC NKN_PMK_DocInfo 'COL', 'TEST', '$sap_code_decripted', '$anio', '$month';");
+            $data = $conexion->select("EXEC NKN_PMK_DocInfo 'COL', 'PROD', '$sap_code_decripted', '$anio', '$month';");
         \DB::disconnect('170');
         $data = [
             'data' => $data,
