@@ -63,18 +63,86 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-xl-6">
+                                <div class="col-xl-12">
                                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                                         <div class="iq-card-body">
                                             <div class="row">
-                                                <div class="col-md-12 col-lg-12">
-                                                    <div class="d-flex align-items-center mb-3 mb-lg-0">
-                                                        <div class="rounded-circle iq-card-icon iq-bg-primary dark-icon-light mr-3"> <i class="ri-file-copy-2-line"></i></div>
-                                                        <div class="text-left">
-                                                            <h4>Facturas del mes</h4>
-                                                            <p class="mb-0"><b>120</b></p>
-                                                        </div>
+                                                <div class="col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Mes de consulta:</label>
+                                                        <select class="form-control form-control-sm mb-3 w-75" id="period">
+                                                            @php
+                                                                $añoAct = date('o');
+                                                                $añoAct = $añoAct - 4;
+                                                                for($i=date('o'); $i>=$añoAct; $i--){
+                                                                    for ($e=12; $e>=1; $e--){
+                                                                        $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                                                                        $mes=$meses[$e - 1];
+                                                                        if ($e == date('m')){
+                                                                            if($i == date("Y")){
+                                                                                if($e <= date("n")){
+                                                                                    if($e < 10){
+                                                                                        echo '
+                                                                                            <option value="'.$i.'|0'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                        ';
+                                                                                    }
+                                                                                    else{
+                                                                                        echo '
+                                                                                        <option value="'.$i.'|'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                        '; 
+                                                                                    }
+                                                                                }
+                                                                                else{}
+                                                                            }
+                                                                            else{
+                                                                                if($e < 10){
+                                                                                    echo '
+                                                                                        <option value="'.$i.'|0'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                    ';
+                                                                                }
+                                                                                else{
+                                                                                    echo '
+                                                                                        <option value="'.$i.'|'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                    '; 
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        else{
+                                                                            if($i == date("Y")){
+                                                                                if($e <= date("n")){
+                                                                                    if($e < 10){
+                                                                                        echo '
+                                                                                            <option value="'.$i.'|0'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                        ';
+                                                                                    }
+                                                                                    else{
+                                                                                        echo '
+                                                                                            <option value="'.$i.'|'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                        '; 
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            else{
+                                                                                if($e < 10){
+                                                                                    echo '
+                                                                                        <option value="'.$i.'|0'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                    ';
+                                                                                }
+                                                                                else{
+                                                                                    echo '
+                                                                                        <option value="'.$i.'|'.$e.'" >'.$mes.' '.$i.'</option>
+                                                                                    '; 
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            @endphp 
+                                                        </select>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-6">
+                                                    <a href="javascript:void();" class="btn btn-success d-block mt-4 w-50" onclick="getFacturasCol()">Obtener facturas</a>
                                                 </div>
                                             </div>
                                         </div>

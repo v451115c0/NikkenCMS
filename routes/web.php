@@ -19,3 +19,4 @@ Route::get('enviarMail', 'NikkenCMS\NikkenCMSController@contact');
 Route::get('facturasCol/{sap_code}', 'facturasCol\facturasColController@indexFacturaCol');
 Route::get('getFacturasCol', 'facturasCol\facturasColController@getFacturasCol');
 Route::get('downloadFactura', 'facturasCol\facturasColController@downloadFactura');
+Route::get('encryptarCardCode/{sap_code}', 'facturasCol\facturasColController@encryptarCardCode');

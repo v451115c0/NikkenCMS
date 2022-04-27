@@ -11,7 +11,7 @@ function getFacturasCol(){
     $("#misFacturasTable").dataTable({
         destroy: true,
         ordering: false,
-        ajax: "/getFacturasCol",
+        ajax: "/getFacturasCol?d1=" + $("#period").val(),
         columns: [
             { data: 'DocType', className: 'text-center' },
             { data: 'CardCode', className: 'text-center' },
