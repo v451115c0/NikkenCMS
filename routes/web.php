@@ -16,7 +16,12 @@ Route::match(['get','post'],'addMicroSitio', 'NikkenCMS\NikkenCMSController@addM
 Route::match(['get','post'],'editMicrosito', 'NikkenCMS\NikkenCMSController@editMicrosito')->name('editMicrosito');
 Route::get('enviarMail', 'NikkenCMS\NikkenCMSController@contact');
 
+##Facturación COLOMBIA
 Route::get('facturasCol/{sap_code}', 'facturasCol\facturasColController@indexFacturaCol');
 Route::get('getFacturasCol', 'facturasCol\facturasColController@getFacturasCol');
 Route::get('downloadFactura', 'facturasCol\facturasColController@downloadFactura');
 Route::get('encryptarCardCode/{sap_code}', 'facturasCol\facturasColController@encryptarCardCode');
+
+##Depuracion de CI con mas de 7 días sin pago 
+Route::get('IndexDepuraciones', 'depuraciones7days\dep7dayController@indexDepuraciones');
+Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7days');
