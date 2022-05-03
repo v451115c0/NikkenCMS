@@ -78,6 +78,22 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'mysqlTV' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_TV', '127.0.0.1'),
+            'port' => env('DB_PORT_TV', '3306'),
+            'database' => env('DB_DATABASE_TV', 'forge'),
+            'username' => env('DB_USERNAME_TV', 'forge'),
+            'password' => env('DB_PASSWORD_TV', ''),
+            'unix_socket' => env('DB_SOCKET_TV', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

@@ -35,7 +35,7 @@ class dep7dayController extends Controller{
                 INNER JOIN mitiendanikken.sale_products c ON b.id = c.sale_id
                 WHERE a.sap_code IN (
                     '$codigo'
-                ) and b.status = 'pagada' and c.sku in (5024, 5025, 5026, 5027, 5028, 5002, 5031, 5032, 502719,502819,502619,502519,50249,50239); ");
+                ) AND b.status = 'pagada' AND c.sku in (5024, 5025, 5026, 5027, 5028, 5002, 5031, 5032, 502719,502819,502619,502519,50249,50239); ");
         \DB::disconnect('mysqlTV');
 
         //si regresa 1 es porque si tiene pago
