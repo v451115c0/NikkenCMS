@@ -115,6 +115,21 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'migracion' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_MIGRACION', '127.0.0.1'),
+            'port' => env('DB_PORT_MIGRACION', '3306'),
+            'database' => env('DB_DATABASE_MIGRACION', 'forge'),
+            'username' => env('DB_USERNAME_MIGRACION', 'forge'),
+            'password' => env('DB_PASSWORD_MIGRACION', ''),
+            'unix_socket' => env('DB_SOCKET_TV', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
     ],
 
     /*
