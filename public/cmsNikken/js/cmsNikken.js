@@ -885,3 +885,68 @@ function catchCheckboxForAllUsers(){
         $("#allowedUsersNsite").val('');
     }
 }
+
+var flags = {'3': 'peru.png', '2': 'mexico.png', '9': 'mexico.png', '1': 'colombia.png', '10': 'chile.png', '4': 'ecuador.png', '5': 'panama.png', '7': 'salvador.png', '6': 'guatemala.png', '8': 'costarica.png'};
+
+function Depuraciones(){
+    $("#registros").dataTable({
+        lengthChange: false,
+        ordering: true,
+        info: false,
+        destroy: true,
+        ajax: "/Depuraciones",
+        columns: [
+            
+            { data: 'code', className: 'text-center' },
+            { data: 'name', className: 'text-center' },
+            { data: 'email', className: 'text-center' },
+            { data: 'create_at', className: 'text-center' },
+            { data: 'country', className: 'text-center' },
+            { data: 'sponsor', className: 'text-center' },
+            { 
+                data: 'code',
+                className: 'text-center',
+                "render": function(data, type, row){
+                    var email = "\'"+row.email+"\'";
+                    
+                        btndepurar = '<button class="btn btn-danger" type="button" onclick="DepurarRegistro('+row.code+','+email+');">Depurar</button>';
+                    
+                    return btndepurar;
+                }
+            },
+            
+            
+        ],
+        language: {
+            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+        }
+    });
+}
+Depuraciones();
+
+function DepurarRegistro(codigo,correo){
+    $.ajax({
+        type: "GET",
+        url: '/Depurarmas7dias',
+        dataType: "json",
+        contentType: "text/json; charset=UTF-8",
+        data: {
+            codigo: codigo,
+            correo: correo
+        },
+        success: function(data){
+            if (data == 0) {
+                    alert('no se puede depurar, cuenta con pago');
+            }
+            else if(data == 1){
+                    alert('depurado correctamente');
+            }
+            else{
+                    alert('ocurrio un error');
+            }
+        },
+        error: function(data) {
+                alert('ocurrio un error en la solicitud');
+        }
+    });
+}
