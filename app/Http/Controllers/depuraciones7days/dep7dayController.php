@@ -71,7 +71,7 @@ class dep7dayController extends Controller{
             \DB::disconnect('migracion');
              //}
 
-            return session('tokenUser');
+            return 1;
             //echo "depurar registro";
         }
     }
