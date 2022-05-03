@@ -896,7 +896,6 @@ function Depuraciones(){
         destroy: true,
         ajax: "/Depuraciones",
         columns: [
-            
             { data: 'code', className: 'text-center' },
             { data: 'name', className: 'text-center' },
             { data: 'email', className: 'text-center' },
@@ -944,6 +943,7 @@ function DepurarRegistro(codigo,correo){
             else{
                     alert('ocurrio un error');
             }
+            Depuraciones();
         },
         error: function(data) {
                 alert('ocurrio un error en la solicitud');
