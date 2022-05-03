@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class dep7dayController extends Controller{
     public function indexDepuraciones(){
-        return view('Centroamerica.depuraciones');
+        return view('depuraciones7days.depuraciones');
     }
-    
+
     public function Depuraciones(){
         $fecha_actual = date("d-m-Y"); 
         $fecha7diasantes = date("Y-m-d",strtotime($fecha_actual."- 7 days"));
