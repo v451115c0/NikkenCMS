@@ -71,7 +71,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="NikkenCMS/dep7day" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Incorporación sin pago</span></a></li>
+                            <li><a href="{{ url('NikkenCMS/dep7day') }}" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Incorporación sin pago</span></a></li>
                             <li><a href="todo.html" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Todo</span></a></li>
                             <li class="iq-menu-title"><i class="ri-subtract-line"></i><span>Components</span></li>
                             <li>
