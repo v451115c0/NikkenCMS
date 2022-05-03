@@ -935,13 +935,13 @@ function DepurarRegistro(codigo,correo){
         },
         success: function(data){
             if (data == 0) {
-                    alert('no se puede depurar, cuenta con pago');
+                alert('Ups..', 'no se puede depurar, cuenta con pago', 'error');
             }
             else if(data == 1){
-                    alert('depurado correctamente');
+                alert('Ok', 'depurado correctamente', 'success');
             }
             else{
-                    alert('ocurrio un error');
+                alert('Ups...', 'ocurrio un error', 'error');
             }
             Depuraciones();
         },

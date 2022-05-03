@@ -65,12 +65,13 @@ class dep7dayController extends Controller{
                 $updatecontrol_contracts = $conexioniw->update("UPDATE nikkenla_incorporation.contracts SET code = '$codigodepurado', email = '$correodepurado', status = 2 WHERE code = '$codigo';");
             \DB::disconnect('migracion');
 
+            $user = session('tokenUser');
             $conexionlog = \DB::connection('migracion');
-                $log = $conexionlog->insert("INSERT INTO nikkenla_incorporation.socios_depurados VALUES ('$codigo','Panel Admin','$created_at')");
+                $log = $conexionlog->insert("INSERT INTO nikkenla_incorporation.socios_depurados VALUES ('$codigo','$user','$created_at')");
             \DB::disconnect('migracion');
              //}
 
-            return 1;
+            return session('tokenUser');
             //echo "depurar registro";
         }
     }
