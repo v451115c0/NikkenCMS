@@ -16,290 +16,402 @@
             </div>
             <div class="iq-card-body">
                 <div class="table-responsive">
-                    <table id="tabBusinessTools" class="table table-striped table-bordered">
+                    <table id="registros" class="table table-striped table-bordered table-hover text-center" >
                         <thead>
-                            <tr>
-                                <th>Nombre de Sitio</th>
-                                <th>Tag</th>
-                                <th>URL</th>
-                                <th>Icono</th>
-                                <th>Mostrar desde</th>
-                                <th>Mostrar hasta</th>
-                                <th>Concatenar id de usuario</th>
-                                <th>Países</th>
-                                <th>Mostrar para</th>
-                                <th>Aplica a rangos</th>
-                                <th>Función Especial</th>
-                                <th>Mostrar en NikkenAPP</th>
-                                <th>mostrar en MyNIKKEN</th>
-                                <th></th>
+                            <tr class="text-center registros">
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Fecha de Creación</th>
+                                <th>País</th>
+                                <th>Patrocinador</th>
+                                <th>Acciones</th>	
                             </tr>
                         </thead>
                     </table>
-                </div>
-            </div>
-            <!-- modal -->
-            <div class="modal fade editSite" tabindex="-1" role="dialog"   aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editSite" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                                <input type="hidden"name="urlAction" id="urlAction" value="{{ route('editMicrosito') }}">
-                                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                                    <div class="iq-card-header d-flex justify-content-between">
-                                        <h4 class="card-title text-center w-8">Nuevo Micro-sitio</h4>
-                                    </div>
-                                    <div class="iq-card-body">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="nameNSite">Micrositio*:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="nameNSite" name="nameNSite" placeholder="Nombre Micrositio" required>
-                                                        <input type="hidden" class="form-control" id="idNSite" name="idNSite" required readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="URLNSite">URL sitio*:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="URLNSite" name="URLNSite" placeholder="https://... / #modal" required>
-                                                    </div>
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="concatSap_codeNSite" name="concatSap_codeNSite" checked>
-                                                        <label class="custom-control-label" for="concatSap_codeNSite">Concatenar Código ABI/Influencer</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="dateStartNSite">Mostrar desde:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="dateStartNSite" name="dateStartNSite">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-2 align-self-center mb-0" for="dateEndNSite">Mostrar hasta:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="dateEndNSite" name="dateEndNSite">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-3 align-self-center mb-0" for="tagNSite">Tags* <br><b>(separado por coma ','</b>):</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="tagNSite" name="tagNSite" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="control-label col-sm-3 align-self-center mb-0" for="onClickNSite">Evento al click <br><b>(separar por ';')</b>:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="onClickNSite" name="onClickNSite">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="form-group mb-1">
-                                                    <label for="iconNsite">Icono actual</label><br>
-                                                    <img src="" id="currentIcon" width="100%">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-                                                <div class="form-group mb-1">
-                                                    <label for="iconNsite">Nuevo icono</label>
-                                                    <input type="file" class="dropify" data-max-file-size="3M" name="iconNsite"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                                                    <div class="iq-card-header d-flex justify-content-between">
-                                                        <div class="iq-header-title">
-                                                            <h4 class="card-title text-center w-100">Países *</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="iq-card-body row">
-                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                                            <div class="form-group mt-2">
-                                                                <div class="n-chk">
-                                                                    <div class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" id="allCountries" name="allCountries" checked>
-                                                                        <label class="custom-control-label" for="allCountries">Todos los países</label>
-                                                                    </div>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckCol" id="chckCol" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Colombia</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckMex" id="chckMex" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">México</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckPer" id="chckPer" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Perú</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckCri" id="chckCri" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Costa Rica</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                                            <div class="form-group mt-2">
-                                                                <div class="n-chk">
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckEcu" id="chckEcu" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Ecuador</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckSlv" id="chckSlv" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">El Salvador</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckGtm" id="chckGtm" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Guatemala</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckPan" id="chckPan" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Panamá</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckChl" id="chckChl" onchange="$('#allCountries').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">Chile</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                                                <div class="form-group mb-1">
-                                                    <label for="iconNsite">Aplica para estos Códigos <b>(separados por coma)</b>:</label>
-                                                    <textarea id="allowedUsersNsite" name="allowedUsersNsite" rows="5" class="form-control" required></textarea>
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="forAllNSite" name="forAllNSite" checked onchange="catchCheckboxForAllUsers()">
-                                                        <label class="custom-control-label" for="forAllNSite">Aplica para todos los códigos</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                                                    <div class="iq-card-header d-flex justify-content-between">
-                                                        <div class="iq-header-title">
-                                                            <h4 class="card-title text-center w-100">Aplica para los rangos *:</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="iq-card-body row">
-                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                                            <div class="form-group mt-2">
-                                                                <div class="n-chk">
-                                                                    <div class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" id="allRanges" name="allRanges" checked>
-                                                                        <label class="custom-control-label" for="allRanges">Todos los rangos</label>
-                                                                    </div>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckDIR" id="chckDIR" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">DIR</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckEXE" id="chckEXE" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">EXE</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckPLA" id="chckPLA" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">PLA</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                                            <div class="form-group mt-2">
-                                                                <div class="n-chk">
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckORO" id="chckORO" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">ORO</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckPLO" id="chckPLO" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">PLO</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckDIA" id="chckDIA" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">DIA</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckDRL" id="chckDRL" onchange="$('#allRanges').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">DRL</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                                                    <div class="iq-card-header d-flex justify-content-between">
-                                                        <div class="iq-header-title">
-                                                            <h4 class="card-title text-center w-100">Aplica para MyNIKKEN y NIKKEN APP?:</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="iq-card-body row">
-                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                                            <div class="form-group mt-2">
-                                                                <div class="n-chk">
-                                                                    <div class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" id="allSistem" name="allSistem" checked>
-                                                                        <label class="custom-control-label" for="allSistem">Todas las plataformas</label>
-                                                                    </div>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckNINNEAPP" id="chckNINNEAPP" onchange="$('#allSistem').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">NIKKEN APP</span>
-                                                                    </label>
-                                                                    <label class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input" name="chckMyNIKKEN" id="chckMyNIKKEN" onchange="$('#allSistem').prop('checked', false)" checked>
-                                                                        <span class="custom-control-label"></span><span class="new-chk-content">MyNIKKEN</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <center>
-                                            <input type="submit" class="btn btn-primary mb-1 mt-2 w-50 pt-2 pb-2" id="btnsave" name="btnsave" value="Actualizar alerta">
-                                            <br>
-                                            <div id="loadingIcon"></div>
-                                        </center>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+<script>
+    var meses = {'202101': 'Enero 2021', '202102': 'Febrero 2021', '202103': 'Marzo 2021', '202104': 'Abril 2021', '202105': 'Mayo 2021', '202106': 'Junio 2021', '202107': 'Julio 2021', '202108': 'Agosto 2021', '202109': 'Septiembre', '202110': 'Octubre 2021', '202111': 'Noviembre 2021', '202112': 'Diciembre 2021'};
+
+function number_format(number, decimals, dec_point, thousands_point) {
+    if (number == null || !isFinite(number)) {
+        throw new TypeError("number is not valid");
+    }
+    if (!decimals) {
+        var len = number.toString().split('.').length;
+        decimals = len > 1 ? len : 0;
+    }
+    if (!dec_point) {
+        dec_point = '.';
+    }
+    if (!thousands_point) {
+        thousands_point = ',';
+    }
+    number = parseFloat(number).toFixed(decimals);
+    number = number.replace(".", dec_point);
+    var splitNum = number.split(dec_point);
+    splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_point);
+    number = splitNum.join(dec_point);
+    return number;
+}
+
+function formatMoney(amount, decimalCount, decimal = ".", thousands = ",") {
+    try {
+        decimalCount = Math.abs(decimalCount);
+        decimalCount = isNaN(decimalCount) ? 0 : decimalCount;
+        const negativeSign = amount < 0 ? "-" : "";
+        let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+        let j = (i.length > 3) ? i.length % 3 : 0;
+        return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+    }
+    catch (e) {
+        console.log(e)
+    }
+};
+
+var flags = {'3': 'peru.png', '2': 'mexico.png', '9': 'mexico.png', '1': 'colombia.png', '10': 'chile.png', '4': 'ecuador.png', '5': 'panama.png', '7': 'salvador.png', '6': 'guatemala.png', '8': 'costarica.png'};
+
+
+function Estados(){
+    $("#Estados").dataTable({
+    lengthChange: false,
+    ordering: true,
+    info: false,
+    destroy: true,
+    ajax: "/Estados",
+    columns: [
+        
+        { data: 'pais', className: 'text-center' },
+        { data: 'colony_code', className: 'text-center' },
+        { data: 'province_code', className: 'text-center' },
+        { data: 'state_code', className: 'text-center' },
+        { data: 'postal_code', className: 'text-center' }
+        
+        
+        
+    ],
+    dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
+        buttons: {
+            buttons: [
+                { 
+                    extend: 'excel', 
+                    className: 'btn btn-fill btn-fill-dark btn-rounded mb-4 mr-3 btnExcel', 
+                    text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
+                },
+            ]
+        },
+    language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+});
+}
+
+function Depuraciones(){
+    $("#registros").dataTable({
+    lengthChange: false,
+    ordering: true,
+    info: false,
+    destroy: true,
+    ajax: "/Depuraciones",
+    columns: [
+        
+        { data: 'code', className: 'text-center' },
+        { data: 'name', className: 'text-center' },
+        { data: 'email', className: 'text-center' },
+        { data: 'create_at', className: 'text-center' },
+       /* { 
+            data: 'country', 
+            className: 'text-center',
+            "render": function(data, type, row){
+                var paisText = row.country;
+                if(paisText == 'LAT'){
+                    paisText = "MEX";
+                }
+                return "<img src='../fpro/img/flags/" + flags[row.country.trim()] + "' width=25px'> <br> " + paisText;
+            }
+        },*/
+        { data: 'country', className: 'text-center' },
+        { data: 'sponsor', className: 'text-center' },
+        { 
+            data: 'code',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var email = "\'"+row.email+"\'";
+                
+                    btndepurar = '<button class="btn btn-danger" type="button" onclick="DepurarRegistro('+row.code+','+email+');">Depurar</button>';
+                
+                return btndepurar;
+            }
+        },
+        
+        
+    ],
+    /*dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
+        buttons: {
+            buttons: [
+                { 
+                    extend: 'excel', 
+                    className: 'btn btn-fill btn-fill-dark btn-rounded mb-4 mr-3 btnExcel', 
+                    text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
+                },
+            ]
+        },*/
+    language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+});
+}
+
+Depuraciones();
+
+function DepurarRegistro(codigo,correo){
+        /*alert(codigo);
+        alert(correo);*/
+
+        $.ajax({
+          type: "GET",
+          url: '/Depurarmas7dias',
+          dataType: "json",
+          contentType: "text/json; charset=UTF-8",
+          data: {
+            codigo: codigo,
+            correo: correo
+          },
+          success: function(data){
+
+            if (data == 0) {
+                    alert('no se puede depurar, cuenta con pago');
+            }else if(data == 1){
+                    alert('depurado correctamente');
+            }
+            else{
+                    alert('ocurrio un error');
+            }/*
+            $("#typedocument").find('option').remove();
+            $("#typedocument").append('<option value="" selected>'+selreg+'</option>');
+         //   $("#region").append('<option value="" selected>selecciona una opcion</option>');
+           // $("#comuna").append('<option value="" selected>selecciona una opcion</option>');
+          //  $("#ciudad").append('<option value="" selected>selecciona una opcion</option>');
+          $.each(data,function(key, registro) {
+
+            $("#comuna").append('<option value='+registro.id_type.replace(/ /g, "%")+'>'+registro.name+'</option>');
+          });*/
+        },
+        error: function(data) {
+                 alert('ocurrio un error en la solicitud');
+        }
+      });
+}
+
+var contador = 0;
+var meses = {'202101': 'Enero 2021', '202102': 'Febrero 2021', '202103': 'Marzo 2021', '202104': 'Abril 2021', '202105': 'Mayo 2021', '202106': 'Junio 2021', '202107': 'Julio 2021', '202108': 'Agosto 2021', '202109': 'Septiembre', '202110': 'Octubre 2021', '202111': 'Noviembre 2021', '202112': 'Diciembre 2021'};
+var flag = {'PER': 'peru.png', 'MEX': 'mexico.png', 'LAT': 'mexico.png', 'COL': 'colombia.png', 'CHL': 'chile.png', 'ECU': 'ecuador.png', 'PAN': 'panama.png', 'SLV': 'salvador.png', 'GTM': 'guatemala.png', 'CRI': 'costarica.png'};
+var mainCode = $("#associateid").val();
+$("#rankingTabCA").dataTable({
+    lengthChange: false,
+    ordering: true,
+    info: false,
+    destroy: true,
+    ajax: "/vpGetRankGTMSLVPAN",
+    columns: [
+        { 
+            data: 'Ranking', 
+            className: 'text-center'
+           
+        },
+        { data: 'AssociateName', className: 'text-center' },
+        { data: 'Rango', className: 'text-center' },
+        { 
+            data: 'Pais', 
+            className: 'text-center',
+            "render": function(data, type, row){
+                var paisText = row.Pais;
+                if(paisText == 'LAT'){
+                    paisText = "MEX";
+                }
+                return "<img src='../fpro/img/flags/" + flag[row.Pais.trim()] + "' width=25px'> <br> " + paisText;
+            }
+        },
+         { 
+            data: 'VP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var vp = row.VP;
+                var vp_cumple = row.Cumple_VP;
+                if(vp_cumple == 'YES'){
+                    vp = formatMoney(row.VP) +'<br><span class="badge badge-success badge-pill"><i class="flaticon-single-circle-tick"></i> Cumple</span>';
+                }
+                else{
+                    vp = formatMoney(row.VP) + '<br><span class="badge badge-danger badge-pill"><i class="flaticon-close"></i> No cumple</span>';
+                }
+                return vp;
+            }
+        },
+        {
+                        data: 'AssociateName', className: 'text-center',
+                        render: function(data, type, row){
+                            return meses[row.Periodo];
+                        }
+                    },
+        { data: 'Total_IncorporVP100', className: 'text-center' },
+        {
+            data: 'VGP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var VGP_Acumulado = row.VGP;
+                return formatMoney(VGP_Acumulado);
+            }
+
+        },
+        
+        
+    ],
+    language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+});
+
+
+$("#rankingTabCRIB").dataTable({
+    lengthChange: false,
+    ordering: true,
+    info: false,
+    destroy: true,
+    ajax: "/vpGetRankCRIB",
+    columns: [
+        { 
+            data: 'Ranking', 
+            className: 'text-center'
+           
+        },
+        { data: 'AssociateName', className: 'text-center' },
+        { data: 'Rango', className: 'text-center' },
+        { 
+            data: 'Pais', 
+            className: 'text-center',
+            "render": function(data, type, row){
+                var paisText = row.Pais;
+                if(paisText == 'LAT'){
+                    paisText = "MEX";
+                }
+                return "<img src='../fpro/img/flags/" + flag[row.Pais.trim()] + "' width=25px'> <br> " + paisText;
+            }
+        },
+         { 
+            data: 'VP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var vp = row.VP;
+                var vp_cumple = row.Cumple_VP;
+                if(vp_cumple == 'YES'){
+                    vp = formatMoney(row.VP) +'<br><span class="badge badge-success badge-pill"><i class="flaticon-single-circle-tick"></i> Cumple</span>';
+                }
+                else{
+                    vp = formatMoney(row.VP) + '<br><span class="badge badge-danger badge-pill"><i class="flaticon-close"></i> No cumple</span>';
+                }
+                return vp;
+            }
+        },
+        {
+                        data: 'AssociateName', className: 'text-center',
+                        render: function(data, type, row){
+                            return meses[row.Periodo];
+                        }
+                    },
+        { data: 'Total_IncorporVP100', className: 'text-center' },
+        {
+            data: 'VGP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var VGP_Acumulado = row.VGP;
+                return formatMoney(VGP_Acumulado);
+            }
+
+        },
+        
+        
+    ],
+
+    language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+});
+
+Estados();
+
+$("#rankingTabCRIL").dataTable({
+    lengthChange: false,
+    ordering: true,
+    info: false,
+    destroy: true,
+    ajax: "/vpGetRankCRIL",
+    columns: [
+        { 
+            data: 'Ranking', 
+            className: 'text-center'
+           
+        },
+        { data: 'AssociateName', className: 'text-center' },
+        { data: 'Rango', className: 'text-center' },
+        { 
+            data: 'Pais', 
+            className: 'text-center',
+            "render": function(data, type, row){
+                var paisText = row.Pais;
+                if(paisText == 'LAT'){
+                    paisText = "MEX";
+                }
+                return "<img src='../fpro/img/flags/" + flag[row.Pais.trim()] + "' width=25px'> <br> " + paisText;
+            }
+        },
+         { 
+            data: 'VP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var vp = row.VP;
+                var vp_cumple = row.Cumple_VP;
+                if(vp_cumple == 'YES'){
+                    vp = formatMoney(row.VP) +'<br><span class="badge badge-success badge-pill"><i class="flaticon-single-circle-tick"></i> Cumple</span>';
+                }
+                else{
+                    vp = formatMoney(row.VP) + '<br><span class="badge badge-danger badge-pill"><i class="flaticon-close"></i> No cumple</span>';
+                }
+                return vp;
+            }
+        },
+        {
+                        data: 'AssociateName', className: 'text-center',
+                        render: function(data, type, row){
+                            return meses[row.Periodo];
+                        }
+                    },
+        { data: 'Total_IncorporVP100', className: 'text-center' },
+        {
+            data: 'VGP',
+            className: 'text-center',
+            "render": function(data, type, row){
+                var VGP_Acumulado = row.VGP;
+                return formatMoney(VGP_Acumulado);
+            }
+
+        },
+        
+        
+    ],
+    language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+});
+
+
+    
+    
+
+</script>
 
