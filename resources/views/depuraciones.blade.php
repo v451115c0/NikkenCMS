@@ -59,16 +59,14 @@
 														<th>Fecha de Creación</th>
 														<th>País</th>
 														<th>Patrocinador</th>
-														<th>Acciones</th>
-														
-																
-															</tr>
-														</thead>
-													</table>
-												</div>
-											</div>
+														<th>Acciones</th>	
+													</tr>
+												</thead>
+											</table>
 										</div>
 									</div>
+								</div>
+							</div>
 
 
 
