@@ -692,6 +692,7 @@ function getDataBuscador(){
                     }
                 }
             },
+            { data: 'actionUser', className: 'text-center' },
             {
                 data: 'MyNikken',
                 className: 'text-center',

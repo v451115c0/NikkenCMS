@@ -32,6 +32,7 @@
                                 <th>Función Especial</th>
                                 <th>Mostrar en NikkenAPP</th>
                                 <th>mostrar en MyNIKKEN</th>
+                                <th>Ultima modificación</th>
                                 <th></th>
                             </tr>
                         </thead>
