@@ -55,7 +55,8 @@ class facturasColController extends Controller{
 
     public function downloadFactura(Request $request){
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
+        //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
+        $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/security/oauth/token', [
             'form_params' => [
                 'username' => 'crojas@nikkenlatam.com',
                 'password' => 'P4w5W0rT',
@@ -76,7 +77,8 @@ class facturasColController extends Controller{
                 "documentIdentification" => "SETT002452332"
             ],
         ];
-        $response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
+        //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
+        $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/integration/emission/company/2516/detail/documents/files', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $access_token,
                 'Accept' => '*/*',
