@@ -54,14 +54,14 @@ class facturasColController extends Controller{
     }
 
     public function downloadFactura(Request $request){
-        $NitOF = '830129024-3';
+        $NitOF = '830129024';
         $ClaveOF = 'S3cr3tC0d3';
         $NitCliente = request()->d1;
         $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
         $signature = hash('sha384', $signature);
         $folio = request()->d2;
+        return 'signatura sin sha: ' . $signature . '| signature con sha: ' . hash('sha384', $signature) . '| documentIdentification: ' . request()->d2;
         ## lo que retorna 2541e33a41a3e25a168b71d68e398d563ea63e0e07564f167edd73f121ef5c8883a045136e35850904488c8be2aaa90e
-        try{
             $client = new \GuzzleHttp\Client();
             //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
             $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/security/oauth/token', [
@@ -100,9 +100,5 @@ class facturasColController extends Controller{
             $bin = base64_decode($pdfb64, true);
             file_put_contents('factura_nikken.pdf', $bin);
             return response()->file(public_path("factura_nikken.pdf"));
-        }
-        catch(Exception $e){
-            return 'signatura sin sha: ' . $signature . '| signature con sha: ' . hash('sha384', $signature) . '| documentIdentification: ' . request()->d2;
-        }
     }
 }
