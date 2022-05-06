@@ -54,53 +54,55 @@ class facturasColController extends Controller{
     }
 
     public function downloadFactura(Request $request){
-        $client = new \GuzzleHttp\Client();
-        //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
-        $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/security/oauth/token', [
-            'form_params' => [
-                'username' => 'crojas@nikkenlatam.com',
-                'password' => 'P4w5W0rT',
-                'grant_type' => 'password',
-            ],
-        ]);
-        $response->getHeaderLine('x-www-form-urlencoded');
-        $access_token = json_decode($response->getBody());
-        $access_token = $access_token->access_token;
-        //return $access_token;
-
         $NitOF = '830129024-3';
         $ClaveOF = 'S3cr3tC0d3';
         $NitCliente = request()->d1;
         $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
-        return 'signatura sin sha: ' . $signature . '| signature con sha: ' . hash('sha384', $signature) . '| documentIdentification: ' . request()->d2;
         $signature = hash('sha384', $signature);
         $folio = request()->d2;
-
         ## lo que retorna 2541e33a41a3e25a168b71d68e398d563ea63e0e07564f167edd73f121ef5c8883a045136e35850904488c8be2aaa90e
-
-        $client = new \GuzzleHttp\Client();
-        $GetOrder = [
-            "signature" => "$signature",
-            "customerIdentificationNumber" => "$NitCliente",
-            "documentFileRequest" => [
-                "documentFileType" => "Graphical Representation",
-                "documentType" => 1,
-                "documentIdentification" => "$folio"
-            ],
-        ];
-        //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
-        $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/integration/emission/company/2516/detail/documents/files', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token,
-                'Accept' => '*/*',
-            ],
-            'json' => $GetOrder,
-        ]);
-        
-        $pdfb64 = json_decode($response->getBody());
-        $pdfb64 = $pdfb64->result->base64;
-        $bin = base64_decode($pdfb64, true);
-        file_put_contents('factura_nikken.pdf', $bin);
-        return response()->file(public_path("factura_nikken.pdf"));
+        try{
+            $client = new \GuzzleHttp\Client();
+            //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
+            $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/security/oauth/token', [
+                'form_params' => [
+                    'username' => 'crojas@nikkenlatam.com',
+                    'password' => 'P4w5W0rT',
+                    'grant_type' => 'password',
+                ],
+            ]);
+            $response->getHeaderLine('x-www-form-urlencoded');
+            $access_token = json_decode($response->getBody());
+            $access_token = $access_token->access_token;
+            //return $access_token;
+    
+            $client = new \GuzzleHttp\Client();
+            $GetOrder = [
+                "signature" => "$signature",
+                "customerIdentificationNumber" => "$NitCliente",
+                "documentFileRequest" => [
+                    "documentFileType" => "Graphical Representation",
+                    "documentType" => 1,
+                    "documentIdentification" => "$folio"
+                ],
+            ];
+            //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
+            $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/integration/emission/company/2516/detail/documents/files', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $access_token,
+                    'Accept' => '*/*',
+                ],
+                'json' => $GetOrder,
+            ]);
+            
+            $pdfb64 = json_decode($response->getBody());
+            $pdfb64 = $pdfb64->result->base64;
+            $bin = base64_decode($pdfb64, true);
+            file_put_contents('factura_nikken.pdf', $bin);
+            return response()->file(public_path("factura_nikken.pdf"));
+        }
+        catch(Exception $e){
+            return 'signatura sin sha: ' . $signature . '| signature con sha: ' . hash('sha384', $signature) . '| documentIdentification: ' . request()->d2;
+        }
     }
 }
