@@ -35,8 +35,8 @@ function getFacturasCol(){
         dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
         language:{
             "paginate": {
-                "previous": "<i class='material-icons dp48'>chevron_left</i></div>",
-                "next": "<i class='material-icons dp48'>chevron_right</i></div>"
+                "previous": "<i class='ri-arrow-left-circle-line'></i>",
+                "next": "<i class='ri-arrow-right-circle-line'></i></div>"
             },
             "search": "Buscar" ,
             "searchPlaceholder": "Buscar factura",
