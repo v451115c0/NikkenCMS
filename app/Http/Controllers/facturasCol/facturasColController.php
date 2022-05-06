@@ -58,7 +58,7 @@ class facturasColController extends Controller{
         $ClaveOF = 'S3cr3tC0d3';
         $NitCliente = '53120485';
         $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
-        $signature = hash('sha384', $text);
+        $signature = hash('sha384', $signature);
         return $signature;
         $client = new \GuzzleHttp\Client();
         //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
