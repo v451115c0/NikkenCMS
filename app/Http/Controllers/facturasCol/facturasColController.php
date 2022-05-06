@@ -54,12 +54,6 @@ class facturasColController extends Controller{
     }
 
     public function downloadFactura(Request $request){
-        $NitOF = '830129024-3';
-        $ClaveOF = 'S3cr3tC0d3';
-        $NitCliente = '53120485';
-        $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
-        $signature = hash('sha384', $signature);
-        return $signature;
         $client = new \GuzzleHttp\Client();
         //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/security/oauth/token', [
         $response = $client->request('POST', 'https://facturaelectronicavp.ptesa.com.co/api/fe/v1/security/oauth/token', [
@@ -74,14 +68,25 @@ class facturasColController extends Controller{
         $access_token = $access_token->access_token;
         //return $access_token;
 
+        $NitOF = '830129024-3';
+        $ClaveOF = 'S3cr3tC0d3';
+        $NitCliente = request()->d1;
+        $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
+        $signature = hash('sha384', $signature);
+
+        $folio = request()->d2;
+        return $signature;
+
+        ## lo que retorna 2541e33a41a3e25a168b71d68e398d563ea63e0e07564f167edd73f121ef5c8883a045136e35850904488c8be2aaa90e
+
         $client = new \GuzzleHttp\Client();
         $GetOrder = [
-            "signature" => "d14025b5413060c5905d55e0e16062add8d5b9fe85400d17c69a0fd25fde0399a5d7bc1191bb670ffc8165b3c2318744",
-            "customerIdentificationNumber" => "53120485",
+            "signature" => "$signature",
+            "customerIdentificationNumber" => "$NitCliente",
             "documentFileRequest" => [
                 "documentFileType" => "Graphical Representation",
                 "documentType" => 1,
-                "documentIdentification" => "FE102480726"
+                "documentIdentification" => "$folio"
             ],
         ];
         //$response = $client->request('POST', 'https://secfevalpruebas.ptesa.com.co:8443/api/fe/v1/integration/emission/company/100071/detail/documents/files', [
