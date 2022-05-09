@@ -57,7 +57,8 @@ class facturasColController extends Controller{
         $NitOF = '830129024';
         $ClaveOF = 'S3cr3tC0d3';
         $NitCliente = request()->d1;
-        $NitCliente = substr($NitCliente, 0, -2);;
+        return substr($NitCliente, -2, 1);
+        $NitCliente = (substr($NitCliente, -2, 1) == '-') ? substr($NitCliente, 0, -2) : request()->d1;
         return $NitCliente;
         $signature = "$NitOF" . "$ClaveOF" . "$NitCliente";
         //return 'signatura sin sha: ' . $signature . '| signature con sha: ' . hash('sha384', $signature) . '| documentIdentification: ' . request()->d2;
