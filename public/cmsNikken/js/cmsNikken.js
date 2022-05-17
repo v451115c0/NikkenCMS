@@ -901,7 +901,7 @@ function Depuraciones(){
             { data: 'name', className: 'text-center' },
             { data: 'email', className: 'text-center' },
             { data: 'create_at', className: 'text-center' },
-            { data: 'country', className: 'text-center' },
+            { data: 'pais', className: 'text-center' },
             { data: 'sponsor', className: 'text-center' },
             { 
                 data: 'code',

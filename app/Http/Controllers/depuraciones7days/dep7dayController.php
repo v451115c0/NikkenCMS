@@ -14,7 +14,10 @@ class dep7dayController extends Controller{
         $fecha_actual = date("d-m-Y"); 
         $fecha7diasantes = date("Y-m-d",strtotime($fecha_actual."- 7 days"));
         $conexion5 = \DB::connection('migracion');
-            $depuraciones = $conexion5->select("SELECT * FROM nikkenla_incorporation.contracts WHERE payment = 0 AND create_at < '$fecha7diasantes' AND code NOT LIKE '%2' AND type = 1 AND email != '' AND email NOT LIKE '%depuracion%' AND email NOT LIKE '%.20%' and email NOT LIKE '%_20%';");
+            $depuraciones = $conexion5->select("SELECT contra.*, tv.name AS pais
+                                                FROM nikkenla_incorporation.contracts contra
+                                                INNER JOIN testmitiendanikken_04_05_2019.countries tv ON contra.country = tv.id
+                                                WHERE contra.payment = 0 AND contra.create_at < '$fecha7diasantes' AND contra.code NOT LIKE '%2' AND contra.type = 1 AND contra.email != '' AND contra.email NOT LIKE '%depuracion%' AND contra.email NOT LIKE '%.20%' and contra.email NOT LIKE '%_20%';");
         \DB::disconnect('migracion');
         $data = [
             'data' => $depuraciones,
