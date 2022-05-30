@@ -17,7 +17,7 @@ class dep7dayController extends Controller{
             $depuraciones = $conexion5->select("SELECT contra.*, tv.name AS pais
                                                 FROM nikkenla_incorporation.contracts contra
                                                 INNER JOIN testmitiendanikken_04_05_2019.countries tv ON contra.country = tv.id
-                                                WHERE contra.payment = 0 AND contra.create_at < '$fecha7diasantes' AND contra.code NOT LIKE '%2' AND contra.type = 1 AND contra.email != '' AND contra.email NOT LIKE '%depuracion%' AND contra.email NOT LIKE '%.20%' and contra.email NOT LIKE '%_20%';");
+                                                WHERE contra.payment = 0 AND contra.code NOT LIKE '%2' AND contra.type = 1 AND contra.email != '' AND contra.email NOT LIKE '%depuracion%' AND contra.email NOT LIKE '%.20%' and contra.email NOT LIKE '%_20%';");
         \DB::disconnect('migracion');
         $data = [
             'data' => $depuraciones,
