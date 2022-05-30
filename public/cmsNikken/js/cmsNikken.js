@@ -893,7 +893,7 @@ function Depuraciones(){
     $("#registros").dataTable({
         lengthChange: false,
         ordering: true,
-        info: false,
+        info: true,
         destroy: true,
         ajax: "/Depuraciones",
         columns: [
@@ -917,6 +917,16 @@ function Depuraciones(){
             
             
         ],
+        dom: '<"row"<"col s12 m12 l12 xl12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
+        buttons: {
+            buttons: [
+                { 
+                    extend: 'excel', 
+                    className: 'btn btn-fill btn-fill-dark btn-rounded mb-4 mr-3 btnExcel', 
+                    text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
+                },
+            ]
+        },
         language: {
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
         }
