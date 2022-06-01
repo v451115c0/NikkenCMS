@@ -3,7 +3,7 @@
 @section('content')
 <ol class="breadcrumb bg-primary">
     <li class="breadcrumb-item"><a href="{{ url('NikkenCMS/home') }}" class="text-white"><i class="ri-home-4-line mr-1 float-left"></i>Home</a></li>
-    <li class="breadcrumb-item active text-white" aria-current="page">Depuración de incorporados con mas de 7 días sin pago.</li>
+    <li class="breadcrumb-item active text-white" aria-current="page">Incorporaciones sin pago</li>
 </ol>
 <div class="row">
     <div class="col-lg-12 col-md-12">
@@ -11,7 +11,7 @@
         <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Depuración de incorporados con mas de 7 días sin pago.</h4>
+                    <h4 class="card-title">Incorporaciones sin pago</h4>
                 </div>
             </div>
             <div class="iq-card-body">
