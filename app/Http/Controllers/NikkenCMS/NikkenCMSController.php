@@ -372,9 +372,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             $data = [
                 'data' => $dataCell,
             ];
@@ -388,9 +388,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id WHERE cell.id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
@@ -405,9 +405,9 @@ class NikkenCMSController extends Controller{
             $numberCell = $parameters['numberCell'];
             $Update_On_SQL_server = $parameters['Update_On_SQL_server'];
             $Use_As_My_Principal_phone = $parameters['Use_As_My_Principal_phone'];
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->update("UPDATE users_cell_phone_update SET area_code = '$country_code', cell_phone = '$numberCell', updated_on_sql_server = '$Update_On_SQL_server', use_as_my_principal_phone = '$Use_As_My_Principal_phone' WHERE id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
@@ -418,9 +418,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->delete("DELETE FROM users_cell_phone_update WHERE id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
@@ -431,9 +431,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             $data = [
                 'data' => $dataCell,
             ];
@@ -447,9 +447,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
@@ -479,9 +479,9 @@ class NikkenCMSController extends Controller{
             $created_at = $parameters['created_at'];
             $updated_at = Date('Y-m-d H-i-s');
 
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->update("UPDATE users_fiscal_update SET rfc = '$rfc', person_type = '$person_type', regimen_code = '$regimen_code', regimen_description = '$regimen_description', business_name = '$business_name', name = '$name', last_name = '$last_name1', second_last_name = '$last_name2', cp = '$cp', estado = '$estado', municipio = '$municipio', colonia = '$colonia', cfdi_code = '$cfdi_code', cfdi_description = '$cfdi_description', updated_on_sql_server = '$updated_on_sql_server', updated_at = '$updated_at' WHERE id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
@@ -492,9 +492,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysql2');
+            $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->delete("DELETE FROM users_fiscal_update WHERE id = $id");
-            \DB::disconnect('mysql2');
+            \DB::disconnect('mysqlTV');
             return $response;
         }
     }
