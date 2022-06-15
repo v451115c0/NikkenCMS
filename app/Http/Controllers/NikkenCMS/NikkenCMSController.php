@@ -409,7 +409,7 @@ class NikkenCMSController extends Controller{
         }
         else{
             $conexion = \DB::connection('mysqlTV');
-                $dataCell = $conexion->select("SELECT top 1 * FROM users_fiscal_update");
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update LIMIT 1");
             \DB::disconnect('mysqlTV');
             $error = [];
             foreach($dataCell as $row){
