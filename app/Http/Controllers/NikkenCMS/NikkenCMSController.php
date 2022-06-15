@@ -412,11 +412,15 @@ class NikkenCMSController extends Controller{
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 6991303;");
             \DB::disconnect('mysqlTV');
             $error = [];
+            $prop = [];
             foreach($dataCell as $row){
                 $file = $row->fiscal_file;
                 $extension = explode('.', $file);
+                if($extension[5] === 'pdf'){
+                    $prop = $this->getTextFromPDF($file);
+                }
             }
-            return $extension;
+            return $prop;
             $data = [
                 'data' => $dataCell,
                 'error' => $error,
