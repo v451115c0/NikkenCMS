@@ -6,16 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
-        "asika/pdf2text": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel-notification-channels/google-chat": "^1.0",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "league/flysystem-aws-s3-v3": "~1.0",
-        "smalot/pdfparser": "^2.2",
-        "spatie/pdf-to-text": "^1.51"
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
