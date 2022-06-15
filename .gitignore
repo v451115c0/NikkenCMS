@@ -16,3 +16,7 @@ yarn-error.log
 env
 public/file.pdf
 public/factura_nikken.pdf
+composer.json
+composer.json
+composer.lock
+public/testpdf.pdf

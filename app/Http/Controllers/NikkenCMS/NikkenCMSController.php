@@ -9,6 +9,7 @@ use App\User;
 use Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Spatie\PdfToText\Pdf;
 
 class NikkenCMSController extends Controller{
     //Declaramos las configuraciones de amazon s3
@@ -298,7 +299,7 @@ class NikkenCMSController extends Controller{
         return ($data) ? 1 : 0;
     }
 
-    function getDatattableMetricas($parameters){
+    public function getDatattableMetricas($parameters){
         $mes = $parameters['mes'];
         $andMes = ($mes == 'todos') ? "": " AND Fecha BETWEEN '$mes-01' AND '$mes-30'";
         $plataforma = $parameters['plataforma'];
@@ -315,6 +316,53 @@ class NikkenCMSController extends Controller{
         $data = [
             'data' => $data,
         ];
+        return $data;
+    }
+
+    public function getTextFromPDF(Request $request){
+        $PDFfile = request()->file;
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile($PDFfile);
+        $data = [];
+        $textGral = $pdf->getText();
+        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
+        $validaTexto = strpos($textGral, $find);
+
+        if ($validaTexto === false) {
+            $data['valido'] = false;
+        }
+        else {
+            $textGral = explode("\n", $textGral);
+            $data['valido'] = true;
+            $data['titulo'] = trim($textGral[1]);
+
+            $nombre = explode(':', trim($textGral[13]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $nombre = str_replace($order, $replace, $nombre);
+            $data['nombre'] = trim($nombre[1]);
+
+            $apellido1 = explode(':', trim($textGral[14]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $apellido1 = str_replace($order, $replace, $apellido1);
+            $data['apellido1'] = trim($apellido1[1]);
+
+            $apellido2 = explode(':', trim($textGral[15]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $apellido2 = str_replace($order, $replace, $apellido2);
+            $data['apellido2'] = trim($apellido2[1]);
+
+            $cp = explode(':', trim($textGral[21]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $cp = str_replace($order, $replace, $cp[1]);
+            $cp = explode(' ', trim($cp));
+            $data['cp'] = trim($cp[0]);
+
+            $data['RFC'] = trim($textGral[9]);
+        }
         return $data;
     }
 }
