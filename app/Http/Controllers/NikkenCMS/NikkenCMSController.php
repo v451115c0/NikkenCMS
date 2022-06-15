@@ -103,6 +103,30 @@ class NikkenCMSController extends Controller{
             case 'getDatattableMetricas':
                 return $this->getDatattableMetricas($parameters);
                 break;
+            case 'getdataWhatsapp':
+                return $this->getdataWhatsapp();
+                break;
+            case 'loadDataWSTVuser':
+                return $this->loadDataWSTVuser($parameters);
+                break;
+            case 'updateDataWSTV':
+                return $this->updateDataWSTV($parameters);
+                break;
+            case 'deleteDataWSTV':
+                return $this->deleteDataWSTV($parameters);
+                break;
+            case 'loadDataFisData':
+                return $this->loadDataFisData($parameters);
+                break;
+            case 'updateFisData':
+                return $this->updateFisData($parameters);
+                break;
+            case 'deleteFisData':
+                return $this->deleteFisData($parameters);
+                break;
+            case 'get_users_fiscal_update':
+                return $this->get_users_fiscal_update();
+                break;
         }
     }
 
