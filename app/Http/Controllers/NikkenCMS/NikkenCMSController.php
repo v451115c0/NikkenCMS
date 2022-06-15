@@ -492,9 +492,53 @@ class NikkenCMSController extends Controller{
     }
 
     public function getTextFromPDF(Request $request, $PDFfile){
-        if(empty($PDFfile)){
-            $PDFfile = request()->file;
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile($PDFfile);
+        $data = [];
+        $textGral = $pdf->getText();
+        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
+        $validaTexto = strpos($textGral, $find);
+
+        if ($validaTexto === false) {
+            $data['valido'] = false;
         }
+        else {
+            $textGral = explode("\n", $textGral);
+            $data['valido'] = true;
+            $data['titulo'] = trim($textGral[1]);
+
+            $nombre = explode(':', trim($textGral[13]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $nombre = str_replace($order, $replace, $nombre);
+            $data['nombre'] = trim($nombre[1]);
+
+            $apellido1 = explode(':', trim($textGral[14]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $apellido1 = str_replace($order, $replace, $apellido1);
+            $data['apellido1'] = trim($apellido1[1]);
+
+            $apellido2 = explode(':', trim($textGral[15]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $apellido2 = str_replace($order, $replace, $apellido2);
+            $data['apellido2'] = trim($apellido2[1]);
+
+            $cp = explode(':', trim($textGral[21]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $cp = str_replace($order, $replace, $cp[1]);
+            $cp = explode(' ', trim($cp));
+            $data['cp'] = trim($cp[0]);
+
+            $data['RFC'] = trim($textGral[9]);
+        }
+        return $data;
+    }
+
+    public function getTextFromPDFview(Request $request){
+        $PDFfile = request()->file;
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($PDFfile);
         $data = [];
