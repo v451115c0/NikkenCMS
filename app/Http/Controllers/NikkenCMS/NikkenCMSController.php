@@ -413,14 +413,16 @@ class NikkenCMSController extends Controller{
             \DB::disconnect('mysqlTV');
             $error = [];
             $prop = [];
-            foreach($dataCell as $row){
+            /*foreach($dataCell as $row){
                 $file = $row->fiscal_file;
                 $extension = explode('.', $file);
                 if($extension[5] === 'pdf'){
                     $prop = $this->getTextFromPDF($file);
                 }
-            }
-            return $prop;
+                if($prop['valido'] === true){
+                    if()
+                }
+            }*/
             $data = [
                 'data' => $dataCell,
                 'error' => $error,
