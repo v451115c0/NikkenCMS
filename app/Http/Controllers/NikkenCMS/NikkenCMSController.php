@@ -409,15 +409,12 @@ class NikkenCMSController extends Controller{
         }
         else{
             $conexion = \DB::connection('mysqlTV');
-                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update LIMIT 1");
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 6991303;");
             \DB::disconnect('mysqlTV');
             $error = [];
             foreach($dataCell as $row){
                 $file = $row->fiscal_file;
-                $path = "$file";
-                $file = new SplFileInfo($path);
-                $extension  = $file->getExtension();
-                $extension = "The extension is: $extension.";
+                $extension = explode('.', $file);
             }
             return $extension;
             $data = [
