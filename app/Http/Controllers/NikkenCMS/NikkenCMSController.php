@@ -365,4 +365,137 @@ class NikkenCMSController extends Controller{
         }
         return $data;
     }
+
+    // Actualización de número de whatsapp
+    public function getdataWhatsapp(){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $conexion = \DB::connection('mysql2');
+                $dataCell = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id");
+            \DB::disconnect('mysql2');
+            $data = [
+                'data' => $dataCell,
+            ];
+            return $data;
+        }
+    }
+
+    public function loadDataWSTVuser($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id WHERE cell.id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
+    
+    public function updateDataWSTV($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $country_code = $parameters['country_code'];
+            $numberCell = $parameters['numberCell'];
+            $Update_On_SQL_server = $parameters['Update_On_SQL_server'];
+            $Use_As_My_Principal_phone = $parameters['Use_As_My_Principal_phone'];
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->update("UPDATE users_cell_phone_update SET area_code = '$country_code', cell_phone = '$numberCell', updated_on_sql_server = '$Update_On_SQL_server', use_as_my_principal_phone = '$Use_As_My_Principal_phone' WHERE id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
+    
+    public function deleteDataWSTV($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->delete("DELETE FROM users_cell_phone_update WHERE id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
+
+    // Actualización de número de whatsapp
+    public function get_users_fiscal_update(){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $conexion = \DB::connection('mysql2');
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update");
+            \DB::disconnect('mysql2');
+            $data = [
+                'data' => $dataCell,
+            ];
+            return $data;
+        }
+    }
+
+    public function loadDataFisData($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
+    
+    public function updateFisData($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $sap_code = $parameters['sap_code'];
+            $rfc = $parameters['rfc'];
+            $person_type = $parameters['person_type'];
+            $regimen_code = $parameters['regimen_code'];
+            $regimen_description = $parameters['regimen_description'];
+            $business_name = $parameters['business_name'];
+            $name = $parameters['name'];
+            $last_name1 = $parameters['last_name1'];
+            $last_name2 = $parameters['last_name2'];
+            $cp = $parameters['cp'];
+            $estado = $parameters['estado'];
+            $municipio = $parameters['municipio'];
+            $colonia = $parameters['colonia'];
+            $cfdi_code = $parameters['cfdi_code'];
+            $cfdi_description = $parameters['cfdi_description'];
+            $updated_on_sql_server = $parameters['updated_on_sql_server'];
+            $created_at = $parameters['created_at'];
+            $updated_at = Date('Y-m-d H-i-s');
+
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->update("UPDATE users_fiscal_update SET rfc = '$rfc', person_type = '$person_type', regimen_code = '$regimen_code', regimen_description = '$regimen_description', business_name = '$business_name', name = '$name', last_name = '$last_name1', second_last_name = '$last_name2', cp = '$cp', estado = '$estado', municipio = '$municipio', colonia = '$colonia', cfdi_code = '$cfdi_code', cfdi_description = '$cfdi_description', updated_on_sql_server = '$updated_on_sql_server', updated_at = '$updated_at' WHERE id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
+    
+    public function deleteFisData($parameters){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $id = $parameters['id'];
+            $conexion = \DB::connection('mysql2');
+                $response = $conexion->delete("DELETE FROM users_fiscal_update WHERE id = $id");
+            \DB::disconnect('mysql2');
+            return $response;
+        }
+    }
 }
