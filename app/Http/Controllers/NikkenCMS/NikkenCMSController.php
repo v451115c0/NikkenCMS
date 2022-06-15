@@ -491,7 +491,7 @@ class NikkenCMSController extends Controller{
         }
     }
 
-    public function getTextFromPDF(Request $request, $PDFfile){
+    public function getTextFromPDF(Request $request){
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($PDFfile);
         $data = [];
