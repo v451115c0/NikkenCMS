@@ -16,8 +16,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_zero_config.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_html5.css') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('fproh/plugins/sweetalerts/sweetalert2.min.css') }}"/>
-		<link rel="stylesheet" type="text/css" href="{{ asset('fproh/plugins/sweetalerts/sweetalert.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('fpro/css/dropify/dropify.css') }}">
     </head>
@@ -234,7 +234,7 @@
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/jszip.min.js') }}"></script>
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
         <script src="{{ asset('fpro/plugins/table/datatable/button-ext/buttons.print.min.js') }}"></script>
-	    <script src="{{ asset('fproh/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+	    <script src="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
         <script src="{{ asset('fpro/js/dropify/dropify.js') }}"></script>
         <script src="{{ asset('cmsNikken/js/cmsNikken.js') }}"></script>
     </body>
