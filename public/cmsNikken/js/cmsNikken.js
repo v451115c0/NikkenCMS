@@ -1264,10 +1264,10 @@ function get_users_fiscal_update(){
                 render: function(data, type, row){
                     var dato = row.updated_on_sql_server;
                     if(dato == 1){
-                        return '<span class="badge badge-success ml-3">Procesado</span>';
+                        return '<span class="badge badge-success ml-3">Procesado' + dato + '</span>';
                     }
                     else{
-                        return '<span class="badge badge-info ml-3">Sin procesar</span>';
+                        return '<span class="badge badge-info ml-3">Sin procesar' + dato + '</span>';
                     }
                 }
             },
