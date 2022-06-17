@@ -417,11 +417,13 @@ class NikkenCMSController extends Controller{
                 if($row->fiscal_file != null || !empty($row->fiscal_file)){
                     $file = $row->fiscal_file;
                     $extension = explode('.', $file);
-                    if($extension[5] === 'pdf'){
-                        $prop = $this->getTextFromPDF($file);
-                        if($prop['valido'] === true){
-                            if(trim($row->rfc) != trim($prop['RFC']) || trim($row->name) != trim($prop['nombre']) || trim($row->last_name) != trim($prop['apellido1']) || trim($row->second_last_name) != trim($prop['apellido2']) || trim($row->cp) != trim($prop['cp'])){
-                                $error[$idx] = $row;
+                    if(empty($row->business_name)){
+                        if($extension[5] === 'pdf'){
+                            $prop = $this->getTextFromPDF($file);
+                            if($prop['valido'] === true){
+                                if(trim($row->rfc) != trim($prop['RFC']) || trim($row->name) != trim($prop['nombre']) || trim($row->last_name) != trim($prop['apellido1']) || trim($row->second_last_name) != trim($prop['apellido2']) || trim($row->cp) != trim($prop['cp'])){
+                                    $error[$idx] = $row;
+                                }
                             }
                         }
                     }
