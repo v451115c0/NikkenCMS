@@ -1234,6 +1234,86 @@ function get_users_fiscal_update(){
             "search": "Buscar",
         }
     });
+
+    $('#users_fiscal_updateAlert').DataTable({
+        destroy: true,
+        lengthChange: false,
+        info: true,
+        ajax: "/NikkenCMSpro/getActions?action=get_users_fiscal_update",
+        dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
+        columns: [
+            { data: 'id', className: 'text-center table-danger' },
+            { data: 'sap_code', className: 'text-center table-danger' },
+            { data: 'rfc', className: 'text-center table-danger' },
+            { data: 'person_type', className: 'text-center table-danger' },
+            { data: 'regimen_code', className: 'text-center table-danger' },
+            { data: 'regimen_description', className: 'text-center table-danger' },
+            { data: 'business_name', className: 'text-center table-danger' },
+            { data: 'name', className: 'text-center table-danger' },
+            { data: 'last_name', className: 'text-center table-danger' },
+            { data: 'second_last_name', className: 'text-center table-danger' },
+            { data: 'cp', className: 'text-center table-danger' },
+            { data: 'estado', className: 'text-center table-danger' },
+            { data: 'municipio', className: 'text-center table-danger' },
+            { data: 'colonia', className: 'text-center table-danger' },
+            { data: 'cfdi_code', className: 'text-center table-danger' },
+            { data: 'cfdi_description', className: 'text-center table-danger' },
+            { 
+                data: 'updated_on_sql_server',
+                className: 'text-center table-danger',
+                render: function(data, type, row){
+                    var dato = row.updated_on_sql_server;
+                    if(dato == 1){
+                        return '<span class="badge badge-success ml-3">Procesado</span>';
+                    }
+                    else{
+                        return '<span class="badge badge-info ml-3">Sin procesar</span>';
+                    }
+                }
+            },
+            { data: 'created_at', className: 'text-center table-danger' },
+            { data: 'updated_at', className: 'text-center table-danger' },
+            { data: 'comments', className: 'text-center table-danger' },
+            { 
+                data: 'fiscal_file',
+                className: 'text-center table-danger',
+                render: function(data, type, row){
+                    var archivo = row.fiscal_file;
+                    if(row.fiscal_file === null || row.fiscal_file === undefined || row.fiscal_file === NaN){
+                        archivo = 'https://micrositios.s3.us-west-1.amazonaws.com/srcMyNIKKEN/color-swatch.jpg';
+                    }
+                    return '<a href="' + archivo + '" target="_blank" class="btn btn-success" id="getImgNewTab">Ver imagen adjunta</a>';
+                },
+            },
+            { 
+                data: 'updated_at',
+                className: 'text-center',
+                render: function(data, type, row){
+                    return '<a href="javascript:void(0)" data-toggle="modal" data-target=".modalUpdate" onclick="loadDataFisData(' + row.id + ', ' + row.sap_code + ')"><i class="ri-ball-pen-fill text-success pr-1" style="font-size: 20px"></i></a>' +
+                            '<a href="javascript:void(0)"><i class="ri-delete-bin-5-line text-danger" style="font-size: 20px" onclick="deleteFisData(' + row.id + ')"></i></a>';
+                }
+            },
+        ],
+        buttons: {
+            buttons: [
+                { 
+                    extend: 'excel', 
+                    className: 'btn btn-fill btn-fill-dark btn-rounded mb-4 mr-3 btnExcel', 
+                    text:"<img src='https://services.nikken.com.mx/retos/img/excel.png' width='15px'></img> Exportar a Excel",
+                },
+            ]
+        },
+        language: {
+            "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json",
+            "paginate": { "previous": "<i class='flaticon-arrow-left-1'></i>", "next": "<i class='flaticon-arrow-right'></i>" },
+            "info": "Showing page _PAGE_ of _PAGES_",
+            "search": "Buscar",
+        },
+        rowId: function(a) {
+            return a.associateid;
+        },
+        
+    });
 }
 get_users_fiscal_update();
 
