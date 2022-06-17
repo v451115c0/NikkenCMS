@@ -433,11 +433,9 @@ class NikkenCMSController extends Controller{
             }
             $data = [
                 'data' => $dataCell,
-                'error' => $error,
             ];
-            /*$data = [
-                'data' => $dataCell,
-            ];*/
+            
+            $data['error'] = $error;
             return $data;
         }
     }
