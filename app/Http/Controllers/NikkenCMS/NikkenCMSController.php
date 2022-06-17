@@ -412,7 +412,7 @@ class NikkenCMSController extends Controller{
         }
         else{
             $conexion = \DB::connection('mysqlTV');
-                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 123456");
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
             \DB::disconnect('mysqlTV');
             $data = [
                 'data' => $dataCell,
@@ -521,7 +521,7 @@ class NikkenCMSController extends Controller{
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
 
-        if ($validaTexto === false) {
+        if ($validaTexto === false || empty($textGral)) {
             $data['valido'] = false;
         }
         else {
