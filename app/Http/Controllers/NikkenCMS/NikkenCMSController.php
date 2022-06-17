@@ -534,12 +534,12 @@ class NikkenCMSController extends Controller{
             $apellido2 = str_replace($order, $replace, $apellido2);
             $data['apellido2'] = trim($apellido2[1]);
 
-            /*$cp = explode(':', trim($textGral[21]));
+            $cp = explode(':', trim($textGral[21]));
             $order   = array("\r\n", "\n", "\r", "\t");
             $replace = ' ';
             $cp = str_replace($order, $replace, $cp[1]);
             $cp = explode(' ', trim($cp));
-            $data['cp'] = trim($cp[0]);*/
+            $data['cp'] = trim($cp[0]);
 
             $data['RFC'] = trim($textGral[9]);
         }
