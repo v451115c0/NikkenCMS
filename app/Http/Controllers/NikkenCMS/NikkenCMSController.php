@@ -411,7 +411,7 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
             \DB::disconnect('mysqlTV');
-            /*$error = [];
+            $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
                 $file = $row->fiscal_file;
@@ -428,10 +428,10 @@ class NikkenCMSController extends Controller{
             $data = [
                 'data' => $dataCell,
                 'error' => $error,
-            ];*/
-            $data = [
-                'data' => $dataCell,
             ];
+            /*$data = [
+                'data' => $dataCell,
+            ];*/
             return $data;
         }
     }
