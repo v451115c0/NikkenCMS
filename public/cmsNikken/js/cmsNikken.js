@@ -1242,7 +1242,7 @@ function get_users_fiscal_update(){
         ajax: "/NikkenCMSpro/getActions?action=get_users_fiscal_update",
         dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
         columns: [
-            { error: 'id', className: 'text-center table-danger' },
+            { data: 'id', className: 'text-center table-danger' },
             { error: 'sap_code', className: 'text-center table-danger' },
             { error: 'rfc', className: 'text-center table-danger' },
             { error: 'person_type', className: 'text-center table-danger' },
@@ -1309,10 +1309,6 @@ function get_users_fiscal_update(){
             "info": "Showing page _PAGE_ of _PAGES_",
             "search": "Buscar",
         },
-        rowId: function(a) {
-            return a.associateid;
-        },
-        
     });
 }
 get_users_fiscal_update();
