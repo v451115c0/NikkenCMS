@@ -217,5 +217,45 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-12">
+        <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+            <div class="iq-card-header d-flex justify-content-between">
+                <h4 class="card-title text-center w-8">Datos fiscales con diferencia de datos</h4>
+            </div>
+            <div class="iq-card-body">
+                <div class="col-lg-12">
+                    <span id="log"></span>
+                </div>
+                <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_updateAlert">
+                    <thead>
+                       <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Código Usuario</th>
+                          <th scope="col">RFC</th>
+                          <th scope="col">Tipo de persona</th>
+                          <th scope="col">Regimen Fiscal</th>
+                          <th scope="col">Regimen Descriptor</th>
+                          <th scope="col">Persona Moral Nombre</th>
+                          <th scope="col">Persona Fisica Nombre</th>
+                          <th scope="col">Persona Fisica Primer Apellido</th>
+                          <th scope="col">Persona Fisica Segundo Apellido</th>
+                          <th scope="col">Código Postal</th>
+                          <th scope="col">Estado</th>
+                          <th scope="col">Municipio</th>
+                          <th scope="col">Colonia</th>
+                          <th scope="col">Código CFDI</th>
+                          <th scope="col">Descripción CFDI</th>
+                          <th scope="col">Actualizado en SQL</th>
+                          <th scope="col">Fecha de Registro</th>
+                          <th scope="col">Ultima actualizacion</th>
+                          <th scope="col">Comentarios</th>
+                          <th scope="col">Archivo adjunto</th>
+                          <th scope="col">Acciones</th>
+                       </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
