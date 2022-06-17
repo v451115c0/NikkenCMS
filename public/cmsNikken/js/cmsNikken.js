@@ -1235,7 +1235,7 @@ function get_users_fiscal_update(){
         }
     });
 
-    $('#users_fiscal_updateAlert').DataTable({
+    /*$('#users_fiscal_updateAlert').DataTable({
         destroy: true,
         lengthChange: false,
         info: true,
@@ -1309,7 +1309,7 @@ function get_users_fiscal_update(){
             "info": "Showing page _PAGE_ of _PAGES_",
             "search": "Buscar",
         },
-    });
+    });*/
 }
 get_users_fiscal_update();
 
