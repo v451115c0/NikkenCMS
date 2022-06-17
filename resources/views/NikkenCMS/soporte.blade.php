@@ -57,7 +57,9 @@
                             <li>
                                 <a href="#tv" class="iq-waves-effect collapsed"  data-toggle="collapse" aria-expanded="false"><i class="ri-store-2-line"></i><span>TV</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                                 <ul id="tv" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li><a href="{{ url('NikkenCMS/updateWs') }}"><i class="ri-whatsapp-line"></i>WhatsApp TV</a></li>
+                                    @if (session('tokenUser') != 'Elena Gomez')
+                                        <li><a href="{{ url('NikkenCMS/updateWs') }}"><i class="ri-whatsapp-line"></i>WhatsApp TV</a></li>
+                                    @endif
                                     <li><a href="{{ url('NikkenCMS/datosFiscales') }}"><i class="ri-file-paper-line"></i>Datos Fiscales</a></li>
                                 </ul>
                             </li>
@@ -159,7 +161,7 @@
                                                 </div>
                                             </a>
                                             <div class="d-inline-block w-100 text-center p-3">
-                                                <a class="btn btn-primary dark-btn-primary" href="{{ URL('NikkenCMS/login') }}" role="button">Cerrar Sesión<i class="ri-login-box-line ml-2"></i></a>
+                                                <a class="btn btn-primary dark-btn-primary" href="{{ URL('login') }}" role="button">Cerrar Sesión<i class="ri-login-box-line ml-2"></i></a>
                                             </div>
                                         </div>
                                     </div>
