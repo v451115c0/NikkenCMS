@@ -1235,31 +1235,31 @@ function get_users_fiscal_update(){
         }
     });
 
-    /*$('#users_fiscal_updateAlert').DataTable({
+    $('#users_fiscal_updateAlert').DataTable({
         destroy: true,
         lengthChange: false,
         info: true,
-        ajax: "/NikkenCMSpro/getActions?action=get_users_fiscal_update",
+        ajax: "/NikkenCMSpro/getActions?action=get_users_fiscal_updateError",
         dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5 mb-md-0 mb-5"i><"col-md-7"p>>> >',
         columns: [
             { data: 'id', className: 'text-center table-danger' },
-            { error: 'sap_code', className: 'text-center table-danger' },
-            { error: 'rfc', className: 'text-center table-danger' },
-            { error: 'person_type', className: 'text-center table-danger' },
-            { error: 'regimen_code', className: 'text-center table-danger' },
-            { error: 'regimen_description', className: 'text-center table-danger' },
-            { error: 'business_name', className: 'text-center table-danger' },
-            { error: 'name', className: 'text-center table-danger' },
-            { error: 'last_name', className: 'text-center table-danger' },
-            { error: 'second_last_name', className: 'text-center table-danger' },
-            { error: 'cp', className: 'text-center table-danger' },
-            { error: 'estado', className: 'text-center table-danger' },
-            { error: 'municipio', className: 'text-center table-danger' },
-            { error: 'colonia', className: 'text-center table-danger' },
-            { error: 'cfdi_code', className: 'text-center table-danger' },
-            { error: 'cfdi_description', className: 'text-center table-danger' },
+            { data: 'sap_code', className: 'text-center table-danger' },
+            { data: 'rfc', className: 'text-center table-danger' },
+            { data: 'person_type', className: 'text-center table-danger' },
+            { data: 'regimen_code', className: 'text-center table-danger' },
+            { data: 'regimen_description', className: 'text-center table-danger' },
+            { data: 'business_name', className: 'text-center table-danger' },
+            { data: 'name', className: 'text-center table-danger' },
+            { data: 'last_name', className: 'text-center table-danger' },
+            { data: 'second_last_name', className: 'text-center table-danger' },
+            { data: 'cp', className: 'text-center table-danger' },
+            { data: 'estado', className: 'text-center table-danger' },
+            { data: 'municipio', className: 'text-center table-danger' },
+            { data: 'colonia', className: 'text-center table-danger' },
+            { data: 'cfdi_code', className: 'text-center table-danger' },
+            { data: 'cfdi_description', className: 'text-center table-danger' },
             { 
-                error: 'updated_on_sql_server',
+                data: 'updated_on_sql_server',
                 className: 'text-center table-danger',
                 render: function(data, type, row){
                     var dato = row.updated_on_sql_server;
@@ -1271,11 +1271,11 @@ function get_users_fiscal_update(){
                     }
                 }
             },
-            { error: 'created_at', className: 'text-center table-danger' },
-            { error: 'updated_at', className: 'text-center table-danger' },
-            { error: 'comments', className: 'text-center table-danger' },
+            { data: 'created_at', className: 'text-center table-danger' },
+            { data: 'updated_at', className: 'text-center table-danger' },
+            { data: 'comments', className: 'text-center table-danger' },
             { 
-                error: 'fiscal_file',
+                data: 'fiscal_file',
                 className: 'text-center table-danger',
                 render: function(data, type, row){
                     var archivo = row.fiscal_file;
@@ -1286,7 +1286,7 @@ function get_users_fiscal_update(){
                 },
             },
             { 
-                error: 'updated_at',
+                data: 'updated_at',
                 className: 'text-center table-danger',
                 render: function(data, type, row){
                     return '<a href="javascript:void(0)" data-toggle="modal" data-target=".modalUpdate" onclick="loadDataFisData(' + row.id + ', ' + row.sap_code + ')"><i class="ri-ball-pen-fill text-success pr-1" style="font-size: 20px"></i></a>' +
@@ -1309,7 +1309,7 @@ function get_users_fiscal_update(){
             "info": "Showing page _PAGE_ of _PAGES_",
             "search": "Buscar",
         },
-    });*/
+    });
 }
 get_users_fiscal_update();
 

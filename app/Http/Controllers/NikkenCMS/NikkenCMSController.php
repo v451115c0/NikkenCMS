@@ -127,6 +127,9 @@ class NikkenCMSController extends Controller{
             case 'get_users_fiscal_update':
                 return $this->get_users_fiscal_update();
                 break;
+            case 'get_users_fiscal_updateError':
+                return $this->get_users_fiscal_updateError();
+                break;
         }
     }
 
@@ -402,14 +405,28 @@ class NikkenCMSController extends Controller{
         }
     }
 
-    // Actualización de número de whatsapp
+    // admin de datos fiscales
     public function get_users_fiscal_update(){
         if(empty(session('tokenPass'))){
             return "error";
         }
         else{
             $conexion = \DB::connection('mysqlTV');
-                //$dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 123456");
+            \DB::disconnect('mysqlTV');
+            $data = [
+                'data' => $dataCell,
+            ];
+            return $data;
+        }
+    }
+
+    public function get_users_fiscal_updateError(){
+        if(empty(session('tokenPass'))){
+            return "error";
+        }
+        else{
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 123456");
             \DB::disconnect('mysqlTV');
             $error = [];
@@ -432,11 +449,8 @@ class NikkenCMSController extends Controller{
                 }
             }
             $data = [
-                'data' => $dataCell,
-                'error' => $error,
+                'data' => $error,
             ];
-            
-            //$data['error'] = $error;
             return $data;
         }
     }
