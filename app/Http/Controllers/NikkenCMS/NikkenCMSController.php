@@ -572,19 +572,10 @@ class NikkenCMSController extends Controller{
         $parseador = new \Smalot\PdfParser\Parser();
         $documento = $parseador->parseFile($nombreDocumento);
 
-        $paginas = $documento->getPages();
-        foreach ($paginas as $indice => $pagina) {
-            printf("<h1>Página #%02d</h1>", $indice + 1);
-            $texto = $pagina->getText();
-            echo "<pre>";
-            echo $texto;
-            echo "</pre>";
-
-        }
         $file = "";
         $imagenes = $documento->getObjectsByType('XObject', 'Image');
         foreach ($imagenes as $imagen) {
-            $file .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64,%s\"/>". $imagen->getContent();
+            $file .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64," . base64_encode($imagen->getContent()) . "\"/>";
         }
         
         return $file;
