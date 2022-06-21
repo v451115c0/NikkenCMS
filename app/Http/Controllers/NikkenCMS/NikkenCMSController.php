@@ -584,7 +584,7 @@ class NikkenCMSController extends Controller{
         $file = "";
         $imagenes = $documento->getObjectsByType('XObject', 'Image');
         foreach ($imagenes as $imagen) {
-            $file .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64,%s\"/>". base64_encode($imagen->getContent());
+            $file .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64,%s\"/>". $imagen->getContent();
         }
         
         return $file;
