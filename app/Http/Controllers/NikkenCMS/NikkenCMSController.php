@@ -9,7 +9,7 @@ use App\User;
 use Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
-use Spatie\PdfToText\Pdf;
+use Smalot\PdfParser\Parser;
 
 class NikkenCMSController extends Controller{
     //Declaramos las configuraciones de amazon s3
@@ -563,10 +563,10 @@ class NikkenCMSController extends Controller{
         $PDFfile = request()->file;
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($PDFfile);
-        $data = [];
+        /*$data = [];
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-        $validaTexto = strpos($textGral, $find);
+        $validaTexto = strpos($textGral, $find);*/
 
         $imagenes = $parser->getObjectsByType('XObject', 'Image');
         $pre = "";
