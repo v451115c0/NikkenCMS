@@ -569,6 +569,7 @@ class NikkenCMSController extends Controller{
         $validaTexto = strpos($textGral, $find);*/
 
         $nombreDocumento = "$PDFfile";
+        $parseador = new \Smalot\PdfParser\Parser();
         $documento = $parseador->parseFile($nombreDocumento);
 
         $paginas = $documento->getPages();
