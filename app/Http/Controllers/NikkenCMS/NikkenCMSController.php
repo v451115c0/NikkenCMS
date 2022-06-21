@@ -568,6 +568,13 @@ class NikkenCMSController extends Controller{
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
 
+        $imagenes = $documento->getObjectsByType('XObject', 'Image');
+        $pre = "";
+        foreach ($imagenes as $imagen) {
+            $pre .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64,%s\"/>" . base64_encode($imagen->getContent());
+        }
+        return $pre;
+
         if ($validaTexto === false) {
             $data['valido'] = false;
         }
