@@ -560,7 +560,6 @@ class NikkenCMSController extends Controller{
     }
 
     public function getTextFromPDFview(Request $request){
-        include __DIR__."/vendor/autoload.php";
         $PDFfile = request()->file;
         /*$parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($PDFfile);
