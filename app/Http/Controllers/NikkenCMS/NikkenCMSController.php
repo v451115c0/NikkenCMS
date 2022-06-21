@@ -561,19 +561,14 @@ class NikkenCMSController extends Controller{
 
     public function getTextFromPDFview(Request $request){
         $PDFfile = request()->file;
-        $parser = new \Smalot\PdfParser\Parser();
+        /*$parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile($PDFfile);
-        /*$data = [];
+        $data = [];
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);*/
-
-        $imagenes = $parser->getObjectsByType('XObject', 'Image');
-        $pre = "";
-        foreach ($imagenes as $imagen) {
-            $pre .= "<h1>Una imagen</h1><img src=\"data:image/jpg;base64,%s\"/>" . base64_encode($imagen->getContent());
-        }
-        return $pre;
+        
+        return $PDFfile;
 
         if ($validaTexto === false) {
             $data['valido'] = false;
