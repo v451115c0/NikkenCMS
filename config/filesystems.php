@@ -54,6 +54,25 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => 'GOOGLE_CLOUD_PROJECT_ID',
+            'key_file' => 'GOOGLE_CLOUD_KEY_FILE', // optional: /path/to/service-account.json
+            
+            'bucket' => 'GOOGLE_CLOUD_STORAGE_BUCKET',
+            'visibility' => 'public',
+        ],
+
+        /*'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'citric-cistern-352720'),
+            'key_file' => env('GOOGLE_CLOUD_KEY_FILE', 'C:\laragon\www\NikkenCMS\credentials.json'), // optional: /path/to/service-account.json
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'cmssrc'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null), // optional: /default/path/to/apply/in/bucket
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null), // see: Public URLs below
+            'visibility' => 'public', // optional: public|private
+        ],*/
+
     ],
 
     /*
