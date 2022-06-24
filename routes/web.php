@@ -30,8 +30,9 @@ Route::get('Depuraciones', 'depuraciones7days\dep7dayController@Depuraciones');
 Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7days');
 
 ## Google Cloud Storage
-Route::get('gcs', function(){
-    $disk = \Storage::disk('gcs');
-    $disk->put('hola.txt', "hola mundo");
-    return "hola mundo";
+Route::get('googlebucket', function(){
+    $disk = \storage::disk('gcs');
+    $disk->put('cmstest.txt', 'hola mundo');
+    $url = $disk->url('cmstest.txt');
+    return $url;
 });

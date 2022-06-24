@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use League\Flysystem\GoogleCloudStorage\GoogleCloudStorageAdapter;
-use League\Flysystem\Filesystem;
 use Google\Cloud\Storage\StorageClient;
+use League\Flysystem\Filesystem;
+use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter;
 
 class GoogleStorageServiceProvider extends ServiceProvider
 {
@@ -33,7 +33,7 @@ class GoogleStorageServiceProvider extends ServiceProvider
                 'keyFilePath' => $config['key_file'],
             ]);
             $bucket = $storageClient->bucket($config['bucket']);
-            $adapter = new GoogleCloudStorageAdapter($storageClient, $bucket);
+            $adapter = new GoogleStorageAdapter($storageClient, $bucket);
             return new Filesystem($adapter);
         });
     }
