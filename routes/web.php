@@ -15,7 +15,6 @@ Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes
 Route::match(['get','post'],'addMicroSitio', 'NikkenCMS\NikkenCMSController@addMicroSitio')->name('addMicroSitio');
 Route::match(['get','post'],'editMicrosito', 'NikkenCMS\NikkenCMSController@editMicrosito')->name('editMicrosito');
 Route::get('getTextFromPDFview', 'NikkenCMS\NikkenCMSController@getTextFromPDFview')->name('getTextFromPDFview');
-Route::get('getImgFromPDFview', 'NikkenCMS\NikkenCMSController@getImgFromPDFview')->name('getImgFromPDFview');
 Route::get('enviarMail', 'NikkenCMS\NikkenCMSController@contact');
 
 ##Facturación COLOMBIA
@@ -29,9 +28,4 @@ Route::get('IndexDepuraciones', 'depuraciones7days\dep7dayController@indexDepura
 Route::get('Depuraciones', 'depuraciones7days\dep7dayController@Depuraciones');
 Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7days');
 
-## Google Cloud Storage
-Route::get('gcs', function(){
-    $disk = \Storage::disk('gcs');
-    $disk->put('hola.txt', "hola mundo");
-    return "hola mundo";
-});
+## agregar la columna de kit de transformación
