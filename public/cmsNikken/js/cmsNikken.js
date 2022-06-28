@@ -1551,6 +1551,7 @@ function getValidateInfoSAT(sap_code){
             sap_code: sap_code
         },
         beforeSend: function(){
+            $("#loadingdivValidatePDF").show();
             $("#loadingdivValidatePDF").empty();
             showLoadingIcon($("#loadingdivValidatePDF"));
             $("#responseValidate").empty();
