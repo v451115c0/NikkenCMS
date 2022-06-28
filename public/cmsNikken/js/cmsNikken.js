@@ -1282,7 +1282,7 @@ function get_users_fiscal_update(){
                     if(row.fiscal_file === null || row.fiscal_file === undefined || row.fiscal_file === NaN){
                         archivo = 'https://micrositios.s3.us-west-1.amazonaws.com/srcMyNIKKEN/color-swatch.jpg';
                     }
-                    return '<a href="' + archivo + '" target="_blank" class="btn btn-success" id="getImgNewTab">Ver imagen adjunta</a><br><br><a href="javascript:void(0)" class="btn btn-success" id="getImgNewTab"><i class="ri-eye-2-line"></i> Validar documento</a>';
+                    return '<a href="' + archivo + '" target="_blank" class="btn btn-success" id="getImgNewTab">Ver imagen adjunta</a><br><br><a data-target=".modalValidatePDFsat" data-toggle="modal" href="javascript:void(0)" class="btn btn-success" id="getImgNewTab"><i class="ri-eye-2-line"></i> Validar documento</a>';
                 },
             },
             { 
