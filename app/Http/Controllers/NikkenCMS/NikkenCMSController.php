@@ -10,7 +10,7 @@ use Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Smalot\PdfParser\Parser;
-use \ConvertApi\ConvertApi;
+use ConvertApi\ConvertApi;
 
 use Zxing\QrReader;
 
