@@ -46,7 +46,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div id="loadingdiv"></div>
+                                <div id="loadingdivValidatePDF"></div>
                                 <div class="row">
                                     <div class="col-lg-12" id="responseValidate">
                                         

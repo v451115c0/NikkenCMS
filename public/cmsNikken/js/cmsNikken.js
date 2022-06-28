@@ -1550,7 +1550,13 @@ function getValidateInfoSAT(sap_code){
         data: {
             sap_code: sap_code
         },
+        beforeSend: function(){
+            $("#loadingdivValidatePDF").empty();
+            showLoadingIcon($("#loadingdivValidatePDF"));
+            $("#responseValidate").empty();
+        },
         success: function (response) {
+            $("#loadingdivValidatePDF").hide();
             $("#responseValidate").html(response);
         }
     });
