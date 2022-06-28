@@ -10,8 +10,7 @@ use Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Smalot\PdfParser\Parser;
-use ConvertApi\ConvertApi;
-
+use \ConvertApi\ConvertApi;
 use Zxing\QrReader;
 
 class NikkenCMSController extends Controller{
@@ -448,6 +447,182 @@ class NikkenCMSController extends Controller{
     }
 
     public function getImgFromPDFview(Request $request){
+        ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
+        $PDFfile = request()->file;
+        $data2 = [];
+
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile($PDFfile);
+        $data = [];
+        $textGral = $pdf->getText();
+        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
+        $validaTexto = strpos($textGral, $find);
+        if ($validaTexto === false) {
+            $data['valido'] = false;
+        }
+        else {
+            $textGral = explode("\n", $textGral);
+            $data['valido'] = true;
+            $data['titulo'] = trim($textGral[1]);
+
+            $nombre = explode(':', trim($textGral[13]));
+            $nombre = $this->delete_space($nombre[1], ' ');
+            $data['nombre'] = trim($nombre);
+            
+            $apellido1 = explode(':', trim($textGral[14]));
+            $apellido1 = $this->delete_space($apellido1[1], ' ');
+            $data['apellido1'] = trim($apellido1);
+            
+
+            $apellido2 = explode(':', trim($textGral[15]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $apellido2 = str_replace($order, $replace, $apellido2);
+            $data['apellido2'] = trim($apellido2[1]);
+
+            $cp = explode(':', trim($textGral[21]));
+            $order   = array("\r\n", "\n", "\r", "\t");
+            $replace = ' ';
+            $cp = str_replace($order, $replace, $cp[1]);
+            $cp = explode(' ', trim($cp));
+            $data['cp'] = trim($cp[0]);
+
+            $data['RFC'] = trim($textGral[9]);
+        }
+        $data2['pdfUSER'] = $data;
+
+        ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
+        ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
+        $result = ConvertApi::convert('jpg', [
+                'File' => "$PDFfile",
+                'PageRange' => '1-1',
+            ], 'pdf'
+        );
+        $result->saveFiles('extraido/QR.jpg');
+        $qrcode = new QrReader('./extraido/QR.jpg');
+        $text = $qrcode->text();
+        $urlQR = explode('validadorqr.jsf', trim($text));
+        
+        $origenSAT = false;
+        $RFCfinal = false;
+        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : $origenSAT = 'no';
+
+        $rfcQR = explode('_', trim($urlQR[1]));
+        (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : $RFCfinal = 'no';
+
+        if($origenSAT){
+            $result = ConvertApi::convert('pdf', [
+                    'Url' => $text,
+                    'PageRange' => '1-1',
+                ], 'web'
+            );
+            $result->saveFiles('./extraido/PDF.pdf');
+            
+            $parser = new \Smalot\PdfParser\Parser();
+            $pdf = $parser->parseFile('./extraido/PDF.pdf');
+            $textGral = $pdf->getText();
+            $textGral = explode("\n", $textGral);
+            $data = [];
+            
+            $nombre = explode(':', trim($textGral[3]));
+            $nombre = $this->delete_space($nombre, '');
+            $data['nombre'] = trim($nombre[2]);
+            
+            $apellido1 = explode(':', trim($textGral[4]));
+            $apellido1 = $this->delete_space($apellido1[2], '');
+            $data['apellido1'] = trim($apellido1);
+
+            $apellido2 = explode(':', trim($textGral[5]));
+            $apellido2 = $this->delete_space($apellido2[2], '');
+            $data['apellido2'] = trim($apellido2);
+
+            $cp = explode(':', trim($textGral[18]));
+            $cp = $this->delete_space($cp[2], '');
+            $data['cp'] = trim($cp);
+
+            $rfc = explode(':', trim($textGral[0]));
+            $rfc = explode(',', trim($rfc[2]));
+            $rfc = $this->delete_space($rfc[0], '');
+            $data['RFC'] = trim($rfc);
+            
+            $data2['pdfSAT'] = $data;
+
+            $nombre = "";
+            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['nombre'], '')); $x++){
+                $nombre .= $data2['pdfSAT']['nombre'][$x];
+            }
+            ($nombre === $this->delete_space($data2['pdfUSER']['nombre'], '')) ? $nombreValido = "valido": $nombreValido = 'invalido';
+            
+            $apellido1 = "";
+            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido1'], '')); $x++){
+                $apellido1 .= $data2['pdfSAT']['apellido1'][$x];
+            }
+            ($apellido1 === $this->delete_space($data2['pdfUSER']['apellido1'], '')) ? $apellido1 = "valido": $apellido1 = 'invalido';
+            
+            $apellido2 = "";
+            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido2'], '')); $x++){
+                $apellido2 .= $data2['pdfSAT']['apellido2'][$x];
+            }
+            ($apellido2 === $this->delete_space($data2['pdfUSER']['apellido2'], '')) ? $apellido2 = "valido": $apellido2 = 'invalido';
+            
+            $cp = "";
+            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['cp'], '')); $x++){
+                $cp .= $data2['pdfSAT']['cp'][$x];
+            }
+            ($cp === $this->delete_space($data2['pdfUSER']['cp'], '')) ? $cp = "valido": $cp = 'invalido';
+            
+            $RFC = "";
+            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['RFC'], '')); $x++){
+                $RFC .= $data2['pdfSAT']['RFC'][$x];
+            }
+            ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
+
+            $table = '<table border="1px" width="100%">' .
+                        '<thead>' .
+                            '<tr>' .
+                                '<td>PDF del usuario</td>' .
+                                '<td>PDF del SAT</td>' .
+                                '<td>Dato Real?</td>' .
+                            '</tr>' .
+                        '</thead>' .
+                        '<tbody>' .
+                            '<tr>' .
+                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
+                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
+                                '<td>' . $nombreValido . '</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
+                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
+                                '<td>' . $apellido1 . '</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
+                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
+                                '<td>' . $apellido2 . '</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
+                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
+                                '<td>' . $cp . '</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
+                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
+                                '<td>' . $RFC . '</td>' .
+                            '</tr>' .
+                        '</tbody>' .
+                    '</table>';
+
+            return $table;
+        }
+        else{
+            return $origenSAT;
+        }
+    }
+    
+    public function getValidateInfoSAT(Request $request){
+        return "hola mundo";
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = request()->file;
         $data2 = [];
