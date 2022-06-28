@@ -622,7 +622,6 @@ class NikkenCMSController extends Controller{
     }
     
     public function getValidateInfoSAT(Request $request){
-        return "hola mundo";
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = request()->file;
         $data2 = [];
