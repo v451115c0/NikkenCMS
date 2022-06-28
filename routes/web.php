@@ -17,9 +17,11 @@ Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes
 Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitioGCP')->name('addMicroSitio');
 #Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitio')->name('addMicroSitio');
 Route::match(['get','post'],'editMicrosito', 'MyNIKKEN\MNKController@editMicrosito')->name('editMicrosito');
-Route::get('getTextFromPDFview', 'MyNIKKEN\MNKController@getTextFromPDFview')->name('getTextFromPDFview');
-Route::get('getImgFromPDFview', 'MyNIKKEN\MNKController@getImgFromPDFview')->name('getImgFromPDFview');
-Route::get('getValidateInfoSAT', 'MyNIKKEN\MNKController@getValidateInfoSAT')->name('getValidateInfoSAT');
+
+## Admin Datos Fiscales TV
+Route::get('getTextFromPDFview', 'NikkenCMS\NikkenCMSController@getTextFromPDFview')->name('getTextFromPDFview');
+Route::get('getImgFromPDFview', 'NikkenCMS\NikkenCMSController@getImgFromPDFview')->name('getImgFromPDFview');
+Route::get('getValidateInfoSAT', 'NikkenCMS\NikkenCMSController@getValidateInfoSAT')->name('getValidateInfoSAT');
 
 ##Facturación COLOMBIA
 Route::get('facturasCol/{sap_code}', 'facturasCol\facturasColController@indexFacturaCol');
