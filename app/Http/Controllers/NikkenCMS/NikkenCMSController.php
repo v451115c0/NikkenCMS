@@ -797,7 +797,7 @@ class NikkenCMSController extends Controller{
             return $table;
         }
         else{
-            return $origenSAT;
+            return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
         }
     }
 
