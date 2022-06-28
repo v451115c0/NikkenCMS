@@ -12,11 +12,14 @@ Route::get('authLogin', 'NikkenCMS\NikkenCMSController@authLogin');
 Route::get('NikkenCMS/{view}', 'NikkenCMS\NikkenCMSController@getViwe');
 Route::get('NikkenCMSpro/getActions', 'NikkenCMS\NikkenCMSController@getActions');
 Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes_sap_encrypt');
-Route::match(['get','post'],'addMicroSitio', 'NikkenCMS\NikkenCMSController@addMicroSitio')->name('addMicroSitio');
-Route::match(['get','post'],'editMicrosito', 'NikkenCMS\NikkenCMSController@editMicrosito')->name('editMicrosito');
-Route::get('getTextFromPDFview', 'NikkenCMS\NikkenCMSController@getTextFromPDFview')->name('getTextFromPDFview');
-Route::get('getImgFromPDFview', 'NikkenCMS\NikkenCMSController@getImgFromPDFview')->name('getImgFromPDFview');
-Route::get('enviarMail', 'NikkenCMS\NikkenCMSController@contact');
+
+# Material MyNIKKEN <--> NIKKEN APP
+Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitioGCP')->name('addMicroSitio');
+#Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitio')->name('addMicroSitio');
+Route::match(['get','post'],'editMicrosito', 'MyNIKKEN\MNKController@editMicrosito')->name('editMicrosito');
+Route::get('getTextFromPDFview', 'MyNIKKEN\MNKController@getTextFromPDFview')->name('getTextFromPDFview');
+Route::get('getImgFromPDFview', 'MyNIKKEN\MNKController@getImgFromPDFview')->name('getImgFromPDFview');
+Route::get('getValidateInfoSAT', 'MyNIKKEN\MNKController@getValidateInfoSAT')->name('getValidateInfoSAT');
 
 ##Facturación COLOMBIA
 Route::get('facturasCol/{sap_code}', 'facturasCol\facturasColController@indexFacturaCol');
@@ -28,11 +31,3 @@ Route::get('encryptarCardCode/{sap_code}', 'facturasCol\facturasColController@en
 Route::get('IndexDepuraciones', 'depuraciones7days\dep7dayController@indexDepuraciones');
 Route::get('Depuraciones', 'depuraciones7days\dep7dayController@Depuraciones');
 Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7days');
-
-## Google Cloud Storage
-Route::get('googlebucket', function(){
-    $disk = \storage::disk('gcs');
-    $disk->put('MyNIKKEN_src/cmstest.txt', 'hola mundo');
-    $url = $disk->url('cmstest.txt');
-    return $url;
-});
