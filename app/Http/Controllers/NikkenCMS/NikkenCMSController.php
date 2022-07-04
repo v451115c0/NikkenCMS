@@ -612,7 +612,7 @@ class NikkenCMSController extends Controller{
     public function getValidateInfoSAT(Request $request){
         $sap_code =  request()->sap_code;
         $conexion = \DB::connection('mysqlTV');
-            $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code ");
+            $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code");
         \DB::disconnect('mysqlTV');
         
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
@@ -786,6 +786,10 @@ class NikkenCMSController extends Controller{
             return $table;
         }
         else{
+            $conexion = \DB::connection('migracion');
+                $date = Date('d-m-Y H:i:s');
+                $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
+            \DB::disconnect('migracion');
             return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
         }
     }
