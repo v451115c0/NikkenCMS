@@ -257,14 +257,14 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 123456");
             \DB::disconnect('mysqlTV');
-            return $dataCell;
             $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
                 if($row->fiscal_file != null || !empty($row->fiscal_file)){
                     $file = $row->fiscal_file;
                     $extension = explode('.', $file);
-                    if(empty($row->business_name) || strlen($row->business_name) <= 0){
+                    return $extension;
+                    /*if(empty($row->business_name) || strlen($row->business_name) <= 0){
                         if($extension[5] === 'pdf'){
                             $prop = $this->getTextFromPDF($file);
                             if($prop['valido'] === true){
@@ -274,7 +274,7 @@ class NikkenCMSController extends Controller{
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
             $data = [
@@ -396,18 +396,6 @@ class NikkenCMSController extends Controller{
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
-
-        /*$nombreDocumento = "$PDFfile";
-        $parseador = new \Smalot\PdfParser\Parser();
-        $documento = $parseador->parseFile($nombreDocumento);
-
-        $file = "";
-        $imagenes = $documento->getObjectsByType('XObject', 'Image');
-        foreach ($imagenes as $imagen) {
-            $file .= '<img src="data:image/jpg;base64,'. base64_encode($imagen->getContent()) .'" />';
-        }
-        
-        return $file;*/
 
         if ($validaTexto === false) {
             $data['valido'] = false;
