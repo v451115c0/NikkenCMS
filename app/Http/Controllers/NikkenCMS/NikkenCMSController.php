@@ -669,7 +669,7 @@ class NikkenCMSController extends Controller{
         $result->saveFiles('extraido/QR.jpg');
         $qrcode = new QrReader('./extraido/QR.jpg');
         $text = $qrcode->text();
-        return $text;
+        return "texto de QR: " . $text;
         $urlQR = explode('validadorqr.jsf', trim($text));
         
         $origenSAT = false;
