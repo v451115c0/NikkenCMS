@@ -263,7 +263,6 @@ class NikkenCMSController extends Controller{
                 if($row->fiscal_file != null || !empty($row->fiscal_file)){
                     $file = $row->fiscal_file;
                     $extension = explode('.', $file);
-                    return $extension;
                     if(empty($row->business_name) || strlen($row->business_name) <= 0){
                         if(trim($extension[3]) === 'pdf'){
                             $prop = $this->getTextFromPDF($file);
