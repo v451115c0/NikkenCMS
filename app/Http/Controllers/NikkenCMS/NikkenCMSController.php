@@ -669,16 +669,19 @@ class NikkenCMSController extends Controller{
         $result->saveFiles('extraido/QR.jpg');
         $qrcode = new QrReader('./extraido/QR.jpg');
         $text = $qrcode->text();
+        return $text;
         $urlQR = explode('validadorqr.jsf', trim($text));
         
         $origenSAT = false;
         $RFCfinal = false;
         (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : $origenSAT = 'no';
 
-        $rfcQR = explode('_', trim($urlQR[1]));
-        (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : $RFCfinal = 'no';
-
         if($origenSAT){
+            $rfcQR = explode('_', trim($urlQR[1]));
+            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : $RFCfinal = 'no';   
+        }
+
+        if($origenSAT && $RFCfinal){
             $result = ConvertApi::convert('pdf', [
                     'Url' => $text,
                     'PageRange' => '1-1',
