@@ -787,7 +787,7 @@ class NikkenCMSController extends Controller{
         }
         else{
             $conexion = \DB::connection('migracion');
-                $date = Date('d-m-Y H:i:s');
+                $date = Date('Y-m-d H:i:s');
                 $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
             \DB::disconnect('migracion');
             return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
