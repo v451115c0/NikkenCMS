@@ -673,11 +673,10 @@ class NikkenCMSController extends Controller{
         
         $origenSAT = false;
         $RFCfinal = false;
-        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : $origenSAT = 'no vale';
-        return $origenSAT;
+        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : null;
         if($origenSAT == true){
             $rfcQR = explode('_', trim($urlQR[1]));
-            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : $RFCfinal = 'no';   
+            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : null;   
         }
 
         if($origenSAT == true && $RFCfinal == true){
