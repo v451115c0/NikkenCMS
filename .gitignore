@@ -26,3 +26,5 @@ composer.lock
 composer.json
 composer.json
 composer.lock
+public/extraido/PDF.pdf
+public/extraido/QR.jpg
