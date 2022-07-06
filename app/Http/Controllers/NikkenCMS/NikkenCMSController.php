@@ -611,9 +611,9 @@ class NikkenCMSController extends Controller{
     
     public function getValidateInfoSAT(Request $request){
         $sap_code =  request()->sap_code;
-        $conexion = \DB::connection('mysqlTV');
+        $conexion = \DB::connection('mysqlTVTest');
             $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code");
-        \DB::disconnect('mysqlTV');
+        \DB::disconnect('mysqlTVTest');
         
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $response[0]->fiscal_file;
