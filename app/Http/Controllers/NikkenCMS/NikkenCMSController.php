@@ -239,7 +239,7 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTVTest');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
             \DB::disconnect('mysqlTV');
             $data = [
@@ -254,9 +254,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTVTest');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 14829503");
-            \DB::disconnect('mysqlTVTest');
+            \DB::disconnect('mysqlTV');
             $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
@@ -621,9 +621,9 @@ class NikkenCMSController extends Controller{
     
     public function getValidateInfoSAT(Request $request){
         $sap_code =  request()->sap_code;
-        $conexion = \DB::connection('mysqlTVTest');
+        $conexion = \DB::connection('mysqlTV');
             $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code");
-        \DB::disconnect('mysqlTVTest');
+        \DB::disconnect('mysqlTV');
         
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $response[0]->fiscal_file;
@@ -812,7 +812,7 @@ class NikkenCMSController extends Controller{
     }
 
     public function deleteNumbersSepecialChar($string, $replace){
-        $res = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), '', $string);
+        $res = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
         return $string;
     }
 
