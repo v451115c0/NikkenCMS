@@ -14,8 +14,8 @@ Route::get('NikkenCMSpro/getActions', 'NikkenCMS\NikkenCMSController@getActions'
 Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes_sap_encrypt');
 
 # Material MyNIKKEN <--> NIKKEN APP
-Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitioGCP')->name('addMicroSitio');
-#Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitio')->name('addMicroSitio');
+#Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitioGCP')->name('addMicroSitio');
+Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitio')->name('addMicroSitio');
 Route::match(['get','post'],'editMicrosito', 'MyNIKKEN\MNKController@editMicrosito')->name('editMicrosito');
 
 ## Admin Datos Fiscales TV
