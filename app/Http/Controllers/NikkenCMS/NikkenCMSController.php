@@ -476,7 +476,10 @@ class NikkenCMSController extends Controller{
             $data['cp'] = trim($cp[0]);
 
             $data['RFC'] = trim($textGral[9]);
+
+            $data['regimen'] = trim($this->delete_space($textGral[36], ' '));
         }
+        return $data;
         $data2['pdfUSER'] = $data;
 
         ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
@@ -493,12 +496,13 @@ class NikkenCMSController extends Controller{
         
         $origenSAT = false;
         $RFCfinal = false;
-        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : $origenSAT = 'no';
+        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : null;
+        if($origenSAT == true){
+            $rfcQR = explode('_', trim($urlQR[1]));
+            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : null;   
+        }
 
-        $rfcQR = explode('_', trim($urlQR[1]));
-        (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : $RFCfinal = 'no';
-
-        if($origenSAT){
+        if($origenSAT == true && $RFCfinal == true){
             $result = ConvertApi::convert('pdf', [
                     'Url' => $text,
                     'PageRange' => '1-1',
@@ -565,6 +569,8 @@ class NikkenCMSController extends Controller{
             }
             ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
 
+            return "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
+            VALUES ('1954', '14829503', '" . $data2['pdfUSER']['RFC'] . "', 'FISICA', '605', 'SUELDOS Y SALARIOS E INGRESOS ASIMILADOS A SALARIOS', '', '" . $data2['pdfUSER']['nombre'] . "', '" . $data2['pdfUSER']['apellido1'] . "', '" . $data2['pdfUSER']['apellido2'] . "', '" . $data2['pdfUSER']['cp'] . "', 'ESTADO DE MÉXICO', 'NICOLÁS ROMERO', 'BENITO JUÁREZ 1A. SECCIÓN (CABECERA MUNICIPAL)', 'S01', 'SIN EFECTOS FISCALES', 'https://storage.googleapis.com/tv-store/datos-fiscales/1656438198_XAXX010101000_correcto.pdf', '', '0', '0', '2022-07-06 15:26:15', '2022-07-06 15:26:15')";
             $table = '<table border="1px" width="100%">' .
                         '<thead>' .
                             '<tr>' .
@@ -605,7 +611,11 @@ class NikkenCMSController extends Controller{
             return $table;
         }
         else{
-            return $origenSAT;
+            $conexion = \DB::connection('migracion');
+                $date = Date('Y-m-d H:i:s');
+                $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
+            \DB::disconnect('migracion');
+            return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
         }
     }
     
@@ -798,6 +808,11 @@ class NikkenCMSController extends Controller{
     public function delete_space($string, $replace){
         $order = array("\r\n", "\n", "\r", "\t", " ");
         $string = str_replace($order, $replace, $string);
+        return $string;
+    }
+
+    public function deleteNumbersSepecialChar($string, $replace){
+        $res = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), '', $string);
         return $string;
     }
 
