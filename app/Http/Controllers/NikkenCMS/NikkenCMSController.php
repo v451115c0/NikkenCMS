@@ -746,7 +746,7 @@ class NikkenCMSController extends Controller{
             }
             ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
 
-            return $textGral;
+            return $data2['pdfUSER'];
             $table = '<table border="1px" width="100%">' .
                         '<thead>' .
                             '<tr>' .
