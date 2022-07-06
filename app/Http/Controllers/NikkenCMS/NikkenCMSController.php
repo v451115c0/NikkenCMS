@@ -800,4 +800,14 @@ class NikkenCMSController extends Controller{
         $string = str_replace($order, $replace, $string);
         return $string;
     }
+
+    public function getDataBuscador(){
+        $conexion = \DB::connection('173');
+            $data = $conexion->select("SELECT * FROM LAT_MyNIKKEN.dbo.Buscador_Mynikken;");
+        \DB::disconnect('173');
+        $data = [
+            'data' => $data,
+        ];
+        return $data;
+    }
 }
