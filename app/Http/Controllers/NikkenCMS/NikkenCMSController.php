@@ -255,7 +255,7 @@ class NikkenCMSController extends Controller{
         }
         else{
             $conexion = \DB::connection('mysqlTVTest');
-                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update");
+                $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 14829503");
             \DB::disconnect('mysqlTVTest');
             $error = [];
             $prop = [];
