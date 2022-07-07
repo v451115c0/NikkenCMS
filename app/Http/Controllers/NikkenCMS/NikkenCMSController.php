@@ -598,9 +598,9 @@ class NikkenCMSController extends Controller{
             
             //return $insert;
             
-            $conexion = \DB::connection('migracion');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->insert("$insert");
-            \DB::disconnect('migracion');
+            \DB::disconnect('mysqlTVTest');
 
 
             return $insert;
