@@ -595,9 +595,14 @@ class NikkenCMSController extends Controller{
 
             $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
             VALUES ('1954', '14829503', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', 'ESTADO DE MÉXICO', 'NICOLÁS ROMERO', 'BENITO JUÁREZ 1A. SECCIÓN (CABECERA MUNICIPAL)', 'S01', 'SIN EFECTOS FISCALES', 'https://storage.googleapis.com/tv-store/datos-fiscales/1656438198_XAXX010101000_correcto.pdf', '', '0', '0', '2022-07-06 15:26:15', '2022-07-06 15:26:15')";
+            
+            return $insert;
+            
             $conexion = \DB::connection('migracion');
                 $response = $conexion->insert("$insert");
             \DB::disconnect('migracion');
+
+
             return $insert;
             $table = '<table border="1px" width="100%">' .
                         '<thead>' .
@@ -641,6 +646,7 @@ class NikkenCMSController extends Controller{
         else{
             $conexion = \DB::connection('migracion');
                 $date = Date('Y-m-d H:i:s');
+                $sap_code = 9845903;
                 $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
             \DB::disconnect('migracion');
             return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
