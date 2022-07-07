@@ -239,9 +239,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             $data = [
                 'data' => $dataCell,
             ];
@@ -254,9 +254,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 14829503");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
@@ -475,9 +475,33 @@ class NikkenCMSController extends Controller{
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
 
-            $data['RFC'] = trim($textGral[9]);
+            $arrayRegimenCode = [
+                'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
+                'Arrendamiento' => 606,
+                'Regimen de Enajenacion o Adquisicion de Bienes' => 607,
+                'Demás ingresos' => 608,
+                'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
+                'Ingresos por Dividendos (socios y accionistas)' => 611,
+                'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
+                'Ingresos por intereses' => 614,
+                'Regimen de los ingresos por obtencion de premios' => 615,
+                'Sin obligaciones Fiscales' => 616,
+                'Incorporacion Fiscal' => 621,
+                'Regimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
+                'Regimen Simplificado de Confianza' => 626,
+            ];
 
-            $data['regimen'] = trim($this->delete_space($textGral[36], ' '));
+            $data['RFC'] = trim($textGral[9]);
+            $data['tipo'] = 'FISICA';
+            $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
+            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+
+            $find2 = "Régimen";
+            $validaTexto2 = strpos(trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), '')), $find2);
+            if ($validaTexto != false) {
+                $data['regimenDescriptor2'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), ''));
+                $data['regimen2'] = $arrayRegimenCode[trim($data['regimenDescriptor2'])];
+            }
         }
         return $data;
         $data2['pdfUSER'] = $data;
@@ -812,7 +836,8 @@ class NikkenCMSController extends Controller{
     }
 
     public function deleteNumbersSepecialChar($string, $replace){
-        $res = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
+        $string = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
+        $string = preg_replace('/[0-9]+/', $replace, $string);
         return $string;
     }
 
