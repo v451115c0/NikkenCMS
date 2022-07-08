@@ -239,9 +239,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTVTest');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
-            \DB::disconnect('mysqlTVTest');
+            \DB::disconnect('mysqlTV');
             $data = [
                 'data' => $dataCell,
             ];
@@ -254,9 +254,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTVTest');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 14829503");
-            \DB::disconnect('mysqlTVTest');
+            \DB::disconnect('mysqlTV');
             $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
