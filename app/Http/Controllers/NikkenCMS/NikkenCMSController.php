@@ -180,9 +180,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $dataCell = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             $data = [
                 'data' => $dataCell,
             ];
@@ -196,9 +196,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->select("SELECT cell.*,  us.sap_code, CONCAT(us.name, ' ', us.last_name) AS nombre FROM users_cell_phone_update cell INNER JOIN users us ON cell.user_id = us.id WHERE cell.id = $id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             return $response;
         }
     }
@@ -213,9 +213,9 @@ class NikkenCMSController extends Controller{
             $numberCell = $parameters['numberCell'];
             $Update_On_SQL_server = $parameters['Update_On_SQL_server'];
             $Use_As_My_Principal_phone = $parameters['Use_As_My_Principal_phone'];
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->update("UPDATE users_cell_phone_update SET area_code = '$country_code', cell_phone = '$numberCell', updated_on_sql_server = '$Update_On_SQL_server', use_as_my_principal_phone = '$Use_As_My_Principal_phone' WHERE id = $id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             return $response;
         }
     }
@@ -226,9 +226,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->delete("DELETE FROM users_cell_phone_update WHERE id = $id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             return $response;
         }
     }
