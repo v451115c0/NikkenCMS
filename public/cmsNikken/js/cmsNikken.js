@@ -973,6 +973,7 @@ function users_cell_phone_update(){
             { data: 'id', className: 'text-center' },
             { data: 'sap_code', className: 'text-center' },
             { data: 'nombre', className: 'text-center' },
+            { data: 'country_code', className: 'text-center' },
             { data: 'area_code', className: 'text-center' },
             { data: 'cell_phone', className: 'text-center' },
             { data: 'updated_on_sql_server', className: 'text-center' },

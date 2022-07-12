@@ -17,6 +17,7 @@
                           <th scope="col">#</th>
                           <th scope="col">Código Usuario</th>
                           <th scope="col">Nombre</th>
+                          <th scope="col">País</th>
                           <th scope="col">Código país</th>
                           <th scope="col">Número</th>
                           <th scope="col">Update_On_SQL_server</th>
