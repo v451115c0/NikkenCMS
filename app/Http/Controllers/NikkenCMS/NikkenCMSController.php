@@ -453,6 +453,12 @@ class NikkenCMSController extends Controller{
             $data['valido'] = true;
             $data['titulo'] = trim($textGral[1]);
 
+            $data['sap_code'] = $request->sap_code;
+            $data['RFC'] = trim($textGral[9]);
+            $data['tipo'] = $request->type;
+            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
+
             $nombre = explode(':', trim($textGral[13]));
             $nombre = $this->delete_space($nombre[1], ' ');
             $data['nombre'] = trim($nombre);
@@ -469,7 +475,7 @@ class NikkenCMSController extends Controller{
             $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
-
+            return $data['cp'];
             $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
             \DB::disconnect('mysqlTV');
@@ -488,11 +494,11 @@ class NikkenCMSController extends Controller{
             
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
-                'Arrendamiento' => 606,
+                'Régimen de Arrendamiento' => 606,
                 'Regimen de Enajenacion o Adquisicion de Bienes' => 607,
                 'Demás ingresos' => 608,
                 'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
-                'Ingresos por Dividendos (socios y accionistas)' => 611,
+                'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
                 'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
                 'Ingresos por intereses' => 614,
                 'Regimen de los ingresos por obtencion de premios' => 615,
@@ -501,11 +507,7 @@ class NikkenCMSController extends Controller{
                 'Regimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
                 'Regimen Simplificado de Confianza' => 626,
             ];
-
-            $data['RFC'] = trim($textGral[9]);
-            $data['tipo'] = 'FISICA';
-            $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
-            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            
 
             /*$find2 = "Régimen";
             $validaTexto2 = strpos(trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), '')), $find2);
