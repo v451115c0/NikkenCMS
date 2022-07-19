@@ -35,4 +35,3 @@ Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7d
 
 ## Reportes
 Route::get('getReport', 'reportes\reportesController@getReport');
-Route::get('analisis_Mk_Inc_SisAgua', 'reportes\reportesController@analisis_Mk_Inc_SisAgua');

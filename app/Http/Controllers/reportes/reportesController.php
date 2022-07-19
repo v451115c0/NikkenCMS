@@ -6,14 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\Chart\ChartColor;
 use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
 use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
+use PhpOffice\PhpSpreadsheet\Chart\GridLines;
+use PhpOffice\PhpSpreadsheet\Chart\Layout;
 use PhpOffice\PhpSpreadsheet\Chart\Legend as ChartLegend;
 use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
+use PhpOffice\PhpSpreadsheet\Chart\Properties;
 use PhpOffice\PhpSpreadsheet\Chart\Title;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DB;
 use PHPExcel_Worksheet_Drawing;
 
@@ -32,6 +35,9 @@ class reportesController extends Controller{
         switch($reporte){
             case 'vjapong1':
                 return $this->vjapong1($parametros);
+            break;
+            case 'analisis_Mk_Inc_SisAgua':
+                return $this->analisis_Mk_Inc_SisAgua($parametros);
             break;
         }
     }
@@ -129,64 +135,93 @@ class reportesController extends Controller{
         })->export('xls');
     }
 
-    public function analisis_Mk_Inc_SisAgua(){
+    public function analisis_Mk_Inc_SisAgua($parametros){
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->fromArray(
             [
-                ['', 2010, 2011, 2012],
-                ['Q1', 12, 15, 21],
-                ['Q2', 56, 73, 86],
-                ['Q3', 52, 61, 69],
-                ['Q4', 30, 32, 0],
+                ['MOKUTEKI ', 'PIWATER', 'KIT NORMAL ', 'WATERFALL ', 'WATERFALL + OPTIMIZER', 'OPTIMIZER', 'PIWATER + OPTIMIZER ', 'AQUAPOURT'],
+                [19798, 2367, 2132, 1667, 143, 121, 47, 43],
+                ['75.23%', '8.99%', '8.10%', '6.33%', '0.54%', '0.46%', '0.18%', '0.16%'],
             ]
         );
-        $dataSeriesLabels = [
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$B$1', null, 1), // 2010
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$C$1', null, 1), // 2011
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$D$1', null, 1), // 2012
-        ];
-        $xAxisTickValues = [
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$A$2:$A$5', null, 4), // Q1 to Q4
-        ];
-        $dataSeriesValues = [
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_NUMBER, 'Worksheet!$B$2:$B$5', null, 4),
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_NUMBER, 'Worksheet!$C$2:$C$5', null, 4),
-            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_NUMBER, 'Worksheet!$D$2:$D$5', null, 4),
-        ];
 
-        $series = new DataSeries(
-            DataSeries::TYPE_AREACHART,
-            DataSeries::GROUPING_PERCENT_STACKED,
-            range(0, count($dataSeriesValues) - 1),
-            $dataSeriesLabels,
-            $xAxisTickValues,
-            $dataSeriesValues
+        $colors = [
+            'cccccc', '00abb8', 'b8292f', 'eb8500',
+        ];
+        $dataSeriesLabels1 = [
+            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$A$1', null, 1), // 2011
+        ];
+        $xAxisTickValues1 = [
+            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_STRING, 'Worksheet!$A$1:$H$1', null, 4), // Q1 to Q4
+        ];
+        $dataSeriesValues1 = [
+            new DataSeriesValues(DataSeriesValues::DATASERIES_TYPE_NUMBER, 'Worksheet!$A$2:$H$2', null, 4, [], null, $colors),
+        ];
+        $labelLayout = new Layout();
+        $labelLayout
+            ->setShowVal(true)
+            ->setLabelFontColor(new ChartColor('FFFF00'))
+            ->setLabelFillColor(new ChartColor('accent2', null, 'schemeClr'));
+        $dataSeriesValues1[0]->setLabelLayout($labelLayout);
+
+        $series1 = new DataSeries(
+            DataSeries::TYPE_BARCHART,
+            null,
+            range(0, count($dataSeriesValues1) - 1),
+            $dataSeriesLabels1,
+            $xAxisTickValues1,
+            $dataSeriesValues1
         );
 
-        $plotArea = new PlotArea(null, [$series]);
-        $legend = new ChartLegend(ChartLegend::POSITION_TOPRIGHT, null, false);
+        $layout1 = new Layout();
+        $layout1->setShowVal(true);
+        $layout1->setShowPercent(true);
 
-        $title = new Title('Test %age-Stacked Area Chart');
-        $yAxisLabel = new Title('Value ($k)');
+        $plotArea1 = new PlotArea($layout1, [$series1]);
+        $legend1 = new ChartLegend(ChartLegend::POSITION_RIGHT, null, false);
 
-        $chart = new Chart(
+        $title1 = new Title('Test Bar Chart');
+
+        $chart1 = new Chart(
             'chart1',
-            $title,
-            $legend,
-            $plotArea,
+            $title1,
+            $legend1,
+            $plotArea1,
             true,
             DataSeries::EMPTY_AS_GAP,
             null,
-            $yAxisLabel
+            null
         );
-        $chart->setTopLeftPosition('A7');
-        $chart->setBottomRightPosition('H20');
-        $worksheet->addChart($chart);
-        $filename = $helper->getFilename(__FILE__);
+        $majorGridlinesY = new GridLines();
+        $majorGridlinesY->setLineColorProperties('FF0000');
+        $minorGridlinesY = new GridLines();
+        $minorGridlinesY->setLineStyleProperty('dash', Properties::LINE_STYLE_DASH_ROUND_DOT);
+        $chart1
+            ->getChartAxisY()
+            ->setMajorGridlines($majorGridlinesY)
+            ->setMinorGridlines($minorGridlinesY);
+        $majorGridlinesX = new GridLines();
+        $majorGridlinesX->setLineColorProperties('FF00FF');
+        $minorGridlinesX = new GridLines();
+        $minorGridlinesX->activateObject();
+        $chart1
+            ->getChartAxisX()
+            ->setMajorGridlines($majorGridlinesX)
+            ->setMinorGridlines($minorGridlinesX);
+
+        $chart1->setTopLeftPosition('A13');
+        $chart1->setBottomRightPosition('J26');
+
+        $worksheet->addChart($chart1);
+
+
+        $filename = "test.xlsx";
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->setIncludeCharts(true);
         $callStartTime = microtime(true);
         $writer->save($filename);
+        $myFile = public_path("test.xlsx");
+    	return response()->download($myFile);
     }
 }
