@@ -476,9 +476,11 @@ class NikkenCMSController extends Controller{
             $data['estado'] = $response[0]->estado;
             $data['municipio'] = $response[0]->municipio;
             
-            return $textGral;
-            $colonia = $cp = explode(':', trim($textGral[21]));
-            $data['colonia'] = 'DEL VALLE CENTRO';
+            #return $textGral;
+            $colonia = explode('Colonia:', trim($textGral[23]));
+            $colonia = $this->delete_space($colonia[1], ' ');
+            return $colonia;
+            $data['colonia'] = trim($colonia);
             
 
             $arrayRegimenCode = [
