@@ -476,7 +476,7 @@ class NikkenCMSController extends Controller{
             $data['estado'] = $response[0]->estado;
             $data['municipio'] = $response[0]->municipio;
             $data['colonia'] = 'DEL VALLE CENTRO';
-            return $textGral;
+            #return $textGral;
 
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
