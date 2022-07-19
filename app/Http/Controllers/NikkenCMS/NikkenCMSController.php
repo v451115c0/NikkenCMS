@@ -461,17 +461,12 @@ class NikkenCMSController extends Controller{
             $apellido1 = $this->delete_space($apellido1[1], ' ');
             $data['apellido1'] = trim($apellido1);
             
-
             $apellido2 = explode(':', trim($textGral[15]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido2 = str_replace($order, $replace, $apellido2);
+            $apellido2 = $this->delete_space($apellido2, ' ');
             $data['apellido2'] = trim($apellido2[1]);
 
             $cp = explode(':', trim($textGral[21]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $cp = str_replace($order, $replace, $cp[1]);
+            $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
 
