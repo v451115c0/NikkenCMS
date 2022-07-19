@@ -479,6 +479,12 @@ class NikkenCMSController extends Controller{
             $colonia = explode('Colonia:', trim($textGral[23]));
             $colonia = $this->delete_space($colonia[1], ' ');
             $data['colonia'] = trim($colonia);
+
+            $data['codCFDI'] = 'S01';
+            $data['descCFDI'] = 'SIN EFECTOS FISCALES';
+            $data['updateSQL'] = '0';
+            $data['dateReg'] = Date('Y-m-d H:i:s');
+            $data['lastUpdate'] = Date('Y-m-d H:i:s');
             
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
