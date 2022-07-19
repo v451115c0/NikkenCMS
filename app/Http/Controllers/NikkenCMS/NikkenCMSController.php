@@ -445,6 +445,23 @@ class NikkenCMSController extends Controller{
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
+
+        $arrayRegimenCode = [
+            'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
+            'Régimen de Arrendamiento' => 606,
+            'Regimen de Enajenacion o Adquisicion de Bienes' => 607,
+            'Demás ingresos' => 608,
+            'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
+            'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
+            'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
+            'Ingresos por intereses' => 614,
+            'Regimen de los ingresos por obtencion de premios' => 615,
+            'Sin obligaciones Fiscales' => 616,
+            'Incorporacion Fiscal' => 621,
+            'Regimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
+            'Regimen Simplificado de Confianza' => 626,
+        ];
+
         if ($validaTexto === false) {
             $data['valido'] = false;
         }
@@ -456,8 +473,8 @@ class NikkenCMSController extends Controller{
             $data['sap_code'] = $request->sap_code;
             $data['RFC'] = trim($textGral[9]);
             $data['tipo'] = $request->type;
-            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
+            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
 
             $nombre = explode(':', trim($textGral[13]));
             $nombre = $this->delete_space($nombre[1], ' ');
@@ -492,23 +509,6 @@ class NikkenCMSController extends Controller{
             $data['dateReg'] = Date('Y-m-d H:i:s');
             $data['lastUpdate'] = Date('Y-m-d H:i:s');
             
-            $arrayRegimenCode = [
-                'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
-                'Régimen de Arrendamiento' => 606,
-                'Regimen de Enajenacion o Adquisicion de Bienes' => 607,
-                'Demás ingresos' => 608,
-                'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
-                'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
-                'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
-                'Ingresos por intereses' => 614,
-                'Regimen de los ingresos por obtencion de premios' => 615,
-                'Sin obligaciones Fiscales' => 616,
-                'Incorporacion Fiscal' => 621,
-                'Regimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
-                'Regimen Simplificado de Confianza' => 626,
-            ];
-            
-
             /*$find2 = "Régimen";
             $validaTexto2 = strpos(trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), '')), $find2);
             if ($validaTexto != false) {
