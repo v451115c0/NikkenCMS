@@ -475,8 +475,11 @@ class NikkenCMSController extends Controller{
             \DB::disconnect('mysqlTV');
             $data['estado'] = $response[0]->estado;
             $data['municipio'] = $response[0]->municipio;
+            
+            return $textGral;
+            $colonia = $cp = explode(':', trim($textGral[21]));
             $data['colonia'] = 'DEL VALLE CENTRO';
-            #return $textGral;
+            
 
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
