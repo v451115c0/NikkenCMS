@@ -478,7 +478,9 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
             \DB::disconnect('mysqlTV');
-            return $response;
+            $data['estado'] = $response[0]->estado;
+            $data['municipio'] = $response[0]->municipio;
+            
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
                 'Arrendamiento' => 606,
