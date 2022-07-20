@@ -467,9 +467,22 @@ class NikkenCMSController extends Controller{
         }
         else {
             $textGral = explode("\n", $textGral);
-            $arr = array(0=>20,1=>20,2=>30,3=>40);
-            #return $arr;
-            return array_search(20,$arr,true);
+            $my_array = array('one' => 'I have a cat.', 'two' => 'My dog is blue.', 'three' => 'One cute hamster.');
+            $search_term = "dog";
+
+            function search_array($array, $term)
+            {
+                foreach ($array AS $key => $value) {
+                    if (stristr($value, $term) === FALSE) {
+                        continue;
+                    } else {
+                        return $key;
+                    }
+                }
+
+                return FALSE;
+            }
+            return var_dump(search_array($my_array, $search_term));
             return gettype($textGral);
 
 
