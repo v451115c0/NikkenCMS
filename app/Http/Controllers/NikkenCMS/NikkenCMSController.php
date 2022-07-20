@@ -468,7 +468,7 @@ class NikkenCMSController extends Controller{
         else {
             $textGral = explode("\n", $textGral);
             $my_array = array(0 => 'I have a cat.', 1 => 'My dog is blue.', 2 => 'One cute hamster.');
-            $search_term = "dog";
+            $search_term = "CP";
 
             function search_array($array, $term)
             {
@@ -482,7 +482,7 @@ class NikkenCMSController extends Controller{
 
                 return FALSE;
             }
-            return search_array($my_array, $search_term);
+            return search_array($textGral, $search_term);
             return gettype($textGral);
 
 
