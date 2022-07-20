@@ -435,6 +435,10 @@ class NikkenCMSController extends Controller{
     }
 
     public function getImgFromPDFview(Request $request){
+        $conexion = \DB::connection('mysqlTV');
+            $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 LIMIT 1;");
+        \DB::disconnect('mysqlTV');
+        return $response;
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = request()->file;
         $data2 = [];
