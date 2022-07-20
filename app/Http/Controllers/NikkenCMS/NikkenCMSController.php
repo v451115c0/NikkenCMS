@@ -484,8 +484,8 @@ class NikkenCMSController extends Controller{
             $search_term = "Régimen ";
             $position = $this->search_array($textGral, $search_term);
             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-            #$data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-            $data['regimen'] = $arrayRegimenCode[trim('Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios')];
+            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            #$data['regimen'] = $arrayRegimenCode[trim('Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios')];
 
             $search_term = "Nombre\t(s)";
             $position = $this->search_array($textGral, $search_term);
