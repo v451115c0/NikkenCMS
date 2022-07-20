@@ -523,6 +523,7 @@ class NikkenCMSController extends Controller{
 
             $data['codCFDI'] = 'S01';
             $data['descCFDI'] = 'SIN EFECTOS FISCALES';
+            $data['pdffile'] = $PDFfile;
             $data['updateSQL'] = '0';
             $data['dateReg'] = Date('Y-m-d H:i:s');
             $data['lastUpdate'] = Date('Y-m-d H:i:s');
