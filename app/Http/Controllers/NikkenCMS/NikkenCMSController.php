@@ -482,7 +482,7 @@ class NikkenCMSController extends Controller{
 
                 return FALSE;
             }
-            return var_dump(search_array($my_array, $search_term));
+            return search_array($my_array, $search_term);
             return gettype($textGral);
 
 
