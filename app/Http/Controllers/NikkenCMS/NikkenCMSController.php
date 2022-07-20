@@ -499,9 +499,9 @@ class NikkenCMSController extends Controller{
             $data['estado'] = strtoupper($response[0]->estado);
             $data['municipio'] = strtoupper($response[0]->municipio);*/
             
-            $colonia = explode('Colonia:', trim($textGral[23]));
+            /*$colonia = explode('Colonia:', trim($textGral[23]));
             $colonia = $this->delete_space($colonia[1], ' ');
-            $data['colonia'] = trim($colonia);
+            $data['colonia'] = trim($colonia);*/
 
             $data['codCFDI'] = 'S01';
             $data['descCFDI'] = 'SIN EFECTOS FISCALES';
