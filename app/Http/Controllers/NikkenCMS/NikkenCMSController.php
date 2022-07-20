@@ -511,15 +511,18 @@ class NikkenCMSController extends Controller{
             $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
+
             $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
             \DB::disconnect('mysqlTV');
             $data['estado'] = strtoupper($response[0]->estado);
             $data['municipio'] = strtoupper($response[0]->municipio);
             
-            /*$colonia = explode('Colonia:', trim($textGral[23]));
+            $search_term = "Colonia:";
+            $position = $this->search_array($textGral, $search_term);
+            $colonia = explode('Colonia:', trim($textGral[$position]));
             $colonia = $this->delete_space($colonia[1], ' ');
-            $data['colonia'] = trim($colonia);*/
+            $data['colonia'] = trim($colonia);
 
             $data['codCFDI'] = 'S01';
             $data['descCFDI'] = 'SIN EFECTOS FISCALES';
