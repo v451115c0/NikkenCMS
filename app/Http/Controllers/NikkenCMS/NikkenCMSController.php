@@ -468,7 +468,7 @@ class NikkenCMSController extends Controller{
         else {
             $textGral = explode("\n", $textGral);
             $search_term = "Código\tPostal";
-            return $textGral;
+            
             function search_array($array, $term){
                 foreach ($array AS $key => $value) {
                     if (stristr($value, $term) === FALSE) {
