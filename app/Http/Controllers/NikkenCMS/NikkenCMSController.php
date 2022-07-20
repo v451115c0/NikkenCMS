@@ -467,19 +467,6 @@ class NikkenCMSController extends Controller{
         }
         else {
             $textGral = explode("\n", $textGral);
-            $search_term = "Código\tPostal";
-            
-            function search_array($array, $term){
-                foreach ($array AS $key => $value) {
-                    if (stristr($value, $term) === FALSE) {
-                        continue;
-                    } else {
-                        return $key;
-                    }
-                }
-                return FALSE;
-            }
-            return search_array($textGral, $search_term);
             
             $data['valido'] = true;
             $data['titulo'] = trim($textGral[1]);
@@ -503,7 +490,9 @@ class NikkenCMSController extends Controller{
             $apellido2 = $this->delete_space($apellido2, ' ');
             $data['apellido2'] = trim($apellido2[1]);
 
-            $cp = explode(':', trim($textGral[21]));
+            $search_term = "Código\tPostal";
+            $psoition = $this->search_array($textGral, $search_term);
+            $cp = explode(':', trim($textGral[$psoition]));
             $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
@@ -875,6 +864,17 @@ class NikkenCMSController extends Controller{
         $string = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
         $string = preg_replace('/[0-9]+/', $replace, $string);
         return $string;
+    }
+
+    public function search_array($array, $term){
+        foreach ($array AS $key => $value) {
+            if (stristr($value, $term) === FALSE) {
+                continue;
+            } else {
+                return $key;
+            }
+        }
+        return FALSE;
     }
 
     public function addMicroSitio(Request $request){
