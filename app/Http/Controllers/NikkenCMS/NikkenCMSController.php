@@ -467,11 +467,9 @@ class NikkenCMSController extends Controller{
         }
         else {
             $textGral = explode("\n", $textGral);
-            $my_array = array(0 => 'I have a cat.', 1 => 'My dog is blue.', 2 => 'One cute hamster.');
-            $search_term = "CP";
-
-            function search_array($array, $term)
-            {
+            $search_term = "Código Postal";
+            return $textGral;
+            function search_array($array, $term){
                 foreach ($array AS $key => $value) {
                     if (stristr($value, $term) === FALSE) {
                         continue;
@@ -479,13 +477,10 @@ class NikkenCMSController extends Controller{
                         return $key;
                     }
                 }
-
                 return FALSE;
             }
             return search_array($textGral, $search_term);
-            return gettype($textGral);
-
-
+            
             $data['valido'] = true;
             $data['titulo'] = trim($textGral[1]);
 
