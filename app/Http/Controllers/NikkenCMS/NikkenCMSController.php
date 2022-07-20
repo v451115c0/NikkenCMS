@@ -467,7 +467,7 @@ class NikkenCMSController extends Controller{
         }
         else {
             $textGral = explode("\n", $textGral);
-            return typeOf($textGral);
+            return gettype($textGral);
 
 
             $data['valido'] = true;
