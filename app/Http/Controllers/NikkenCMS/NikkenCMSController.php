@@ -474,7 +474,8 @@ class NikkenCMSController extends Controller{
             $data['RFC'] = trim($textGral[9]);
             $data['tipo'] = $request->type;
             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
-            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            #$data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            $data['regimen'] = $arrayRegimenCode[trim('Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios')];
 
             $nombre = explode(':', trim($textGral[13]));
             $nombre = $this->delete_space($nombre[1], ' ');
