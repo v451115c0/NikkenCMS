@@ -493,7 +493,6 @@ class NikkenCMSController extends Controller{
             $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
-            return $data['cp'];
             $conexion = \DB::connection('mysqlTV');
                 $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
             \DB::disconnect('mysqlTV');
