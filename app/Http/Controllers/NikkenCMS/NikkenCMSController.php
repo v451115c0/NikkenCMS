@@ -468,7 +468,7 @@ class NikkenCMSController extends Controller{
         else {
             $textGral = explode("\n", $textGral);
             $arr = array("p"=>20,"q"=>20,"r"=>30,"s"=>40);
-            return $arr;
+            #return $arr;
             return array_search(20,$arr,true);
             return gettype($textGral);
 
