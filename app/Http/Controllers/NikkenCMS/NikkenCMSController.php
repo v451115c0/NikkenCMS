@@ -472,8 +472,15 @@ class NikkenCMSController extends Controller{
             $data['titulo'] = trim($textGral[1]);
 
             $data['sap_code'] = $request->sap_code;
-            $data['RFC'] = trim($textGral[9]);
+
+            $search_term = "RFC:";
+            $position = $this->search_array($textGral, $search_term);
+            $rfc = explode(':', trim($textGral[$position]));
+            $rfc = $this->delete_space($rfc[1], ' ');
+            $data['RFC'] = trim($rfc);
+
             $data['tipo'] = $request->type;
+
             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[36], ' '), ''));
             #$data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
             $data['regimen'] = $arrayRegimenCode[trim('Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios')];
@@ -491,8 +498,8 @@ class NikkenCMSController extends Controller{
             $data['apellido2'] = trim($apellido2[1]);
 
             $search_term = "Código\tPostal";
-            $psoition = $this->search_array($textGral, $search_term);
-            $cp = explode(':', trim($textGral[$psoition]));
+            $position = $this->search_array($textGral, $search_term);
+            $cp = explode(':', trim($textGral[$position]));
             $cp = $this->delete_space($cp[1], ' ');
             $cp = explode(' ', trim($cp));
             $data['cp'] = trim($cp[0]);
