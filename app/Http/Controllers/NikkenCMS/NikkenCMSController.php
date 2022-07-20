@@ -468,11 +468,8 @@ class NikkenCMSController extends Controller{
         else {
             $textGral = explode("\n", $textGral);
             $os = array("Mac", "NT", "Irix", "Linux");
-            if (in_array("Irix", $os)) {
+            if (in_array("CP", $textGral)) {
                 return "Existe Irix";
-            }
-            if (in_array("mac", $os)) {
-                return "Existe mac";
             }
             return gettype($textGral);
 
