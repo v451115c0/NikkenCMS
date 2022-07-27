@@ -1566,8 +1566,9 @@ function getValidateInfoSAT(sap_code){
 
 function depClient(email){
     email = email.trim();
-    if(email == ''){
-        alert('Ups..', 'Favor de colocar un correo, es necesario', 'error');
+    valido = validarEmail(email);
+    if(email == '' && valido == false){
+        alert('Ups..', 'Favor de colocar un correo valido, es necesario', 'error');
     }
     else{
         $.ajax({
@@ -1595,3 +1596,12 @@ function depClient(email){
         });
     }
 }
+
+function validarEmail(valor) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor)){
+        return true;
+    }
+    else {
+        return false;
+    }
+  }
