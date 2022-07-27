@@ -14,7 +14,11 @@
                 </div>
             </div>
             <div class="iq-card-body">
-                
+                <div class="form-group">
+                    <label for="altemail">Alternate Email:</label>
+                    <input type="email" class="form-control" id="altemail" value="designtheme@gmail.com">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
