@@ -1587,9 +1587,12 @@ function depClient(email){
                 hideLoadingIcon($("#loadingIcon"));
                 switch(response){
                     case 'empty':
-                        alert('Ups...', 'no se encontro ningun CLIENTE con el correo indicado', 'error');
+                        alert('Ups...', 'No se encontro ningun CLIENTE con el correo indicado', 'error');
                         break;
-                    case 'exist':
+                    case 'error':
+                        alert('Ups...', 'Error al depurar al CLIENTE, intente nuevamente', 'error');
+                        break;
+                    case 'success':
                         alert('OK', 'Correo de CLIENTE depurado correctamente', 'success');
                         break;
                 }
@@ -1604,12 +1607,3 @@ function depClient(email){
         alert('Ups..', 'Favor de colocar un correo valido, es necesario', 'error');
     }
 }
-
-function validarEmail(valor) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor)){
-        return true;
-    }
-    else {
-        return false;
-    }
-  }

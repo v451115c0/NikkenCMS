@@ -1097,7 +1097,17 @@ class NikkenCMSController extends Controller{
         \DB::disconnect('mysqlTV');
         $existe = $data[0]->cliente;
         if(intval($existe) > 0){
-            return 'exist';
+            $conexion = \DB::connection('mysqlTV');
+                $data = $conexion->select("SELECT id FROM users WHERE email = '$email' AND client_type = 'CLIENTE'");
+                $id = $data[0]->id;
+                $data = $conexion->update("UPDATE users SET email = '$email_" . Date('Ymdhis_cms') . "', status = 0, locked = 1 WHERE id = '$id' AND client_type = 'CLIENTE'");
+            \DB::disconnect('mysqlTV');
+            if($data){
+                return 'success';
+            }
+            else{
+                return 'error';
+            }
         }
         else{
             return 'empty';
