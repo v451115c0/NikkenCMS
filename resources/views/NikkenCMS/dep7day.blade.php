@@ -14,11 +14,14 @@
                 </div>
             </div>
             <div class="iq-card-body">
+                <center>
+                    <div id="loadingIcon"></div>
+                </center>
                 <div class="form-group">
-                    <label for="altemail">Alternate Email:</label>
-                    <input type="email" class="form-control" id="altemail" value="designtheme@gmail.com">
+                    <label for="clientMail">Correo de Cliente</label>
+                    <input type="email" class="form-control" id="clientMail" value="correo a liberar...">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" onclick="depClient($('#clientMail').val());">Validar y depurar</button>
             </div>
         </div>
     </div>

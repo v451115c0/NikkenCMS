@@ -132,6 +132,9 @@ class NikkenCMSController extends Controller{
             case 'get_users_fiscal_updateError':
                 return $this->get_users_fiscal_updateError();
                 break;
+            case 'depClient':
+                return $this->depClient($parameters);
+                break;
         }
     }
 
@@ -1085,5 +1088,19 @@ class NikkenCMSController extends Controller{
             'data' => $data,
         ];
         return $data;
+    }
+
+    public function depClient($parameters){
+        $email = $parameters['email'];
+        $conexion = \DB::connection('mysqlTV');
+            $data = $conexion->select("SELECT count(*) AS cliente FROM users WHERE email = '$email' AND client_type = 'CLIENTE'");
+        \DB::disconnect('mysqlTV');
+        $existe = $data[0]->cliente;
+        if(intval($existe) > 0){
+            return 'exist';
+        }
+        else{
+            return 'empty';
+        }
     }
 }

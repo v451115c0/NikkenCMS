@@ -1563,3 +1563,35 @@ function getValidateInfoSAT(sap_code){
         }
     });
 }
+
+function depClient(email){
+    email = email.trim();
+    if(email == ''){
+        alert('Ups..', 'Favor de colocar un correo, es necesario', 'error');
+    }
+    else{
+        $.ajax({
+            type: "GET",
+            url: "/NikkenCMSpro/getActions",
+            data: {
+                action: 'depClient',
+                parameters: {
+                    email: email
+                }
+            },
+            beforeSend: function(){
+                $("#clientMail").attr("disabled", "disabled");
+                showLoadingIcon($("#loadingIcon"));
+            },
+            success: function (response) {
+                $("#clientMail").removeAttr("disabled");
+                hideLoadingIcon($("#loadingIcon"));
+                alert('OK', response, 'success');
+            },
+            error: function(){
+                $("#clientMail").removeAttr("disabled");
+                alert('Ups...', 'Error al depurar al CLIENTE, intente nuevamente', 'error');
+            }
+        });
+    }
+}
