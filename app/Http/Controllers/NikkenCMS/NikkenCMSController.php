@@ -1100,7 +1100,7 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTV');
                 $data = $conexion->select("SELECT id FROM users WHERE email = '$email' AND client_type = 'CLIENTE'");
                 $id = $data[0]->id;
-                $data = $conexion->update("UPDATE users SET email = '$email" . '_' . Date('Ymdhis_cms') . "', status = 0, locked = 1 WHERE id = '$id' AND client_type = 'CLIENTE'");
+                $data = $conexion->update("UPDATE users SET email = '$email" . '_' . Date('Ymdhis') . "_cms', status = 0, locked = 1 WHERE id = '$id' AND client_type = 'CLIENTE'");
             \DB::disconnect('mysqlTV');
             if($data){
                 return 'success';
