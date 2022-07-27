@@ -19,7 +19,7 @@
                 </center>
                 <div class="form-group">
                     <label for="clientMail">Correo de Cliente</label>
-                    <input type="email" class="form-control" id="clientMail" value="correo a liberar...">
+                    <input type="email" class="form-control" id="clientMail" placeholder="correo a liberar...">
                 </div>
                 <button type="button" class="btn btn-primary" onclick="depClient($('#clientMail').val());">Validar y depurar</button>
             </div>
