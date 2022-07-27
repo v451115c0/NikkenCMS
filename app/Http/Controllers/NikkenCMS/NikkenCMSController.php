@@ -438,9 +438,8 @@ class NikkenCMSController extends Controller{
         $conexion = \DB::connection('mysqlTVTest');
             $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 LIMIT 1;");
         \DB::disconnect('mysqlTVTest');
-        return $response;
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
-        $PDFfile = request()->file;
+        $PDFfile = $response[0]->fiscal_file;
         $data2 = [];
 
         $parser = new \Smalot\PdfParser\Parser();

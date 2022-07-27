@@ -7,6 +7,18 @@
 </ol>
 <div class="row">
     <div class="col-lg-12 col-md-12">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+                <div class="iq-header-title">
+                    <h4 class="card-title">Depurar Correo de CLIENTE TV</h4>
+                </div>
+            </div>
+            <div class="iq-card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
         <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
