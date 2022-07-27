@@ -1566,11 +1566,9 @@ function getValidateInfoSAT(sap_code){
 
 function depClient(email){
     email = email.trim();
-    valido = validarEmail(email);
-    if(email == '' && valido == false){
-        alert('Ups..', 'Favor de colocar un correo valido, es necesario', 'error');
-    }
-    else{
+    var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+    if (emailRegex.test(correo)) {
         $.ajax({
             type: "GET",
             url: "/NikkenCMSpro/getActions",
@@ -1587,13 +1585,23 @@ function depClient(email){
             success: function (response) {
                 $("#clientMail").removeAttr("disabled");
                 hideLoadingIcon($("#loadingIcon"));
-                alert('OK', response, 'success');
+                switch(response){
+                    case 'empty':
+                        alert('Ups...', 'no se encontro ningun CLIENTE con el correo indicado', 'error');
+                        break;
+                    case 'exist':
+                        alert('OK', 'Correo de CLIENTE depurado correctamente', 'success');
+                        break;
+                }
             },
             error: function(){
                 $("#clientMail").removeAttr("disabled");
                 alert('Ups...', 'Error al depurar al CLIENTE, intente nuevamente', 'error');
             }
         });
+    } 
+    else {
+        alert('Ups..', 'Favor de colocar un correo valido, es necesario', 'error');
     }
 }
 
