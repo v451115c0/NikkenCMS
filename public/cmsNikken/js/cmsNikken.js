@@ -1596,9 +1596,11 @@ function depClient(email){
                         alert('OK', 'Correo de CLIENTE depurado correctamente', 'success');
                         break;
                 }
+                $("#clientMail").val('');
             },
             error: function(){
                 $("#clientMail").removeAttr("disabled");
+                hideLoadingIcon($("#loadingIcon"));
                 alert('Ups...', 'Error al depurar al CLIENTE, intente nuevamente', 'error');
             }
         });
