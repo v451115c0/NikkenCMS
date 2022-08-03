@@ -464,17 +464,17 @@ class NikkenCMSController extends Controller{
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
                 'Régimen de Arrendamiento' => 606,
-                'Regimen de Enajenacion o Adquisicion de Bienes' => 607,
+                'Régimen de Enajenacion o Adquisicion de Bienes' => 607,
                 'Demás ingresos' => 608,
                 'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
                 'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
                 'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
                 'Ingresos por intereses' => 614,
-                'Regimen de los ingresos por obtencion de premios' => 615,
+                'Régimen de los ingresos por obtencion de premios' => 615,
                 'Sin obligaciones Fiscales' => 616,
                 'Incorporacion Fiscal' => 621,
-                'Regimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
-                'Regimen Simplificado de Confianza' => 626,
+                'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
+                'Régimen Simplificado de Confianz' => 626,
             ];
 
             if ($validaTexto === false) {
