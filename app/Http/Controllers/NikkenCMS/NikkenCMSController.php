@@ -448,7 +448,6 @@ class NikkenCMSController extends Controller{
         $formato = explode("datos-fiscales", $PDFfile);
         $formato = explode(".", $formato[1]);
         $formato = $formato[1];
-        return $formato;
         if(trim($formato) === 'pdf'){
             $data2 = [];
 
