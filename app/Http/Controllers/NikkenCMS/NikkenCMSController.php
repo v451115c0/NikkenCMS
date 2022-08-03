@@ -603,7 +603,7 @@ class NikkenCMSController extends Controller{
             $rfc = $this->delete_space($rfc[0], '');
             $data['RFC'] = trim($rfc);
             
-            $data2['pdfSAT'] = $data;
+            $data2['pdfSAT'] = $data; 
             return $data2['pdfSAT'];
 
             $nombre = "";
