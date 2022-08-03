@@ -451,6 +451,8 @@ class NikkenCMSController extends Controller{
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
+        $sap_code = $response[0]->sap_code;
+        $tipo = $response[0]->person_type;
 
         $arrayRegimenCode = [
             'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
@@ -477,7 +479,7 @@ class NikkenCMSController extends Controller{
             $data['valido'] = true;
             $data['titulo'] = trim($textGral[1]);
 
-            $data['sap_code'] = $request->sap_code;
+            $data['sap_code'] = $sap_code;
 
             $search_term = "RFC:";
             $position = $this->search_array($textGral, $search_term);
@@ -485,7 +487,7 @@ class NikkenCMSController extends Controller{
             $rfc = $this->delete_space($rfc[1], ' ');
             $data['RFC'] = trim($rfc);
 
-            $data['tipo'] = $request->type;
+            $data['tipo'] = $tipo;
 
             $search_term = "Régimen ";
             $position = $this->search_array($textGral, $search_term);
