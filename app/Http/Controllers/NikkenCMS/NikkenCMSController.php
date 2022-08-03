@@ -439,7 +439,7 @@ class NikkenCMSController extends Controller{
 
     public function getImgFromPDFview(Request $request){
         $conexion = \DB::connection('mysqlTVTest');
-            $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 LIMIT 1;");
+            $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;;");
         \DB::disconnect('mysqlTVTest');
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $response[0]->fiscal_file;
@@ -471,7 +471,9 @@ class NikkenCMSController extends Controller{
         ];
 
         if ($validaTexto === false) {
-            $data['valido'] = false;
+            $conexion = \DB::connection('mysqlTVTest');
+                $response = $conexion->update("UPDATE users_fiscal_files SET WHERE error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' AND sap_code = $sap_code");
+            \DB::disconnect('mysqlTVTest');
         }
         else {
             $textGral = explode("\n", $textGral);
@@ -493,7 +495,6 @@ class NikkenCMSController extends Controller{
             $position = $this->search_array($textGral, $search_term);
             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
             $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-            #$data['regimen'] = $arrayRegimenCode[trim('Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios')];
 
             $search_term = "Nombre\t(s)";
             $position = $this->search_array($textGral, $search_term);
@@ -538,15 +539,7 @@ class NikkenCMSController extends Controller{
             $data['updateSQL'] = '0';
             $data['dateReg'] = Date('Y-m-d H:i:s');
             $data['lastUpdate'] = Date('Y-m-d H:i:s');
-            
-            /*$find2 = "Régimen";
-            $validaTexto2 = strpos(trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), '')), $find2);
-            if ($validaTexto != false) {
-                $data['regimenDescriptor2'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[37], ' '), ''));
-                $data['regimen2'] = $arrayRegimenCode[trim($data['regimenDescriptor2'])];
-            }*/
         }
-        return $data;
         $data2['pdfUSER'] = $data;
 
         ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
@@ -563,10 +556,16 @@ class NikkenCMSController extends Controller{
         
         $origenSAT = false;
         $RFCfinal = false;
-        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : null;
+
+        if (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) { 
+            $origenSAT = true;
+        }
+        
         if($origenSAT == true){
             $rfcQR = explode('_', trim($urlQR[1]));
-            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : null;   
+            if(trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) {
+                $RFCfinal = true;
+            }
         }
 
         if($origenSAT == true && $RFCfinal == true){
@@ -605,6 +604,7 @@ class NikkenCMSController extends Controller{
             $data['RFC'] = trim($rfc);
             
             $data2['pdfSAT'] = $data;
+            return $data2['pdfSAT'];
 
             $nombre = "";
             for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['nombre'], '')); $x++){
@@ -644,52 +644,11 @@ class NikkenCMSController extends Controller{
             \DB::disconnect('mysqlTVTest');
 
             return $insert;
-            $table = '<table border="1px" width="100%">' .
-                        '<thead>' .
-                            '<tr>' .
-                                '<td>PDF del usuario</td>' .
-                                '<td>PDF del SAT</td>' .
-                                '<td>Dato Real?</td>' .
-                            '</tr>' .
-                        '</thead>' .
-                        '<tbody>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
-                                '<td>' . $nombreValido . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $apellido1 . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $apellido2 . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
-                                '<td>' . $cp . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
-                                '<td>' . $RFC . '</td>' .
-                            '</tr>' .
-                        '</tbody>' .
-                    '</table>';
-
-            return $table;
         }
         else{
-            $conexion = \DB::connection('migracion');
-                $date = Date('Y-m-d H:i:s');
-                $sap_code = $request->sap_code;
-                $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
-            \DB::disconnect('migracion');
-            return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
+            $conexion = \DB::connection('mysqlTVTest');
+                $response = $conexion->update("UPDATE users_fiscal_files SET WHERE error = 1, last_error_message = 'QR de constancia erroneo' AND sap_code = $sap_code");
+            \DB::disconnect('mysqlTVTest');
         }
     }
     
