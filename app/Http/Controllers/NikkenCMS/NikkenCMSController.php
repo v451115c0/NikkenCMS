@@ -453,6 +453,7 @@ class NikkenCMSController extends Controller{
         $validaTexto = strpos($textGral, $find);
         $sap_code = $response[0]->sap_code;
         $tipo = $response[0]->person_type;
+        $user_id = $response[0]->user_id;
 
         $arrayRegimenCode = [
             'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
@@ -539,6 +540,7 @@ class NikkenCMSController extends Controller{
             $data['updateSQL'] = '0';
             $data['dateReg'] = Date('Y-m-d H:i:s');
             $data['lastUpdate'] = Date('Y-m-d H:i:s');
+            $data['user_id'] = $user_id;
         }
         $data2['pdfUSER'] = $data;
 
@@ -603,7 +605,7 @@ class NikkenCMSController extends Controller{
             $rfc = $this->delete_space($rfc[0], '');
             $data['RFC'] = trim($rfc);
             
-            $data2['pdfSAT'] = $data; 
+            $data2['pdfSAT'] = $data;
             return $data2;
 
             $nombre = "";
@@ -637,7 +639,7 @@ class NikkenCMSController extends Controller{
             ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
 
             $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-            VALUES ('1954', '14829503', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', 'ESTADO DE MÉXICO', 'NICOLÁS ROMERO', 'BENITO JUÁREZ 1A. SECCIÓN (CABECERA MUNICIPAL)', 'S01', 'SIN EFECTOS FISCALES', 'https://storage.googleapis.com/tv-store/datos-fiscales/1656438198_XAXX010101000_correcto.pdf', '', '0', '0', '2022-07-06 15:26:15', '2022-07-06 15:26:15')";
+            VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
             
             $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->insert("$insert");
