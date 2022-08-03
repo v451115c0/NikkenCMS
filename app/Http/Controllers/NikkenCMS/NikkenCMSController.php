@@ -474,7 +474,7 @@ class NikkenCMSController extends Controller{
                 'Sin obligaciones Fiscales' => 616,
                 'Incorporacion Fiscal' => 621,
                 'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
-                'Régimen Simplificado de Confianz' => 626,
+                'Régimen Simplificado de Confianza' => 626,
             ];
 
             if ($validaTexto === false) {
