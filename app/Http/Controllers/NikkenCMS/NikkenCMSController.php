@@ -475,6 +475,7 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
             \DB::disconnect('mysqlTVTest');
+            return 'El PDF del usuario no corresponde al SAT';
         }
         else {
             $textGral = explode("\n", $textGral);
@@ -660,6 +661,7 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
             \DB::disconnect('mysqlTVTest');
+            return 'QR de constancia erroneo';
         }
     }
     
