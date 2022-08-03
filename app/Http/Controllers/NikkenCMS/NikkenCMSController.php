@@ -446,8 +446,8 @@ class NikkenCMSController extends Controller{
         $sap_code = $response[0]->sap_code;
 
         $formato = explode("datos-fiscales", $PDFfile);
-        $formato = explode(".", $PDFfile[1]);
-        $formato = $PDFfile[1];
+        $formato = explode(".", $formato[1]);
+        $formato = $formato[1];
         return $formato;
         if(trim($formato) === 'pdf'){
             $data2 = [];
