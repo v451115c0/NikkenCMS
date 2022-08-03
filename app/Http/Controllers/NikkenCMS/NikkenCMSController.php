@@ -242,9 +242,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             $data = [
                 'data' => $dataCell,
             ];
@@ -257,9 +257,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = 14829503");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             $error = [];
             $prop = [];
             foreach($dataCell as $idx => $row){
@@ -292,9 +292,9 @@ class NikkenCMSController extends Controller{
         }
         else{
             $id = $parameters['id'];
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE id = $id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             return $response;
         }
     }
@@ -324,9 +324,9 @@ class NikkenCMSController extends Controller{
             $created_at = $parameters['created_at'];
             $updated_at = Date('Y-m-d H-i-s');
 
-            $conexion = \DB::connection('mysqlTV');
+            $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->update("UPDATE users_fiscal_update SET rfc = '$rfc', person_type = '$person_type', regimen_code = '$regimen_code', regimen_description = '$regimen_description', business_name = '$business_name', name = '$name', last_name = '$last_name1', second_last_name = '$last_name2', cp = '$cp', estado = '$estado', municipio = '$municipio', colonia = '$colonia', cfdi_code = '$cfdi_code', cfdi_description = '$cfdi_description', updated_on_sql_server = '$updated_on_sql_server', updated_at = '$updated_at' WHERE id = $id");
-            \DB::disconnect('mysqlTV');
+            \DB::disconnect('mysqlTVTest');
             return $response;
         }
     }
