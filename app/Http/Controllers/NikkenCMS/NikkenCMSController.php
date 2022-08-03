@@ -654,6 +654,9 @@ class NikkenCMSController extends Controller{
                 return $insert;
             }
             else{
+                $conexion = \DB::connection('mysqlTVTest');
+                    $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTVTest');
                 return "no existe en users: $sap_code";
             }
         }
