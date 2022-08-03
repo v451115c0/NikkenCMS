@@ -439,7 +439,7 @@ class NikkenCMSController extends Controller{
 
     public function getImgFromPDFview(Request $request){
         $conexion = \DB::connection('mysqlTVTest');
-            $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;;");
+            $response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;");
         \DB::disconnect('mysqlTVTest');
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $response[0]->fiscal_file;
@@ -473,7 +473,7 @@ class NikkenCMSController extends Controller{
 
         if ($validaTexto === false) {
             $conexion = \DB::connection('mysqlTVTest');
-                $response = $conexion->update("UPDATE users_fiscal_files SET WHERE error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' AND sap_code = $sap_code");
+                $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
             \DB::disconnect('mysqlTVTest');
         }
         else {
@@ -642,13 +642,14 @@ class NikkenCMSController extends Controller{
             
             $conexion = \DB::connection('mysqlTVTest');
                 $response = $conexion->insert("$insert");
+                $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
             \DB::disconnect('mysqlTVTest');
 
             return $insert;
         }
         else{
             $conexion = \DB::connection('mysqlTVTest');
-                $response = $conexion->update("UPDATE users_fiscal_files SET WHERE error = 1, last_error_message = 'QR de constancia erroneo' AND sap_code = $sap_code");
+                $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
             \DB::disconnect('mysqlTVTest');
         }
     }
