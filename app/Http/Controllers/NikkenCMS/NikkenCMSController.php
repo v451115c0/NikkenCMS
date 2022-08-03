@@ -654,7 +654,7 @@ class NikkenCMSController extends Controller{
                 return $insert;
             }
             else{
-                return 'no existe en users';
+                return "no existe en users: $sap_code";
             }
         }
         else{
