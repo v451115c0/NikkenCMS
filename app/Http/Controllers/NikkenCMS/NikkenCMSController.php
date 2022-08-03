@@ -544,7 +544,7 @@ class NikkenCMSController extends Controller{
                 $data['regimen2'] = $arrayRegimenCode[trim($data['regimenDescriptor2'])];
             }*/
         }
-        return $data;
+        #return $data;
         $data2['pdfUSER'] = $data;
 
         ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
@@ -686,7 +686,7 @@ class NikkenCMSController extends Controller{
         else{
             $conexion = \DB::connection('migracion');
                 $date = Date('Y-m-d H:i:s');
-                $sap_code = 9845903;
+                $sap_code = $request->sap_code;
                 $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
             \DB::disconnect('migracion');
             return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
