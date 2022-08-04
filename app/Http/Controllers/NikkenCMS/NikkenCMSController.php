@@ -441,6 +441,8 @@ class NikkenCMSController extends Controller{
     }
 
     public function getImgFromPDFview(Request $request){
+        date_default_timezone_set('America/Mexico_City');
+        
         $conexion = \DB::connection('mysqlTVTest');
             #$response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;");
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files

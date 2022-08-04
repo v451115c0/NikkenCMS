@@ -40,8 +40,7 @@ class validateFiscalDataFile extends Command
      *
      * @return int
      */
-    public function handle()
-    {
+    public function handle(){
         $conexion = \DB::connection('mysqlTVTest');
             #$response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;");
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
@@ -291,5 +290,28 @@ class validateFiscalDataFile extends Command
         }
         $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
         Storage::append("logValidaPDFFiscal.txt", $logExec);
+    }
+
+    public function delete_space($string, $replace){
+        $order = array("\r\n", "\n", "\r", "\t", " ");
+        $string = str_replace($order, $replace, $string);
+        return $string;
+    }
+
+    public function deleteNumbersSepecialChar($string, $replace){
+        $string = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
+        $string = preg_replace('/[0-9]+/', $replace, $string);
+        return $string;
+    }
+
+    public function search_array($array, $term){
+        foreach ($array AS $key => $value) {
+            if (stristr($value, $term) === FALSE) {
+                continue;
+            } else {
+                return $key;
+            }
+        }
+        return FALSE;
     }
 }
