@@ -444,6 +444,7 @@ class NikkenCMSController extends Controller{
             INNER JOIN users us ON files.sap_code = us.sap_code
             WHERE files.error = 0 AND files.processed = 0 limit 5;");
         \DB::disconnect('mysqlTVTest');
+        $x = 0;
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $dataUser[$x]->fiscal_file;
         $sap_code = $dataUser[$x]->sap_code;
