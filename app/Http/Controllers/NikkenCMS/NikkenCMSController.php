@@ -514,6 +514,12 @@ class NikkenCMSController extends Controller{
                     \DB::disconnect('mysqlTVTest');
                     return "Regimen Fiscal desconocido $sap_code";
                 }
+                catch (Throwable $t){
+                    $conexion = \DB::connection('mysqlTVTest');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Regimen Fiscal desconocido ' WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTVTest');
+                    return "Regimen Fiscal desconocido $sap_code";
+                }
 
                 $search_term = "Nombre\t(s)";
                 $position = $this->search_array($textGral, $search_term);
