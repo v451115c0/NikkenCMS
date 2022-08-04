@@ -167,8 +167,8 @@ class validateFiscalDataFile extends Command
                     'PageRange' => '1-1',
                 ], 'pdf'
             );
-            $result->saveFiles('extraido/QR.jpg');
-            $qrcode = new QrReader('./extraido/QR.jpg');
+            $result->saveFiles(public_path('extraido/QR.jpg'));
+            $qrcode = new QrReader(public_path('extraido/QR.jpg'));
             $text = $qrcode->text();
             $urlQR = explode('validadorqr.jsf', trim($text));
             
@@ -192,10 +192,9 @@ class validateFiscalDataFile extends Command
                         'PageRange' => '1-1',
                     ], 'web'
                 );
-                $result->saveFiles('./extraido/PDF.pdf');
-                
+                $result->saveFiles(public_path('extraido/PDF.pdf'));
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile('./extraido/PDF.pdf');
+                $pdf = $parser->parseFile(public_path('extraido/PDF.pdf'));
                 $textGral = $pdf->getText();
                 $textGral = explode("\n", $textGral);
                 $data = [];
