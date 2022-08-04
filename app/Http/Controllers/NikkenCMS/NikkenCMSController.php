@@ -13,6 +13,9 @@ use Smalot\PdfParser\Parser;
 use \ConvertApi\ConvertApi;
 use Zxing\QrReader;
 
+use File;
+use Response;
+
 class NikkenCMSController extends Controller{
     //Declaramos las configuraciones de amazon s3
     const S3_SLIDERS_FOLDER = 'CmsSRC';
@@ -1107,5 +1110,10 @@ class NikkenCMSController extends Controller{
         else{
             return 'empty';
         }
+    }
+
+    public function downloadfile(){
+        $filepath = public_path('viaje_japon_Grupo_2_v_23.xlsx');
+        return Response::download($filepath); 
     }
 }
