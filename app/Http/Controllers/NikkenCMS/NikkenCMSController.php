@@ -555,6 +555,7 @@ class NikkenCMSController extends Controller{
                 $data['lastUpdate'] = Date('Y-m-d H:i:s');
                 $data['user_id'] = $user_id;
             }
+            return $data;
             $data2['pdfUSER'] = $data;
 
             ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
