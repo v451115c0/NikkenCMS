@@ -502,10 +502,18 @@ class NikkenCMSController extends Controller{
 
                 $data['tipo'] = $tipo;
 
-                $search_term = "Régimen ";
-                $position = $this->search_array($textGral, $search_term);
-                $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                try {
+                    $search_term = "Régimen ";
+                    $position = $this->search_array($textGral, $search_term);
+                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                }
+                catch (Exception $e) {
+                    $conexion = \DB::connection('mysqlTVTest');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Regimen Fiscal desconocido ' WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTVTest');
+                    return "Regimen Fiscal desconocido $sap_code";
+                }
 
                 $search_term = "Nombre\t(s)";
                 $position = $this->search_array($textGral, $search_term);
