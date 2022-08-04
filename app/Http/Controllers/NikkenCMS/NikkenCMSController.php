@@ -442,7 +442,7 @@ class NikkenCMSController extends Controller{
             #$response = $conexion->select("SELECT * FROM users_fiscal_files WHERE error = 0 AND processed = 0;");
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
             INNER JOIN users us ON files.sap_code = us.sap_code
-            WHERE files.error = 0 AND files.processed = 0 limit 5;");
+            WHERE files.error = 0 AND files.processed = 0 LIMIT 1;");
         \DB::disconnect('mysqlTVTest');
         $x = 0;
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
