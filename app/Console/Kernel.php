@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call('App\Http\Controllers\NikkenCMS\NikkenCMSController@getImgFromPDFview')->everyFiveMinutes();
+        $schedule->call('App\Http\Controllers\NikkenCMS\NikkenCMSController@getImgFromPDFview')->everyTwoMinutes();
     }
 
     /**
