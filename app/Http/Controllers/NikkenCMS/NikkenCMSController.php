@@ -448,8 +448,8 @@ class NikkenCMSController extends Controller{
         $x = 1;
         do {
             ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
-            $PDFfile = $dataUser[0]->fiscal_file;
-            $sap_code = $dataUser[0]->sap_code;
+            $PDFfile = $dataUser[$x]->fiscal_file;
+            $sap_code = $dataUser[$x]->sap_code;
 
             $formato = explode("datos-fiscales", $PDFfile);
             $formato = explode(".", $formato[1]);
@@ -463,9 +463,9 @@ class NikkenCMSController extends Controller{
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
-                $sap_code = $dataUser[0]->sap_code;
-                $tipo = $dataUser[0]->person_type;
-                $user_id = $dataUser[0]->user_id;
+                $sap_code = $dataUser[$x]->sap_code;
+                $tipo = $dataUser[$x]->person_type;
+                $user_id = $dataUser[$x]->user_id;
 
                 $arrayRegimenCode = [
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
@@ -702,6 +702,7 @@ class NikkenCMSController extends Controller{
                 \DB::disconnect('mysqlTVTest');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
+            $x++;
         }
         while ($x <= 5);
         return $return;
