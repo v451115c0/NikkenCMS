@@ -446,7 +446,7 @@ class NikkenCMSController extends Controller{
         \DB::disconnect('mysqlTVTest');
         $return = "";
         $x = 1;
-        do {
+        for($x = 0; $x < sizeof($dataUser); $x++){
             ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
             $PDFfile = $dataUser[$x]->fiscal_file;
             $sap_code = $dataUser[$x]->sap_code;
@@ -702,9 +702,7 @@ class NikkenCMSController extends Controller{
                 \DB::disconnect('mysqlTVTest');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
-            $x++;
         }
-        while ($x <= 5);
         return $return;
     }
     
