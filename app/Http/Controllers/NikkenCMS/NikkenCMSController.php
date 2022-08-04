@@ -481,7 +481,7 @@ class NikkenCMSController extends Controller{
                 'Régimen de los ingresos por intereses' => 614,
                 'Régimen de los ingresos por obtencion de premios' => 615,
                 'Sin obligaciones Fiscales' => 616,
-                'Incorporacion Fiscal' => 621,
+                'Régimen de Incorporación Fiscal' => 621,
                 'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
                 'Régimen Simplificado de Confianza' => 626,
             ];
