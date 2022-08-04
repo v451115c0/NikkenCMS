@@ -467,6 +467,7 @@ class NikkenCMSController extends Controller{
 
             $arrayRegimenCode = [
                 'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
+                'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salari os' => 605,
                 'Régimen de Arrendamiento' => 606,
                 'Régimen de Enajenacion o Adquisicion de Bienes' => 607,
                 'Demás ingresos' => 608,
