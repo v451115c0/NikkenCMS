@@ -776,6 +776,13 @@ class NikkenCMSController extends Controller{
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                     \DB::disconnect('mysqlTV');
+                    if(sizeof($response) <= 0){
+                        $conexion = \DB::connection('mysqlTVTest');
+                            $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
+                        \DB::disconnect('mysqlTVTest');
+                        $return = "Formato de constancia incorrecto: $sap_code";
+                        return $return;
+                    }
                     $data['estado'] = strtoupper($response[0]->estado);
                     $data['municipio'] = strtoupper($response[0]->municipio);
                     return $data;
