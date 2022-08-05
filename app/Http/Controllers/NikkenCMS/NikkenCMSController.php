@@ -740,7 +740,6 @@ class NikkenCMSController extends Controller{
                 }
                 else {
                     $textGral = explode("\n", $textGral);
-                    return $textGral;
                     
                     $data['valido'] = true;
                     $data['titulo'] = trim($textGral[1]);
@@ -786,13 +785,13 @@ class NikkenCMSController extends Controller{
                     }
                     $data['estado'] = strtoupper($response[0]->estado);
                     $data['municipio'] = strtoupper($response[0]->municipio);
-                    return $data;
                     
-                    $search_term = "Colonia:";
+                    $search_term = "Nombre\tde\tlaColonia:";
                     $position = $this->search_array($textGral, $search_term);
                     $colonia = explode('Colonia:', trim($textGral[$position]));
                     $colonia = $this->delete_space($colonia[1], ' ');
                     $data['colonia'] = trim($colonia);
+                    return $data;
 
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
