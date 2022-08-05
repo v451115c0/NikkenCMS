@@ -765,19 +765,6 @@ class NikkenCMSController extends Controller{
                     $nombre = explode(':', trim($textGral[$position]));
                     $nombre = $this->delete_space($nombre[1], ' ');
                     $data['nombre'] = trim($nombre);
-                    return $data;
-                    
-                    $search_term = "Primer\tApellido:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $apellido1 = explode(':', trim($textGral[$position]));
-                    $apellido1 = $this->delete_space($apellido1[1], ' ');
-                    $data['apellido1'] = trim($apellido1);
-                    
-                    $search_term = "Segundo\tApellido:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $apellido2 = explode(':', trim($textGral[$position]));
-                    $apellido2 = $this->delete_space($apellido2, ' ');
-                    $data['apellido2'] = trim($apellido2[1]);
 
                     $search_term = "Código\tPostal";
                     $position = $this->search_array($textGral, $search_term);
@@ -785,6 +772,7 @@ class NikkenCMSController extends Controller{
                     $cp = $this->delete_space($cp[1], ' ');
                     $cp = explode(' ', trim($cp));
                     $data['cp'] = trim($cp[0]);
+                    return $data;
 
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
