@@ -698,7 +698,6 @@ class NikkenCMSController extends Controller{
             #Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else if(trim($PersonType) == 'MORAL'){
-            return "entra a moral";
             $x = 0;
             ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
             $PDFfile = $dataUser[$x]->fiscal_file;
@@ -719,23 +718,17 @@ class NikkenCMSController extends Controller{
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
                 $user_id = $dataUser[$x]->user_id;
-
+                
                 $arrayRegimenCode = [
-                    'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
-                    'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salari os' => 605,
-                    'Régimen de Arrendamiento' => 606,
-                    'Régimen de Enajenacion o Adquisicion de Bienes' => 607,
-                    'Demás ingresos' => 608,
-                    'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
-                    'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
-                    'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
-                    'Régimen de Incorporación Fiscal' => 612,
-                    'Régimen de los ingresos por intereses' => 614,
-                    'Régimen de los ingresos por obtencion de premios' => 615,
-                    'Sin obligaciones Fiscales' => 616,
-                    'Régimen de Incorporación Fiscal' => 621,
-                    'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
-                    'Régimen Simplificado de Confianza' => 626,
+                    "General de Ley Personas Morales" => 601,
+                    "Personas Morales con Fines no Lucrativos" => 603,
+                    "Residentes en el Extranjero sin Establecimiento Permanente en Mexico" => 610,
+                    "Sin obligaciones Fiscales" => 616,
+                    "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
+                    "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
+                    "Opcional para Grupos de Sociedades" => 623,
+                    "Coordinados" => 624,
+                    "Regimen Simplificado de Confianza" => 626
                 ];
 
                 if ($validaTexto === false) {
@@ -743,8 +736,10 @@ class NikkenCMSController extends Controller{
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTVTest');
                     $return = 'El PDF del usuario no corresponde al SAT';
+                    return $return;
                 }
                 else {
+                    return "PDF valido";
                     $textGral = explode("\n", $textGral);
                     
                     $data['valido'] = true;
