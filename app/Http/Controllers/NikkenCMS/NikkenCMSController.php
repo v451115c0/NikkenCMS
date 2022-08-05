@@ -829,7 +829,7 @@ class NikkenCMSController extends Controller{
                 }
 
                 if($origenSAT == true && $RFCfinal == true){
-                    $result = ConvertApi::convert('pdf', [
+                    /*$result = ConvertApi::convert('pdf', [
                             'Url' => $text,
                             'PageRange' => '1-1',
                         ], 'web'
@@ -892,7 +892,7 @@ class NikkenCMSController extends Controller{
                     for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['RFC'], '')); $x++){
                         $RFC .= $data2['pdfSAT']['RFC'][$x];
                     }
-                    ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
+                    ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';*/
 
                     $conexion = \DB::connection('mysqlTVTest');
                         $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
