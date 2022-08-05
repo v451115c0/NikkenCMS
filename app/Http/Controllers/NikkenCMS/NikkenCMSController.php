@@ -829,7 +829,6 @@ class NikkenCMSController extends Controller{
                 }
 
                 if($origenSAT == true && $RFCfinal == true){
-                    return "QR sat";
                     $result = ConvertApi::convert('pdf', [
                             'Url' => $text,
                             'PageRange' => '1-1',
@@ -840,6 +839,7 @@ class NikkenCMSController extends Controller{
                     $pdf = $parser->parseFile(public_path('extraido/PDF.pdf'));
                     $textGral = $pdf->getText();
                     $textGral = explode("\n", $textGral);
+                    return $textGral;
                     $data = [];
                     
                     $nombre = explode(':', trim($textGral[3]));
