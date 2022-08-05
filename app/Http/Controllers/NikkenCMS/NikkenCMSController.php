@@ -759,7 +759,6 @@ class NikkenCMSController extends Controller{
                     $position = (intval($position) + 2);
                     $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                     $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-                    return $data;
 
                     $search_term = "Denominación/Razón\tSocial:";
                     $position = $this->search_array($textGral, $search_term);
