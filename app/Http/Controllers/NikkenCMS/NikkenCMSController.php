@@ -740,7 +740,6 @@ class NikkenCMSController extends Controller{
                 }
                 else {
                     $textGral = explode("\n", $textGral);
-                    return $textGral;
                     
                     $data['valido'] = true;
                     $data['titulo'] = trim($textGral[1]);
@@ -754,6 +753,7 @@ class NikkenCMSController extends Controller{
                     $data['RFC'] = trim($rfc);
 
                     $data['tipo'] = $tipo;
+                    return $data;
 
                     $search_term = "Régimen ";
                     $position = $this->search_array($textGral, $search_term);
