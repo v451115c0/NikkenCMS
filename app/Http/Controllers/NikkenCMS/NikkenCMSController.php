@@ -740,6 +740,7 @@ class NikkenCMSController extends Controller{
                 }
                 else {
                     $textGral = explode("\n", $textGral);
+                    return $textGral;
                     
                     $data['valido'] = true;
                     $data['titulo'] = trim($textGral[1]);
