@@ -791,7 +791,6 @@ class NikkenCMSController extends Controller{
                     $colonia = explode('Colonia:', trim($textGral[$position]));
                     $colonia = $this->delete_space($colonia[1], ' ');
                     $data['colonia'] = trim($colonia);
-                    return $data;
 
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
@@ -801,6 +800,7 @@ class NikkenCMSController extends Controller{
                     $data['lastUpdate'] = Date('Y-m-d H:i:s');
                     $data['user_id'] = $user_id;
                 }
+                return $data;
                 $data2['pdfUSER'] = $data;
 
                 ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
