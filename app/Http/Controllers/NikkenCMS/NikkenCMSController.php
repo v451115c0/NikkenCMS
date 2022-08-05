@@ -772,13 +772,13 @@ class NikkenCMSController extends Controller{
                     $cp = $this->delete_space($cp[1], ' ');
                     $cp = explode(' ', trim($cp));
                     $data['cp'] = trim($cp[0]);
-                    return $data;
 
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                     \DB::disconnect('mysqlTV');
                     $data['estado'] = strtoupper($response[0]->estado);
                     $data['municipio'] = strtoupper($response[0]->municipio);
+                    return $data;
                     
                     $search_term = "Colonia:";
                     $position = $this->search_array($textGral, $search_term);
