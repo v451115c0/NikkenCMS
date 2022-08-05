@@ -446,7 +446,7 @@ class NikkenCMSController extends Controller{
         $conexion = \DB::connection('mysqlTVTest');
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
             INNER JOIN users us ON files.sap_code = us.sap_code
-            WHERE files.error = 0 AND files.processed = 0 AND files.sap_code = 45319103;");
+            WHERE files.error = 0 AND files.processed = 0 AND files.person_type = 'MORAL' limit 1;");
         \DB::disconnect('mysqlTVTest');
         $PersonType = $dataUser[0]->person_type;
         $PDFfile = $dataUser[0]->fiscal_file;
