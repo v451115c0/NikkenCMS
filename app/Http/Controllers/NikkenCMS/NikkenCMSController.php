@@ -720,7 +720,7 @@ class NikkenCMSController extends Controller{
                 $user_id = $dataUser[$x]->user_id;
                 
                 $arrayRegimenCode = [
-                    "General de Ley Personas Morales" => 601,
+                    "Régimen General de Ley Personas Morales" => 601,
                     "Personas Morales con Fines no Lucrativos" => 603,
                     "Residentes en el Extranjero sin Establecimiento Permanente en Mexico" => 610,
                     "Sin obligaciones Fiscales" => 616,
