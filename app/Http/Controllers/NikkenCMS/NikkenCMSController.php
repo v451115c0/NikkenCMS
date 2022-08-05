@@ -839,7 +839,6 @@ class NikkenCMSController extends Controller{
                     $pdf = $parser->parseFile(public_path('extraido/PDF.pdf'));
                     $textGral = $pdf->getText();
                     $textGral = explode("\n", $textGral);
-                    return $textGral;
                     $data = [];
                     
                     $nombre = explode(':', trim($textGral[3]));
@@ -899,6 +898,9 @@ class NikkenCMSController extends Controller{
                         $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTVTest');
                     $existe = $user[0]->total;
+
+                    return $data2;
+
                     if($existe > 0){
                         $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
                         VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
