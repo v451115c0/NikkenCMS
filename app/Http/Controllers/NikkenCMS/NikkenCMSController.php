@@ -739,8 +739,8 @@ class NikkenCMSController extends Controller{
                     return $return;
                 }
                 else {
-                    return "PDF valido";
                     $textGral = explode("\n", $textGral);
+                    return $textGral;
                     
                     $data['valido'] = true;
                     $data['titulo'] = trim($textGral[1]);
