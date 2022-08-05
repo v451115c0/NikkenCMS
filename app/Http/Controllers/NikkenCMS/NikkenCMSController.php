@@ -448,7 +448,6 @@ class NikkenCMSController extends Controller{
             INNER JOIN users us ON files.sap_code = us.sap_code
             WHERE files.error = 0 AND files.processed = 0 AND files.sap_code = 123456;");
         \DB::disconnect('mysqlTVTest');
-        return $dataUser;
         $PersonType = $dataUser[0]->person_type;
         $PDFfile = $dataUser[0]->fiscal_file;
         $sap_code = $dataUser[0]->sap_code;
@@ -699,6 +698,7 @@ class NikkenCMSController extends Controller{
             #Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else if(trim($PersonType) == 'MORAL'){
+            return "entra a moral";
             $x = 0;
             ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
             $PDFfile = $dataUser[$x]->fiscal_file;
