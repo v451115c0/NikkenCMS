@@ -298,9 +298,12 @@ class MNKController extends Controller{
                     $position = $this->search_array($textGral, $search_term);
                     $numero = explode('Exterior:', trim($textGral[$position]));
                     $numero = $this->delete_space($numero[1], ' ');
-                    return $numero;
-                    $data['numero'] = trim($numero[0]);
+                    $data['numero'] = trim($numero);
 
+                    $search_term = "Número\tExterior";
+                    $position = $this->search_array($textGral, $search_term);
+                    $actividadEconomica = $textGral[$position];
+                    return $actividadEconomica;
                     $data['actividadEconomica'] = "";
 
                     $data['regimen'] = "";
