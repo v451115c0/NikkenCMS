@@ -292,7 +292,6 @@ class MNKController extends Controller{
                     $calle = explode(':', trim($textGral[$position]));
                     $calle = $this->delete_space($calle[1], ' ');
                     $calle = explode('Número', $calle);
-                    return $calle;
                     $data['calle'] = trim($calle[0]);
 
                     $data['numero'] = "";
