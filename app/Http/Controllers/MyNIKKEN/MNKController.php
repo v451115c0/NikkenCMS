@@ -240,7 +240,6 @@ class MNKController extends Controller{
                 }
                 else {
                     $textGral = explode("\n", $textGral);
-                    return $textGral;
                     
                     $search_term = "RFC:";
                     $position = $this->search_array($textGral, $search_term);
