@@ -311,7 +311,6 @@ class MNKController extends Controller{
                     $position = $this->search_array($textGral, $search_term);
                     $regimen = $textGral[($position + 2)];
                     $regimen = $this->delete_space($regimen, ' ');
-                    return $regimen;
                     $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
                     $data['regimen'] = trim($regimen);
 
