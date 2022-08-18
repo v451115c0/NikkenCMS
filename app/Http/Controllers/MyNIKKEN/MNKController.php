@@ -279,35 +279,17 @@ class MNKController extends Controller{
                     $entidad = explode(' ', trim($entidad));
                     $data['estado'] = trim($entidad[0]);
 
+                    $data['ciudad'] = "";
+
+                    $data['municipio'] = "";
+
+                    $data['CalleyNumero'] = "";
+
+                    $data['actividadEconomica'] = "";
+
+                    $data['regimen'] = "";
+
                     return $data;
-
-                    $data['tipo'] = $tipo;
-
-                    $search_term = "Régimen ";
-                    $position = $this->search_array($textGral, $search_term);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
-                    
-                    $search_term = "Colonia:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $colonia = explode('Colonia:', trim($textGral[$position]));
-                    $colonia = $this->delete_space($colonia[1], ' ');
-                    $data['colonia'] = trim($colonia);
-
-                    $data['codCFDI'] = 'S01';
-                    $data['descCFDI'] = 'SIN EFECTOS FISCALES';
-                    $data['pdffile'] = $PDFfile;
-                    $data['updateSQL'] = '0';
-                    $data['dateReg'] = Date('Y-m-d H:i:s');
-                    $data['lastUpdate'] = Date('Y-m-d H:i:s');
-                    $data['user_id'] = $user_id;
                 }
                 $data2['pdfUSER'] = $data;
 
