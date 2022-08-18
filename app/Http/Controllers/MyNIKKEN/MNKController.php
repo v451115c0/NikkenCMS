@@ -294,7 +294,11 @@ class MNKController extends Controller{
                     $calle = explode('Número', $calle);
                     $data['calle'] = trim($calle[0]);
 
-                    $data['numero'] = "";
+                    $search_term = "Número\tExterior";
+                    $position = $this->search_array($textGral, $search_term);
+                    $numero = explode('Exterior:', trim($textGral[$position]));
+                    $numero = $this->delete_space($numero[1], ' ');
+                    $data['numero'] = trim($numero[0]);
 
                     $data['actividadEconomica'] = "";
 
