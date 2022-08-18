@@ -241,16 +241,13 @@ class MNKController extends Controller{
                 else {
                     $textGral = explode("\n", $textGral);
                     return $textGral;
-                    $data['valido'] = true;
-                    $data['titulo'] = trim($textGral[1]);
-
-                    $data['sap_code'] = $sap_code;
-
+                    
                     $search_term = "RFC:";
                     $position = $this->search_array($textGral, $search_term);
                     $rfc = explode(':', trim($textGral[$position]));
                     $rfc = $this->delete_space($rfc[1], ' ');
                     $data['RFC'] = trim($rfc);
+                    return $data;
 
                     $data['tipo'] = $tipo;
 
