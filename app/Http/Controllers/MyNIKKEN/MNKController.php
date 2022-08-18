@@ -274,11 +274,11 @@ class MNKController extends Controller{
 
                     $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                     $position = $this->search_array($textGral, $search_term);
-                    return $position;
-                    $cp = explode(':', trim($textGral[$position]));
-                    $cp = $this->delete_space($cp[1], ' ');
-                    $cp = explode(' ', trim($cp));
-                    $data['cp'] = trim($cp[0]);
+                    $entidad = explode(':', trim($textGral[$position]));
+                    return $entidad;
+                    $entidad = $this->delete_space($entidad[1], ' ');
+                    $entidad = explode(' ', trim($entidad));
+                    $data['estado'] = trim($entidad[0]);
 
                     return $data;
 
