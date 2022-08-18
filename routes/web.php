@@ -36,3 +36,4 @@ Route::get('Depurarmas7dias', 'depuraciones7days\dep7dayController@Depurarmost7d
 
 ## Reportes
 Route::get('getReport', 'reportes\reportesController@getReport');
+Route::get('apiDataFiscalPDF', 'MyNIKKEN\MNKController@apiDataFiscalPDF');
