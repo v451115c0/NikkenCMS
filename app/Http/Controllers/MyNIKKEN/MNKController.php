@@ -304,9 +304,8 @@ class MNKController extends Controller{
                     $position = $this->search_array($textGral, $search_term);
                     $actividadEconomica = $textGral[($position + 2)];
                     $actividadEconomica = $this->delete_space($actividadEconomica, ' ');
-                    $actividadEconomica = $this->deleteNumbersSepecialChar($actividadEconomica, '');
-                    return $actividadEconomica;
-                    $data['actividadEconomica'] = "";
+                    $actividadEconomica = $this->deleteNumbersSepecialChar($actividadEconomica, ' ');
+                    $data['actividadEconomica'] = trim($actividadEconomica);
 
                     $data['regimen'] = "";
 
