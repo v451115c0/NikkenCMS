@@ -246,14 +246,6 @@ class MNKController extends Controller{
                     $rfc = explode(':', trim($textGral[$position]));
                     $rfc = $this->delete_space($rfc[1], ' ');
                     $data['RFC'] = trim($rfc);
-                    return $data;
-
-                    $data['tipo'] = $tipo;
-
-                    $search_term = "Régimen ";
-                    $position = $this->search_array($textGral, $search_term);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
 
                     $search_term = "Nombre\t(s)";
                     $position = $this->search_array($textGral, $search_term);
@@ -272,6 +264,15 @@ class MNKController extends Controller{
                     $apellido2 = explode(':', trim($textGral[$position]));
                     $apellido2 = $this->delete_space($apellido2, ' ');
                     $data['apellido2'] = trim($apellido2[1]);
+
+                    return $data;
+
+                    $data['tipo'] = $tipo;
+
+                    $search_term = "Régimen ";
+                    $position = $this->search_array($textGral, $search_term);
+                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
 
                     $search_term = "Código\tPostal";
                     $position = $this->search_array($textGral, $search_term);
