@@ -290,8 +290,8 @@ class MNKController extends Controller{
                     $search_term = "Nombre\tde\tVialidad";
                     $position = $this->search_array($textGral, $search_term);
                     $calle = explode(':', trim($textGral[$position]));
-                    return $calle;
                     $calle = explode('Número\tExterior', $calle[1]);
+                    return $calle;
                     $data['calle'] = trim($calle[0]);
 
                     $data['numero'] = "";
