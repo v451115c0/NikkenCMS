@@ -300,7 +300,7 @@ class MNKController extends Controller{
                     $numero = $this->delete_space($numero[1], ' ');
                     $data['numero'] = trim($numero);
 
-                    $search_term = "Número\tExterior";
+                    $search_term = "Actividades Económicas";
                     $position = $this->search_array($textGral, $search_term);
                     $actividadEconomica = $textGral[$position];
                     return $actividadEconomica;
