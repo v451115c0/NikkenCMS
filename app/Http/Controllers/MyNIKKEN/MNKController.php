@@ -602,4 +602,27 @@ class MNKController extends Controller{
             Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
     }
+
+    public function delete_space($string, $replace){
+        $order = array("\r\n", "\n", "\r", "\t", " ");
+        $string = str_replace($order, $replace, $string);
+        return $string;
+    }
+
+    public function deleteNumbersSepecialChar($string, $replace){
+        $string = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', '/' ), $replace, $string);
+        $string = preg_replace('/[0-9]+/', $replace, $string);
+        return $string;
+    }
+
+    public function search_array($array, $term){
+        foreach ($array AS $key => $value) {
+            if (stristr($value, $term) === FALSE) {
+                continue;
+            } else {
+                return $key;
+            }
+        }
+        return FALSE;
+    }
 }
