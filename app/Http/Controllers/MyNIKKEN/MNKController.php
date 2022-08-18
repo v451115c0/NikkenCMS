@@ -284,7 +284,7 @@ class MNKController extends Controller{
                     $search_term = "Nombre\tde\tlaLocalidad";
                     $position = $this->search_array($textGral, $search_term);
                     $entidad = explode(':', trim($textGral[$position]));
-                    $entidad = explode('Nombre\tdel\tMunicipio\to\tDemarcación\tTerritorial', trim($textGral[$position]));
+                    $entidad = explode('\tNombre\tdel\tMunicipio\to\tDemarcación\tTerritorial:', $entidad);
                     return $entidad;
                     $entidad = $this->delete_space($entidad[1], ' ');
                     $entidad = explode(' ', trim($entidad));
