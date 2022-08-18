@@ -211,7 +211,7 @@ class MNKController extends Controller{
                 $data2 = [];
 
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile($PDFfile);
+                $pdf = $parser->parseFile($pdfFile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
