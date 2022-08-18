@@ -216,8 +216,6 @@ class MNKController extends Controller{
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
-                
-                return $textGral;
 
                 $arrayRegimenCode = [
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
@@ -238,14 +236,11 @@ class MNKController extends Controller{
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $return = 'El PDF del usuario no corresponde al SAT';
+                    return 'El PDF del usuario no corresponde al SAT';
                 }
                 else {
                     $textGral = explode("\n", $textGral);
-                    
+                    return $textGral;
                     $data['valido'] = true;
                     $data['titulo'] = trim($textGral[1]);
 
