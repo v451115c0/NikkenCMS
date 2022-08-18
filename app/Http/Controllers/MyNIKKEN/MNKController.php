@@ -281,7 +281,12 @@ class MNKController extends Controller{
 
                     $data['ciudad'] = "";
 
-                    $data['municipio'] = "";
+                    $search_term = "Nombre\tde\tlaLocalidad";
+                    $position = $this->search_array($textGral, $search_term);
+                    $entidad = explode(':', trim($textGral[$position]));
+                    $entidad = $this->delete_space($entidad[1], ' ');
+                    $entidad = explode(' ', trim($entidad));
+                    $data['municipio'] = trim($entidad[0]);
 
                     $data['CalleyNumero'] = "";
 
