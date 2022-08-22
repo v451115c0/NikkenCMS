@@ -364,7 +364,12 @@ class MNKController extends Controller{
                     $nombre = $this->delete_space($nombre[1], ' ');
                     $data['razonSocial'] = trim($nombre);
 
-                    $data['actividadEconomica'] = "";
+                    $search_term = "Actividades Económicas";
+                    $position = $this->search_array($textGral, $search_term);
+                    $actividadEconomica = $textGral[($position + 2)];
+                    $actividadEconomica = $this->delete_space($actividadEconomica, ' ');
+                    $actividadEconomica = $this->deleteNumbersSepecialChar($actividadEconomica, ' ');
+                    $data['actividadEconomica'] = trim($actividadEconomica);
 
                     $data['CP'] = "";
 
