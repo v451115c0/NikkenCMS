@@ -331,53 +331,26 @@ class MNKController extends Controller{
                 }
             }
             else{
-                return "Consstancia Fiscal erronea";
+                return "Constancia Fiscal erronea";
             }
         }
         else if(trim($personType) == 'MORAL'){
             $formato = explode("datos-fiscales", $pdfFile);
             $formato = explode(".", $formato[1]);
             $formato = $formato[1];
-            return $formato;
             if(trim($formato) === 'pdf'){
-                $data2 = [];
-
                 $parser = new \Smalot\PdfParser\Parser();
                 $pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
-                $sap_code = $dataUser[0]->sap_code;
-                $tipo = $dataUser[0]->person_type;
-                $user_id = $dataUser[0]->user_id;
                 
-                $arrayRegimenCode = [
-                    "Régimen General de Ley Personas Morales" => 601,
-                    "Personas Morales con Fines no Lucrativos" => 603,
-                    "Residentes en el Extranjero sin Establecimiento Permanente en Mexico" => 610,
-                    "Sin obligaciones Fiscales" => 616,
-                    "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
-                    "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
-                    "Opcional para Grupos de Sociedades" => 623,
-                    "Coordinados" => 624,
-                    "Regimen Simplificado de Confianza" => 626
-                ];
-
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $return = 'El PDF del usuario no corresponde al SAT';
-                    return $return;
+                    return 'El PDF del usuario no corresponde al SAT';
                 }
                 else {
                     $textGral = explode("\n", $textGral);
-                    
-                    $data['valido'] = true;
-                    $data['titulo'] = trim($textGral[1]);
-
-                    $data['sap_code'] = $sap_code;
 
                     $search_term = "RFC:";
                     $position = $this->search_array($textGral, $search_term);
@@ -385,19 +358,35 @@ class MNKController extends Controller{
                     $rfc = $this->delete_space($rfc[1], ' ');
                     $data['RFC'] = trim($rfc);
 
-                    $data['tipo'] = $tipo;
+                    $search_term = "Denominación/Razón\tSocial:";
+                    $position = $this->search_array($textGral, $search_term);
+                    $nombre = explode(':', trim($textGral[$position]));
+                    $nombre = $this->delete_space($nombre[1], ' ');
+                    $data['razonSocial'] = trim($nombre);
+
+                    $data['actividadEconomica'] = "";
+
+                    $data['CP'] = "";
+
+                    $data['ciudad'] = "";
+
+                    $data['municipio'] = "";
+
+                    $data['calle'] = "";
+
+                    $data['numero'] = "";
+
+                    $data['regimen'] = "";
+
+                    $data['telefono'] = "";
+                    
+                    return $data;
 
                     $search_term = "Regímenes";
                     $position = $this->search_array($textGral, $search_term);
                     $position = (intval($position) + 2);
                     $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                     $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-
-                    $search_term = "Denominación/Razón\tSocial:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $nombre = explode(':', trim($textGral[$position]));
-                    $nombre = $this->delete_space($nombre[1], ' ');
-                    $data['nombre'] = trim($nombre);
 
                     $search_term = "Código\tPostal";
                     $position = $this->search_array($textGral, $search_term);
@@ -436,72 +425,10 @@ class MNKController extends Controller{
                     $data['user_id'] = $user_id;
                 }
                 $data2['pdfUSER'] = $data;
-
-                ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-                ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
-                $result = ConvertApi::convert('jpg', [
-                        'File' => "$PDFfile",
-                        'PageRange' => '1-1',
-                    ], 'pdf'
-                );
-                $result->saveFiles(public_path('extraido/QR.jpg'));
-                $qrcode = new QrReader(public_path('extraido/QR.jpg'));
-                $text = $qrcode->text();
-                $urlQR = explode('validadorqr.jsf', trim($text));
-                
-                $origenSAT = false;
-                $RFCfinal = false;
-
-                if (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) { 
-                    $origenSAT = true;
-                }
-                
-                if($origenSAT == true){
-                    $rfcQR = explode('_', trim($urlQR[1]));
-                    if(trim($rfcQR[1]) == trim($data['RFC'])) {
-                        $RFCfinal = true;
-                    }
-                }
-
-                if($origenSAT == true && $RFCfinal == true){
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $existe = $user[0]->total;
-
-                    if($existe > 0){
-                        $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-                        VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
-                        
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->insert("$insert");
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-            
-                        $return = "PDF procesado, usuario: $sap_code";
-                    }
-                    else{
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-                        $return = "no existe en users: $sap_code";
-                    }
-                }
-                else{
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $return = 'QR de constancia erroneo';
-                }
             }
             else{
-                $conexion = \DB::connection('mysqlTVTest');
-                    $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTVTest');
-                $return = "Formato de constancia incorrecto: $sap_code";
+                return "Constancia Fiscal erronea";
             }
-            $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
-            Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
     }
 
