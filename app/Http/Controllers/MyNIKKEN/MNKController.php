@@ -340,7 +340,7 @@ class MNKController extends Controller{
             $formato = $formato[1];
             if(trim($formato) === 'pdf'){
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile($PDFfile);
+                $pdf = $parser->parseFile($pdfFile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
