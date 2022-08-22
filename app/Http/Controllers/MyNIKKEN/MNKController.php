@@ -299,7 +299,18 @@ class MNKController extends Controller{
                     $regimen = $textGral[($position + 3)];
                     $regimen = $this->delete_space($regimen, ' ');
                     $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
-                    return $regimen;
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen2'] = trim($regimen);
+                    }
+
+                    $regimen = $textGral[($position + 4)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen3'] = trim($regimen);
+                    }
 
                     return $data;
                 }
