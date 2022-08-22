@@ -204,7 +204,6 @@ class MNKController extends Controller{
 
         if(trim($personType) == 'FISICA'){
             $formato = explode("datos-fiscales", $pdfFile);
-            return $formato;
             $formato = explode(".", $formato[1]);
             $formato = $formato[1];
             if(trim($formato) === 'pdf'){
