@@ -296,7 +296,10 @@ class MNKController extends Controller{
                     $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
                     $data['regimen'] = trim($regimen);
 
-                    return $regimen = $textGral[($position + 3)];
+                    $regimen = $textGral[($position + 3)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    return $regimen;
 
                     return $data;
                 }
