@@ -312,6 +312,22 @@ class MNKController extends Controller{
                         $data['regimen3'] = trim($regimen);
                     }
 
+                    $regimen = $textGral[($position + 5)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen4'] = trim($regimen);
+                    }
+
+                    $regimen = $textGral[($position + 6)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen5'] = trim($regimen);
+                    }
+
                     return $data;
                 }
             }
