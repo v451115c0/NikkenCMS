@@ -371,19 +371,78 @@ class MNKController extends Controller{
                     $actividadEconomica = $this->deleteNumbersSepecialChar($actividadEconomica, ' ');
                     $data['actividadEconomica'] = trim($actividadEconomica);
 
-                    $data['CP'] = "";
+                    $search_term = "Código\tPostal";
+                    $position = $this->search_array($textGral, $search_term);
+                    $cp = explode(':', trim($textGral[$position]));
+                    $cp = $this->delete_space($cp[1], ' ');
+                    $cp = explode(' ', trim($cp));
+                    $data['cp'] = trim($cp[0]);
 
                     $data['ciudad'] = "";
 
-                    $data['municipio'] = "";
+                    $search_term = "Nombre\tde\tlaLocalidad";
+                    $position = $this->search_array($textGral, $search_term);
+                    $entidad = explode(':', trim($textGral[$position]));
+                    $entidad = $this->delete_space($entidad[2], ' ');
+                    $data['municipio'] = trim($entidad);
 
-                    $data['calle'] = "";
+                    $search_term = "Nombre\tde\tVialidad";
+                    $position = $this->search_array($textGral, $search_term);
+                    $calle = explode(':', trim($textGral[$position]));
+                    $calle = $this->delete_space($calle[1], ' ');
+                    $calle = explode('Número', $calle);
+                    $data['calle'] = trim($calle[0]);
 
-                    $data['numero'] = "";
+                    $search_term = "Número\tExterior";
+                    $position = $this->search_array($textGral, $search_term);
+                    $numero = explode('Exterior:', trim($textGral[$position]));
+                    $numero = $this->delete_space($numero[1], ' ');
+                    $data['numero'] = trim($numero);
 
-                    $data['regimen'] = "";
+                    $search_term = "Regímenes:";
+                    $position = $this->search_array($textGral, $search_term);
+                    $regimen = $textGral[($position + 2)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $data['regimen'] = trim($regimen);
 
-                    $data['telefono'] = "";
+                    $regimen = $textGral[($position + 3)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen2'] = trim($regimen);
+                    }
+
+                    $regimen = $textGral[($position + 4)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen3'] = trim($regimen);
+                    }
+
+                    $regimen = $textGral[($position + 5)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen4'] = trim($regimen);
+                    }
+
+                    $regimen = $textGral[($position + 6)];
+                    $regimen = $this->delete_space($regimen, ' ');
+                    $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
+                    $validador = explode(' ', $regimen);
+                    if(trim($validador[0]) == 'Régimen'){
+                        $data['regimen5'] = trim($regimen);
+                    }
+
+                    $search_term = "Número:";
+                    $position = $this->search_array($textGral, $search_term);
+                    $telefono = explode('Número:', trim($textGral[$position]));
+                    $telefono = $this->delete_space($telefono[1], ' ');
+                    $data['telefono'] = trim($telefono);
                     
                     return $data;
 
