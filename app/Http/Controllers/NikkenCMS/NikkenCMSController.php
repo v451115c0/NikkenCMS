@@ -245,9 +245,9 @@ class NikkenCMSController extends Controller{
             return "error";
         }
         else{
-            $conexion = \DB::connection('mysqlTVTest');
+            $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_update;");
-            \DB::disconnect('mysqlTVTest');
+            \DB::disconnect('mysqlTV');
             $data = [
                 'data' => $dataCell,
             ];

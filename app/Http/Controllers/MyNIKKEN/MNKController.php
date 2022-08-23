@@ -445,50 +445,7 @@ class MNKController extends Controller{
                     $data['telefono'] = trim($telefono);
                     
                     return $data;
-
-                    $search_term = "Regímenes";
-                    $position = $this->search_array($textGral, $search_term);
-                    $position = (intval($position) + 2);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-
-                    $search_term = "Código\tPostal";
-                    $position = $this->search_array($textGral, $search_term);
-                    $cp = explode(':', trim($textGral[$position]));
-                    $cp = $this->delete_space($cp[1], ' ');
-                    $cp = explode(' ', trim($cp));
-                    $data['cp'] = trim($cp[0]);
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    if(sizeof($response) <= 0){
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-                        $return = "Código Postal desconocido: $sap_code";
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
-                        Storage::append("logValidaPDFFiscal.txt", $logExec);
-                        return "";
-                    }
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
-                    
-                    $search_term = "Nombre\tde\tlaColonia:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $colonia = explode('Colonia:', trim($textGral[$position]));
-                    $colonia = $this->delete_space($colonia[1], ' ');
-                    $data['colonia'] = trim($colonia);
-
-                    $data['codCFDI'] = 'S01';
-                    $data['descCFDI'] = 'SIN EFECTOS FISCALES';
-                    $data['pdffile'] = $PDFfile;
-                    $data['updateSQL'] = '0';
-                    $data['dateReg'] = Date('Y-m-d H:i:s');
-                    $data['lastUpdate'] = Date('Y-m-d H:i:s');
-                    $data['user_id'] = $user_id;
                 }
-                $data2['pdfUSER'] = $data;
             }
             else{
                 return "Constancia Fiscal erronea";
