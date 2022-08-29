@@ -46,7 +46,7 @@ class validateFiscalDataFile extends Command
         $conexion = \DB::connection('mysqlTV');
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
             INNER JOIN users us ON files.sap_code = us.sap_code
-            WHERE files.error = 0 AND files.processed = 0 AND files.fiscal_file IS NOT NULL LIMIT 1;");
+            WHERE files.error = 0 AND files.processed = 0 AND files.fiscal_file IS NOT NULL ORDER BY files.sap_code DESC LIMIT 1;");
         \DB::disconnect('mysqlTV');
         $PersonType = $dataUser[0]->person_type;
         $PDFfile = $dataUser[0]->fiscal_file;
