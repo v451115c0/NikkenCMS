@@ -271,7 +271,6 @@ class validateFiscalDataFile extends Command
                         \DB::disconnect('migracion');
 
                         $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->insert("$insert");
                             $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
                         \DB::disconnect('mysqlTV');
             
