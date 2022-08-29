@@ -43,11 +43,11 @@ class validateFiscalDataFile extends Command
     public function handle(){
         date_default_timezone_set('America/Mexico_City');
 
-        $conexion = \DB::connection('mysqlTVTest');
+        $conexion = \DB::connection('mysqlTV');
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
             INNER JOIN users us ON files.sap_code = us.sap_code
-            WHERE files.error = 0 AND files.processed = 0 limit 1;");
-        \DB::disconnect('mysqlTVTest');
+            WHERE files.error = 0 AND files.processed = 0 AND files.fiscal_file IS NOT NULL LIMIT 1;");
+        \DB::disconnect('mysqlTV');
         $PersonType = $dataUser[0]->person_type;
         $PDFfile = $dataUser[0]->fiscal_file;
         $sap_code = $dataUser[0]->sap_code;
@@ -93,9 +93,9 @@ class validateFiscalDataFile extends Command
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'El PDF del usuario no corresponde al SAT';
                 }
                 else {
@@ -258,39 +258,43 @@ class validateFiscalDataFile extends Command
                     }
                     ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
 
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $existe = $user[0]->total;
                     if($existe > 0){
                         $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
                         VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
                         
-                        $conexion = \DB::connection('mysqlTVTest');
+                        $conexion = \DB::connection('migracion');
+                            $response = $conexion->insert("$insert");
+                        \DB::disconnect('migracion');
+
+                        $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->insert("$insert");
                             $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
+                        \DB::disconnect('mysqlTV');
             
                         $return = "PDF procesado, usuario: $sap_code";
                     }
                     else{
-                        $conexion = \DB::connection('mysqlTVTest');
+                        $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
+                        \DB::disconnect('mysqlTV');
                         $return = "no existe en users: $sap_code";
                     }
                 }
                 else{
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'QR de constancia erroneo';
                 }
             }
             else{
-                $conexion = \DB::connection('mysqlTVTest');
+                $conexion = \DB::connection('mysqlTV');
                     $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTVTest');
+                \DB::disconnect('mysqlTV');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
@@ -332,9 +336,9 @@ class validateFiscalDataFile extends Command
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'El PDF del usuario no corresponde al SAT';
                     return $return;
                 }
@@ -377,9 +381,9 @@ class validateFiscalDataFile extends Command
                         $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                     \DB::disconnect('mysqlTV');
                     if(sizeof($response) <= 0){
-                        $conexion = \DB::connection('mysqlTVTest');
+                        $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
+                        \DB::disconnect('mysqlTV');
                         $return = "Código Postal desconocido: $sap_code";
                         $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
                         Storage::append("logValidaPDFFiscal.txt", $logExec);
@@ -431,40 +435,43 @@ class validateFiscalDataFile extends Command
                 }
 
                 if($origenSAT == true && $RFCfinal == true){
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $existe = $user[0]->total;
 
                     if($existe > 0){
                         $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
                         VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
                         
-                        $conexion = \DB::connection('mysqlTVTest');
+                        $conexion = \DB::connection('migracion');
                             $response = $conexion->insert("$insert");
+                        \DB::disconnect('migracion');
+
+                        $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
+                        \DB::disconnect('mysqlTV');
             
                         $return = "PDF procesado, usuario: $sap_code";
                     }
                     else{
-                        $conexion = \DB::connection('mysqlTVTest');
+                        $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
+                        \DB::disconnect('mysqlTV');
                         $return = "no existe en users: $sap_code";
                     }
                 }
                 else{
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'QR de constancia erroneo';
                 }
             }
             else{
-                $conexion = \DB::connection('mysqlTVTest');
+                $conexion = \DB::connection('mysqlTV');
                     $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTVTest');
+                \DB::disconnect('mysqlTV');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
