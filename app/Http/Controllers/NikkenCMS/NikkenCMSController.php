@@ -264,7 +264,7 @@ class NikkenCMSController extends Controller{
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_files WHERE ERROR = 1;");
             \DB::disconnect('mysqlTV');
             $data = [
-                'data' => $error,
+                'data' => $dataCell,
             ];
             return $data;
         }
