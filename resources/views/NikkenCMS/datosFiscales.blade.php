@@ -12,27 +12,11 @@
                     <thead>
                        <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Código Usuario</th>
-                          <th scope="col">RFC</th>
+                          <th scope="col">Id Registro</th>
+                          <th scope="col">Código de usuario</th>
                           <th scope="col">Tipo de persona</th>
-                          <th scope="col">Regimen Fiscal</th>
-                          <th scope="col">Regimen Descriptor</th>
-                          <th scope="col">Persona Moral Nombre</th>
-                          <th scope="col">Persona Fisica Nombre</th>
-                          <th scope="col">Persona Fisica Primer Apellido</th>
-                          <th scope="col">Persona Fisica Segundo Apellido</th>
-                          <th scope="col">Código Postal</th>
-                          <th scope="col">Estado</th>
-                          <th scope="col">Municipio</th>
-                          <th scope="col">Colonia</th>
-                          <th scope="col">Código CFDI</th>
-                          <th scope="col">Descripción CFDI</th>
-                          <th scope="col">Actualizado en SQL</th>
-                          <th scope="col">Fecha de Registro</th>
-                          <th scope="col">Ultima actualizacion</th>
-                          <th scope="col">Comentarios</th>
-                          <th scope="col">Archivo adjunto</th>
-                          <th scope="col">Acciones</th>
+                          <th scope="col">URL de Archivo</th>
+                          <th scope="col">Mensaje de Error</th>
                        </tr>
                     </thead>
                 </table>
