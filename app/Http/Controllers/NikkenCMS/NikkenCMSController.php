@@ -263,25 +263,6 @@ class NikkenCMSController extends Controller{
             $conexion = \DB::connection('mysqlTV');
                 $dataCell = $conexion->select("SELECT * FROM users_fiscal_files WHERE ERROR = 1;");
             \DB::disconnect('mysqlTV');
-            $error = [];
-            $prop = [];
-            foreach($dataCell as $idx => $row){
-                if($row->fiscal_file != null || !empty($row->fiscal_file)){
-                    $file = $row->fiscal_file;
-                    $extension = explode('.', $file);
-                    if(empty($row->business_name) || strlen($row->business_name) <= 0){
-                        if(trim($extension[3]) === 'pdf'){
-                            $prop = $this->getTextFromPDF($file);
-                            if($prop['valido'] === true){
-                                //if(trim($row->rfc) != trim($prop['RFC']) || trim($row->name) != trim($prop['nombre']) || trim($row->last_name) != trim($prop['apellido1']) || trim($row->second_last_name) != trim($prop['apellido2']) || trim($row->cp) != trim($prop['cp'])){
-                                if(trim($row->rfc) != trim($prop['RFC']) || trim($row->name) != trim($prop['nombre']) || trim($row->last_name) != trim($prop['apellido1']) || trim($row->second_last_name) != trim($prop['apellido2'])){
-                                    $error[$idx] = $row;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             $data = [
                 'data' => $error,
             ];
