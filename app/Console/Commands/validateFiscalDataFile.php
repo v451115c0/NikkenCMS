@@ -297,8 +297,7 @@ class validateFiscalDataFile extends Command
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
-            return $logExec;
-            #Storage::append("logValidaPDFFiscal.txt", $logExec);
+            Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else if(trim($PersonType) == 'MORAL'){
             $x = 0;
