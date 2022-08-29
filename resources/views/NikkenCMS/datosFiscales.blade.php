@@ -8,9 +8,9 @@
                 <h4 class="card-title text-center w-8">Datos fiscales con diferencia de datos</h4>
             </div>
             <div class="iq-card-body">
-                <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_updateAlert">
-                    <thead>
-                       <tr>
+                <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_updateAlert" width="100%">
+                    <thead width="100%">
+                       <tr width="100%">
                           <th scope="col">#</th>
                           <th scope="col">Id Registro</th>
                           <th scope="col">Código de usuario</th>
