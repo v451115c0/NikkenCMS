@@ -148,7 +148,7 @@ class validateFiscalDataFile extends Command
                         $nombre = explode(':', trim($textGral[$position]));
                         $nombre = $this->delete_space($nombre[1], ' ');
                         $data['nombre'] = trim($nombre);
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         $this->updateWithError("error al extraer $search_term");
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
