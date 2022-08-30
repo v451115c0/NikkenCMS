@@ -115,12 +115,12 @@ class validateFiscalDataFile extends Command
                         $data['RFC'] = trim($rfc);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -145,12 +145,12 @@ class validateFiscalDataFile extends Command
                         }
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -163,12 +163,12 @@ class validateFiscalDataFile extends Command
                         $data['nombre'] = trim($nombre);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -181,12 +181,12 @@ class validateFiscalDataFile extends Command
                         $data['apellido1'] = trim($apellido1);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -199,12 +199,12 @@ class validateFiscalDataFile extends Command
                         $data['apellido2'] = trim($apellido2[1]);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -218,12 +218,12 @@ class validateFiscalDataFile extends Command
                         $data['cp'] = trim($cp[0]);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -242,12 +242,12 @@ class validateFiscalDataFile extends Command
                         $data['colonia'] = trim($colonia);
                     } 
                     catch (\Exception $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("error al extraer $search_term", $sap_code);
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
@@ -367,7 +367,7 @@ class validateFiscalDataFile extends Command
                         \DB::disconnect('migracion');
 
                         $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
+                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
                         \DB::disconnect('mysqlTV');
             
                         $return = "PDF procesado, usuario: $sap_code";
@@ -445,32 +445,80 @@ class validateFiscalDataFile extends Command
 
                     $data['sap_code'] = $sap_code;
 
+                    try{
                     $search_term = "RFC:";
                     $position = $this->search_array($textGral, $search_term);
                     $rfc = explode(':', trim($textGral[$position]));
                     $rfc = $this->delete_space($rfc[1], ' ');
                     $data['RFC'] = trim($rfc);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['tipo'] = $tipo;
 
-                    $search_term = "Regímenes";
-                    $position = $this->search_array($textGral, $search_term);
-                    $position = (intval($position) + 2);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                    try{
+                        $search_term = "Regímenes";
+                        $position = $this->search_array($textGral, $search_term);
+                        $position = (intval($position) + 2);
+                        $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                        $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
-                    $search_term = "Denominación/Razón\tSocial:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $nombre = explode(':', trim($textGral[$position]));
-                    $nombre = $this->delete_space($nombre[1], ' ');
-                    $data['nombre'] = trim($nombre);
+                    try{
+                        $search_term = "Denominación/Razón\tSocial:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $nombre = explode(':', trim($textGral[$position]));
+                        $nombre = $this->delete_space($nombre[1], ' ');
+                        $data['nombre'] = trim($nombre);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
-                    $search_term = "Código\tPostal";
-                    $position = $this->search_array($textGral, $search_term);
-                    $cp = explode(':', trim($textGral[$position]));
-                    $cp = $this->delete_space($cp[1], ' ');
-                    $cp = explode(' ', trim($cp));
-                    $data['cp'] = trim($cp[0]);
+                    try{
+                        $search_term = "Código\tPostal";
+                        $position = $this->search_array($textGral, $search_term);
+                        $cp = explode(':', trim($textGral[$position]));
+                        $cp = $this->delete_space($cp[1], ' ');
+                        $cp = explode(' ', trim($cp));
+                        $data['cp'] = trim($cp[0]);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
@@ -487,11 +535,23 @@ class validateFiscalDataFile extends Command
                     $data['estado'] = strtoupper($response[0]->estado);
                     $data['municipio'] = strtoupper($response[0]->municipio);
                     
-                    $search_term = "Nombre\tde\tlaColonia:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $colonia = explode('Colonia:', trim($textGral[$position]));
-                    $colonia = $this->delete_space($colonia[1], ' ');
-                    $data['colonia'] = trim($colonia);
+                    try{
+                        $search_term = "Nombre\tde\tlaColonia:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $colonia = explode('Colonia:', trim($textGral[$position]));
+                        $colonia = $this->delete_space($colonia[1], ' ');
+                        $data['colonia'] = trim($colonia);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
@@ -544,7 +604,7 @@ class validateFiscalDataFile extends Command
                         \DB::disconnect('migracion');
 
                         $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
+                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
                         \DB::disconnect('mysqlTV');
             
                         $return = "PDF procesado, usuario: $sap_code";
