@@ -489,6 +489,9 @@ class validateFiscalDataFile extends Command
             Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else{
+            $conexion = \DB::connection('mysqlTV');
+                    $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Tipo persona No Aplica' WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
             $logExec = "[" . date('Y-m-d H:i:s') . "] Tipo persona: No Aplica: $sap_code\t";
             Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
