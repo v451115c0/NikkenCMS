@@ -91,7 +91,6 @@ class validateFiscalDataFile extends Command
                     'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
                     'Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas.' => 625,
                     'Régimen Simplificado de Confianza' => 626,
-                    'Régimen Simplificado de Confianza' => 626,
                 ];
 
                 if ($validaTexto === false) {
@@ -343,7 +342,8 @@ class validateFiscalDataFile extends Command
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
-                    "Regimen Simplificado de Confianza" => 626
+                    "Regimen Simplificado de Confianza" => 626,
+                    'Régimen Simplificado de Confianza' => 626,
                 ];
 
                 if ($validaTexto === false) {
