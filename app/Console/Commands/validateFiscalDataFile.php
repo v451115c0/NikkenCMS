@@ -180,7 +180,7 @@ class validateFiscalDataFile extends Command
                 $data2['pdfUSER'] = $data;
 
                 ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-                ConvertApi::setApiSecret('784SYWV5QCTzNz1K');
+                ConvertApi::setApiSecret('2BkURXcVE7djyppx');
                 $result = ConvertApi::convert('jpg', [
                         'File' => "$PDFfile",
                         'PageRange' => '1-1',
@@ -420,7 +420,7 @@ class validateFiscalDataFile extends Command
                 $data2['pdfUSER'] = $data;
 
                 ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-                ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
+                ConvertApi::setApiSecret('2BkURXcVE7djyppx');
                 $result = ConvertApi::convert('jpg', [
                         'File' => "$PDFfile",
                         'PageRange' => '1-1',
