@@ -89,6 +89,7 @@ class validateFiscalDataFile extends Command
                     'Sin obligaciones Fiscales' => 616,
                     'Régimen de Incorporación Fiscal' => 621,
                     'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
+                    'Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas' => 625,
                     'Régimen Simplificado de Confianza' => 626,
                 ];
 
