@@ -118,9 +118,19 @@ class validateFiscalDataFile extends Command
 
                     $search_term = "Régimen ";
                     $position = $this->search_array($textGral, $search_term);
-                    return $position;
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                    if(empty($position) || $position <= 0 || trim($position) == ''){
+                        $conexion = \DB::connection('mysqlTV');
+                            $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
+                        \DB::disconnect('mysqlTV');
+                        $return = "Sin Regimen descriptor: $sap_code";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
+                        Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return;
+                    }
+                    else{
+                        $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                        $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                    }
 
                     $search_term = "Nombre\t(s)";
                     $position = $this->search_array($textGral, $search_term);
