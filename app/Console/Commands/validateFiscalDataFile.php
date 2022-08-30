@@ -118,6 +118,7 @@ class validateFiscalDataFile extends Command
 
                     $search_term = "Régimen ";
                     $position = $this->search_array($textGral, $search_term);
+                    return $position;
                     $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                     $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
 
