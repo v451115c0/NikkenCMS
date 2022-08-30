@@ -289,7 +289,7 @@ class validateFiscalDataFile extends Command
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'QR de constancia erroneo';
+                    $return = "QR de constancia erroneo: $sap_code";
                 }
             }
             else{
@@ -465,7 +465,7 @@ class validateFiscalDataFile extends Command
                     $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'QR de constancia erroneo';
+                    $return = "QR de constancia erroneo: $sap_code";
                 }
             }
             else{
