@@ -475,4 +475,26 @@ class MNKController extends Controller{
         }
         return FALSE;
     }
+
+    public function killprocess(){
+        $conexion = \DB::connection('migracion');
+            $data = $conexion->select("SELECT CONCAT('KILL ',id,';') AS muerte FROM information_schema.processlist 
+            WHERE user='nikkenla_mkrt' AND Info LIKE '%SELECT codigo, nombre, rango FROM nikkenla_marketing.control_ci WHERE codigo = code AND (rango IN (%'");
+            $log = "";
+            for($x = 0; $x < sizeof($data); $x++){
+                $queryKill = $data[$x]->muerte;
+                try{
+                    $conexion->statement("$queryKill");
+                    $log .= "$queryKill <br> ";
+                }
+                catch (\Exception $e) {
+                    $log .= "error: $queryKill <br> ";
+                }
+                catch (\Throwable  $e) {
+                    $log .= "error: $queryKill <br> ";
+                }
+            }
+        \DB::disconnect('migracion');
+        return $log;
+    }
 }
