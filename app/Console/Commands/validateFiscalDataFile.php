@@ -227,12 +227,24 @@ class validateFiscalDataFile extends Command
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
+                    
+                    try{
+                        $conexion = \DB::connection('mysqlTV');
+                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
+                        \DB::disconnect('mysqlTV');
+                        $data['estado'] = strtoupper($response[0]->estado);
+                        $data['municipio'] = strtoupper($response[0]->municipio);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
                     try{
                         $search_term = "Colonia:";
@@ -520,20 +532,32 @@ class validateFiscalDataFile extends Command
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
 
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    if(sizeof($response) <= 0){
+                    try{
                         $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
+                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                         \DB::disconnect('mysqlTV');
-                        $return = "Código Postal desconocido: $sap_code";
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
-                        Storage::append("logValidaPDFFiscal.txt", $logExec);
-                        return "";
+                        if(sizeof($response) <= 0){
+                            $conexion = \DB::connection('mysqlTV');
+                                $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
+                            \DB::disconnect('mysqlTV');
+                            $return = "Código Postal desconocido: $sap_code";
+                            $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
+                            Storage::append("logValidaPDFFiscal.txt", $logExec);
+                            return "";
+                        }
+                        $data['estado'] = strtoupper($response[0]->estado);
+                        $data['municipio'] = strtoupper($response[0]->municipio);
                     }
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
                     try{
                         $search_term = "Nombre\tde\tlaColonia:";
