@@ -272,6 +272,7 @@ class validateFiscalDataFile extends Command
                     $data['lastUpdate'] = Date('Y-m-d H:i:s');
                     $data['user_id'] = $user_id;
                 }
+                $data2['pdfUSER'] = $data;
 
                 $conexion = \DB::connection('mysqlTV');
                     $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
@@ -610,6 +611,8 @@ class validateFiscalDataFile extends Command
                     $data['lastUpdate'] = Date('Y-m-d H:i:s');
                     $data['user_id'] = $user_id;
                 }
+                $data2['pdfUSER'] = $data;
+
                 $conexion = \DB::connection('mysqlTV');
                     $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
                 \DB::disconnect('mysqlTV');
@@ -638,10 +641,8 @@ class validateFiscalDataFile extends Command
 
                 $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
                 Storage::append("logValidaPDFFiscal.txt", $logExec);
-                
-                /*$data2['pdfUSER'] = $data;
 
-                ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
+                /*## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
                 ConvertApi::setApiSecret('gbIJ8pquFpBps1Nu');
                 $result = ConvertApi::convert('jpg', [
                         'File' => "$PDFfile",
