@@ -63,8 +63,21 @@ class validateFiscalDataFile extends Command
             $formato = $formato[1];
             if(trim($formato) === 'pdf'){
                 $data2 = [];
+                
+                try{
+                    $parser = new \Smalot\PdfParser\Parser();
+                } 
+                catch (\Exception $e) {
+                    $this->updateWithError("Constancia ilegible o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia ilegible o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                catch (\Throwable  $e) {
+                    $this->updateWithError("Constancia ilegible o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia ilegible o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
 
-                $parser = new \Smalot\PdfParser\Parser();
                 $pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
