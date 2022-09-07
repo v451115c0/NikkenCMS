@@ -64,8 +64,9 @@ class validateFiscalDataFile extends Command
             if(trim($formato) === 'pdf'){
                 $data2 = [];
                 
+                $parser = new \Smalot\PdfParser\Parser();
                 try{
-                    $parser = new \Smalot\PdfParser\Parser();
+                    $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
                     $this->updateWithError("Constancia ilegible o no actualizada ", $sap_code);
