@@ -935,7 +935,6 @@ class NikkenCMSController extends Controller{
         $pdf = $parser->parseFile($PDFfile);
         $data = [];
         $textGral = $pdf->getText();
-        return $textGral;
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
         if ($validaTexto === false) {
@@ -974,13 +973,14 @@ class NikkenCMSController extends Controller{
         $data2['pdfUSER'] = $data;
 
         ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-        ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
-        $result = ConvertApi::convert('jpg', [
+        ConvertApi::setApiSecret('cmurH9MLDGe0nsLE');
+        $result = ConvertApi::convert('PDF', [
                 'File' => "$PDFfile",
                 'PageRange' => '1-1',
             ], 'pdf'
         );
-        $result->saveFiles('extraido/QR.jpg');
+        $result->saveFiles('extraido/pdf.pdf');
+        return 'ok';
         $qrcode = new QrReader('./extraido/QR.jpg');
         $text = $qrcode->text();
         $urlQR = explode('validadorqr.jsf', trim($text));
