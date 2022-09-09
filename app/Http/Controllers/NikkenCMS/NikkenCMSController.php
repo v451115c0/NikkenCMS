@@ -935,6 +935,7 @@ class NikkenCMSController extends Controller{
         $pdf = $parser->parseFile($PDFfile);
         $data = [];
         $textGral = $pdf->getText();
+        return $textGral;
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
         if ($validaTexto === false) {
