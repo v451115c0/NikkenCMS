@@ -937,6 +937,7 @@ class NikkenCMSController extends Controller{
         $textGral = $pdf->getText();
         $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
         $validaTexto = strpos($textGral, $find);
+        return $textGral;
         if ($validaTexto === false) {
             $data['valido'] = false;
         }
@@ -980,7 +981,6 @@ class NikkenCMSController extends Controller{
             ], 'pdf'
         );
         $result->saveFiles('extraido/pdf.pdf');
-        return 'ok';
         $qrcode = new QrReader('./extraido/QR.jpg');
         $text = $qrcode->text();
         $urlQR = explode('validadorqr.jsf', trim($text));
