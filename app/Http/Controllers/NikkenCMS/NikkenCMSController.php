@@ -927,7 +927,6 @@ class NikkenCMSController extends Controller{
         $conexion = \DB::connection('mysqlTV');
             $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code");
         \DB::disconnect('mysqlTV');
-        return $response;
         ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
         $PDFfile = $response[0]->fiscal_file;
         $data2 = [];
@@ -943,6 +942,7 @@ class NikkenCMSController extends Controller{
         }
         else {
             $textGral = explode("\n", $textGral);
+            return $textGral;
             $data['valido'] = true;
             $data['titulo'] = trim($textGral[1]);
 
