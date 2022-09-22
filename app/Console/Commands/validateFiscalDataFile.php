@@ -69,13 +69,13 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
 
@@ -339,13 +339,13 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 //$pdf = $parser->parseFile($PDFfile);

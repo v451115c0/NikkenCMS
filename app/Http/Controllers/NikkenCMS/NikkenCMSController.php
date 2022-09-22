@@ -359,18 +359,18 @@ class NikkenCMSController extends Controller{
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return $logExec;
                 }
                 catch (\Throwable  $e) {
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return $logExec;
                 }
 
                 //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
-                return $textGral;
+                //return $textGral;
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
                 $sap_code = $dataUser[$x]->sap_code;
@@ -594,11 +594,11 @@ class NikkenCMSController extends Controller{
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return $logExec;
                 }
                 catch (\Throwable  $e) {
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return $logExec;
                 }
                 //$pdf = $parser->parseFile($PDFfile);
