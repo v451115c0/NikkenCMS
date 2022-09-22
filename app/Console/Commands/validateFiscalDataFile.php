@@ -109,9 +109,9 @@ class validateFiscalDataFile extends Command
 
                 if ($validaTexto === false) {
                     $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF no es un documento Oficial del SAT' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'El PDF del usuario no corresponde al SAT';
+                    $return = 'El PDF no es un documento Oficial del SAT';
                 }
                 else {
                     $textGral = explode("\n", $textGral);
@@ -372,9 +372,9 @@ class validateFiscalDataFile extends Command
 
                 if ($validaTexto === false) {
                     $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF no es un documento Oficial del SAT' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'El PDF del usuario no corresponde al SAT';
+                    $return = 'El PDF no es un documento Oficial del SAT';
                     return $return;
                 }
                 else {
