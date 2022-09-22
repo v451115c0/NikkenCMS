@@ -327,108 +327,17 @@ class NikkenCMSController extends Controller{
             return $response;
         }
     }
-
-    public function getTextFromPDF($PDFfile){
-        $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile($PDFfile);
-        $data = [];
-        $textGral = $pdf->getText();
-        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-        $validaTexto = strpos($textGral, $find);
-
-        if ($validaTexto === false || empty($textGral)) {
-            $data['valido'] = false;
-        }
-        else {
-            $textGral = explode("\n", $textGral);
-            $data['valido'] = true;
-            $data['titulo'] = trim($textGral[1]);
-
-            $nombre = explode(':', trim($textGral[13]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $nombre = str_replace($order, $replace, $nombre);
-            $data['nombre'] = trim($nombre[1]);
-
-            $apellido1 = explode(':', trim($textGral[14]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido1 = str_replace($order, $replace, $apellido1);
-            $data['apellido1'] = trim($apellido1[1]);
-
-            $apellido2 = explode(':', trim($textGral[15]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido2 = str_replace($order, $replace, $apellido2);
-            $data['apellido2'] = trim($apellido2[1]);
-
-            $cp = explode(':', trim($textGral[21]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $cp = str_replace($order, $replace, $cp[1]);
-            $cp = explode(' ', trim($cp));
-            $data['cp'] = trim($cp[0]);
-
-            $data['RFC'] = trim($textGral[9]);
-        }
-        return $data;
-    }
-
-    public function getTextFromPDFview(Request $request){
-        $PDFfile = request()->file;
-        $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile($PDFfile);
-        $data = [];
-        $textGral = $pdf->getText();
-        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-        $validaTexto = strpos($textGral, $find);
-
-        if ($validaTexto === false) {
-            $data['valido'] = false;
-        }
-        else {
-            $textGral = explode("\n", $textGral);
-            $data['valido'] = true;
-            $data['titulo'] = trim($textGral[1]);
-
-            $nombre = explode(':', trim($textGral[13]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $nombre = str_replace($order, $replace, $nombre);
-            $data['nombre'] = trim($nombre[1]);
-
-            $apellido1 = explode(':', trim($textGral[14]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido1 = str_replace($order, $replace, $apellido1);
-            $data['apellido1'] = trim($apellido1[1]);
-
-            $apellido2 = explode(':', trim($textGral[15]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido2 = str_replace($order, $replace, $apellido2);
-            $data['apellido2'] = trim($apellido2[1]);
-
-            $cp = explode(':', trim($textGral[21]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $cp = str_replace($order, $replace, $cp[1]);
-            $cp = explode(' ', trim($cp));
-            $data['cp'] = trim($cp[0]);
-
-            $data['RFC'] = trim($textGral[9]);
-        }
-        return $data;
-    }
-
-    public function getImgFromPDFview(Request $request){
+    
+    ###########################################
+    public function getValidateInfoSAT(Request $request){
+        $sap_code =  request()->sap_code;
         date_default_timezone_set('America/Mexico_City');
 
-        $conexion = \DB::connection('mysqlTVTest');
+        $conexion = \DB::connection('mysqlTV');
             $dataUser = $conexion->select("SELECT files.* FROM users_fiscal_files files
             INNER JOIN users us ON files.sap_code = us.sap_code
-            WHERE files.error = 0 AND files.processed = 0 AND files.person_type = 'MORAL' limit 1;");
-        \DB::disconnect('mysqlTVTest');
+            WHERE files.error = 0 AND files.processed = 0 AND person_type != 'NO APLICA' AND files.fiscal_file IS NOT NULL AND files.sap_code = $sap_code ORDER BY files.sap_code DESC LIMIT 1;");
+        \DB::disconnect('mysqlTV');
         $PersonType = $dataUser[0]->person_type;
         $PDFfile = $dataUser[0]->fiscal_file;
         $sap_code = $dataUser[0]->sap_code;
@@ -444,11 +353,26 @@ class NikkenCMSController extends Controller{
             $formato = $formato[1];
             if(trim($formato) === 'pdf'){
                 $data2 = [];
-
+                
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile($PDFfile);
+                try{
+                    $pdf = $parser->parseFile($PDFfile);
+                } 
+                catch (\Exception $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                catch (\Throwable  $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+
+                //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
+                return $textGral;
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
                 $sap_code = $dataUser[$x]->sap_code;
@@ -470,13 +394,14 @@ class NikkenCMSController extends Controller{
                     'Sin obligaciones Fiscales' => 616,
                     'Régimen de Incorporación Fiscal' => 621,
                     'Régimen de las Actividades Empresariales con ingresos a traves de Plataformas Tecnologicas' => 625,
+                    'Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas.' => 625,
                     'Régimen Simplificado de Confianza' => 626,
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'El PDF del usuario no corresponde al SAT';
                 }
                 else {
@@ -487,55 +412,162 @@ class NikkenCMSController extends Controller{
 
                     $data['sap_code'] = $sap_code;
 
-                    $search_term = "RFC:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $rfc = explode(':', trim($textGral[$position]));
-                    $rfc = $this->delete_space($rfc[1], ' ');
-                    $data['RFC'] = trim($rfc);
+                    try {
+                        $search_term = "RFC:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $rfc = explode(':', trim($textGral[$position]));
+                        $rfc = $this->delete_space($rfc[1], ' ');
+                        $data['RFC'] = trim($rfc);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['tipo'] = $tipo;
 
-                    $search_term = "Régimen ";
-                    $position = $this->search_array($textGral, $search_term);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                    try {
+                        $search_term = "Régimen ";
+                        $position = $this->search_array($textGral, $search_term);
+                        if(empty($position) || $position <= 0 || trim($position) == ''){
+                            $conexion = \DB::connection('mysqlTV');
+                                $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
+                            \DB::disconnect('mysqlTV');
+                            $return = "Sin Regimen descriptor: $sap_code";
+                            $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
+                            Storage::append("logValidaPDFFiscal.txt", $logExec);
+                            return;
+                        }
+                        else{
+                            $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                            $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+                        }
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
-                    $search_term = "Nombre\t(s)";
-                    $position = $this->search_array($textGral, $search_term);
-                    $nombre = explode(':', trim($textGral[$position]));
-                    $nombre = $this->delete_space($nombre[1], ' ');
-                    $data['nombre'] = trim($nombre);
+                    try {
+                        $search_term = "Nombre\t(s)";
+                        $position = $this->search_array($textGral, $search_term);
+                        $nombre = explode(':', trim($textGral[$position]));
+                        $nombre = $this->delete_space($nombre[1], ' ');
+                        $data['nombre'] = trim($nombre);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
-                    $search_term = "Primer\tApellido:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $apellido1 = explode(':', trim($textGral[$position]));
-                    $apellido1 = $this->delete_space($apellido1[1], ' ');
-                    $data['apellido1'] = trim($apellido1);
+                    try{
+                        $search_term = "Primer\tApellido:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $apellido1 = explode(':', trim($textGral[$position]));
+                        $apellido1 = $this->delete_space($apellido1[1], ' ');
+                        $data['apellido1'] = trim($apellido1);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
-                    $search_term = "Segundo\tApellido:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $apellido2 = explode(':', trim($textGral[$position]));
-                    $apellido2 = $this->delete_space($apellido2, ' ');
-                    $data['apellido2'] = trim($apellido2[1]);
+                    try{
+                        $search_term = "Segundo\tApellido:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $apellido2 = explode(':', trim($textGral[$position]));
+                        $apellido2 = $this->delete_space($apellido2, ' ');
+                        $data['apellido2'] = trim($apellido2[1]);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
-                    $search_term = "Código\tPostal";
-                    $position = $this->search_array($textGral, $search_term);
-                    $cp = explode(':', trim($textGral[$position]));
-                    $cp = $this->delete_space($cp[1], ' ');
-                    $cp = explode(' ', trim($cp));
-                    $data['cp'] = trim($cp[0]);
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
+                    try{
+                        $search_term = "Código\tPostal";
+                        $position = $this->search_array($textGral, $search_term);
+                        $cp = explode(':', trim($textGral[$position]));
+                        $cp = $this->delete_space($cp[1], ' ');
+                        $cp = explode(' ', trim($cp));
+                        $data['cp'] = trim($cp[0]);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
-                    $search_term = "Colonia:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $colonia = explode('Colonia:', trim($textGral[$position]));
-                    $colonia = $this->delete_space($colonia[1], ' ');
-                    $data['colonia'] = trim($colonia);
+                    try{
+                        $conexion = \DB::connection('mysqlTV');
+                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
+                        \DB::disconnect('mysqlTV');
+                        $data['estado'] = strtoupper($response[0]->estado);
+                        $data['municipio'] = strtoupper($response[0]->municipio);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    
+                    try{
+                        $search_term = "Colonia:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $colonia = explode('Colonia:', trim($textGral[$position]));
+                        $colonia = $this->delete_space($colonia[1], ' ');
+                        $data['colonia'] = trim($colonia);
+                    } 
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
@@ -547,136 +579,39 @@ class NikkenCMSController extends Controller{
                 }
                 $data2['pdfUSER'] = $data;
 
-                ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-                ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
-                $result = ConvertApi::convert('jpg', [
-                        'File' => "$PDFfile",
-                        'PageRange' => '1-1',
-                    ], 'pdf'
-                );
-                $result->saveFiles(public_path('extraido/QR.jpg'));
-                $qrcode = new QrReader(public_path('extraido/QR.jpg'));
-                $text = $qrcode->text();
-                $urlQR = explode('validadorqr.jsf', trim($text));
-                
-                $origenSAT = false;
-                $RFCfinal = false;
-
-                if (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) { 
-                    $origenSAT = true;
-                }
-                
-                if($origenSAT == true){
-                    $rfcQR = explode('_', trim($urlQR[1]));
-                    if(trim($rfcQR[1]) == trim($data['RFC'])) {
-                        $RFCfinal = true;
-                    }
-                }
-
-                if($origenSAT == true && $RFCfinal == true){
-                    $result = ConvertApi::convert('pdf', [
-                            'Url' => $text,
-                            'PageRange' => '1-1',
-                        ], 'web'
-                    );
-                    $result->saveFiles(public_path('extraido/PDF.pdf'));
-                    $parser = new \Smalot\PdfParser\Parser();
-                    $pdf = $parser->parseFile(public_path('extraido/PDF.pdf'));
-                    $textGral = $pdf->getText();
-                    $textGral = explode("\n", $textGral);
-                    $data = [];
+                $conexion = \DB::connection('mysqlTV');
+                    $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
+                $existe = $user[0]->total;
+                if($existe > 0){
+                    $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
+                    VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
                     
-                    $nombre = explode(':', trim($textGral[3]));
-                    $nombre = $this->delete_space($nombre, '');
-                    $data['nombre'] = trim($nombre[2]);
-                    
-                    $apellido1 = explode(':', trim($textGral[4]));
-                    $apellido1 = $this->delete_space($apellido1[2], '');
-                    $data['apellido1'] = trim($apellido1);
+                    $conexion = \DB::connection('migracion');
+                        $response = $conexion->insert("$insert");
+                    \DB::disconnect('migracion');
 
-                    $apellido2 = explode(':', trim($textGral[5]));
-                    $apellido2 = $this->delete_space($apellido2[2], '');
-                    $data['apellido2'] = trim($apellido2);
-
-                    $cp = explode(':', trim($textGral[18]));
-                    $cp = $this->delete_space($cp[2], '');
-                    $data['cp'] = trim($cp);
-
-                    $rfc = explode(':', trim($textGral[0]));
-                    $rfc = explode(',', trim($rfc[2]));
-                    $rfc = $this->delete_space($rfc[0], '');
-                    $data['RFC'] = trim($rfc);
-                    
-                    $data2['pdfSAT'] = $data;
-
-                    $nombre = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['nombre'], '')); $x++){
-                        $nombre .= $data2['pdfSAT']['nombre'][$x];
-                    }
-                    ($nombre === $this->delete_space($data2['pdfUSER']['nombre'], '')) ? $nombreValido = "valido": $nombreValido = 'invalido';
-                    
-                    $apellido1 = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido1'], '')); $x++){
-                        $apellido1 .= $data2['pdfSAT']['apellido1'][$x];
-                    }
-                    ($apellido1 === $this->delete_space($data2['pdfUSER']['apellido1'], '')) ? $apellido1 = "valido": $apellido1 = 'invalido';
-                    
-                    $apellido2 = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido2'], '')); $x++){
-                        $apellido2 .= $data2['pdfSAT']['apellido2'][$x];
-                    }
-                    ($apellido2 === $this->delete_space($data2['pdfUSER']['apellido2'], '')) ? $apellido2 = "valido": $apellido2 = 'invalido';
-                    
-                    $cp = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['cp'], '')); $x++){
-                        $cp .= $data2['pdfSAT']['cp'][$x];
-                    }
-                    ($cp === $this->delete_space($data2['pdfUSER']['cp'], '')) ? $cp = "valido": $cp = 'invalido';
-                    
-                    $RFC = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['RFC'], '')); $x++){
-                        $RFC .= $data2['pdfSAT']['RFC'][$x];
-                    }
-                    ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
-
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $existe = $user[0]->total;
-                    if($existe > 0){
-                        $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-                        VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
-                        
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->insert("$insert");
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-            
-                        $return = "PDF procesado, usuario: $sap_code";
-                    }
-                    else{
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-                        $return = "no existe en users: $sap_code";
-                    }
+                    $conexion = \DB::connection('mysqlTV');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTV');
+        
+                    $return = "PDF procesado, usuario: $sap_code";
                 }
                 else{
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $return = 'QR de constancia erroneo';
+                    $conexion = \DB::connection('mysqlTV');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTV');
+                    $return = "no existe en users: $sap_code";
                 }
             }
             else{
-                $conexion = \DB::connection('mysqlTVTest');
+                $conexion = \DB::connection('mysqlTV');
                     $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTVTest');
+                \DB::disconnect('mysqlTV');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
-            return $logExec;
-            #Storage::append("logValidaPDFFiscal.txt", $logExec);
+            Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else if(trim($PersonType) == 'MORAL'){
             $x = 0;
@@ -691,7 +626,20 @@ class NikkenCMSController extends Controller{
                 $data2 = [];
 
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile($PDFfile);
+                try{
+                    $pdf = $parser->parseFile($PDFfile);
+                } 
+                catch (\Exception $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                catch (\Throwable  $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
@@ -709,13 +657,14 @@ class NikkenCMSController extends Controller{
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
-                    "Regimen Simplificado de Confianza" => 626
+                    "Regimen Simplificado de Confianza" => 626,
+                    'Régimen Simplificado de Confianza' => 626,
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTVTest');
+                    $conexion = \DB::connection('mysqlTV');
                         $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF del usuario no corresponde al SAT' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
+                    \DB::disconnect('mysqlTV');
                     $return = 'El PDF del usuario no corresponde al SAT';
                     return $return;
                 }
@@ -727,51 +676,125 @@ class NikkenCMSController extends Controller{
 
                     $data['sap_code'] = $sap_code;
 
-                    $search_term = "RFC:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $rfc = explode(':', trim($textGral[$position]));
-                    $rfc = $this->delete_space($rfc[1], ' ');
-                    $data['RFC'] = trim($rfc);
+                    try{
+                        $search_term = "RFC:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $rfc = explode(':', trim($textGral[$position]));
+                        $rfc = $this->delete_space($rfc[1], ' ');
+                        $data['RFC'] = trim($rfc);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['tipo'] = $tipo;
 
-                    $search_term = "Regímenes";
-                    $position = $this->search_array($textGral, $search_term);
-                    $position = (intval($position) + 2);
-                    $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
-
-                    $search_term = "Denominación/Razón\tSocial:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $nombre = explode(':', trim($textGral[$position]));
-                    $nombre = $this->delete_space($nombre[1], ' ');
-                    $data['nombre'] = trim($nombre);
-
-                    $search_term = "Código\tPostal";
-                    $position = $this->search_array($textGral, $search_term);
-                    $cp = explode(':', trim($textGral[$position]));
-                    $cp = $this->delete_space($cp[1], ' ');
-                    $cp = explode(' ', trim($cp));
-                    $data['cp'] = trim($cp[0]);
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                    \DB::disconnect('mysqlTV');
-                    if(sizeof($response) <= 0){
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-                        $return = "Código Postal desconocido: $sap_code";
-                        return $return;
+                    try{
+                        $search_term = "Regímenes";
+                        $position = $this->search_array($textGral, $search_term);
+                        $position = (intval($position) + 2);
+                        $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                        $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                     }
-                    $data['estado'] = strtoupper($response[0]->estado);
-                    $data['municipio'] = strtoupper($response[0]->municipio);
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+
+                    try{
+                        $search_term = "Denominación/Razón\tSocial:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $nombre = explode(':', trim($textGral[$position]));
+                        $nombre = $this->delete_space($nombre[1], ' ');
+                        $data['nombre'] = trim($nombre);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+
+                    try{
+                        $search_term = "Código\tPostal";
+                        $position = $this->search_array($textGral, $search_term);
+                        $cp = explode(':', trim($textGral[$position]));
+                        $cp = $this->delete_space($cp[1], ' ');
+                        $cp = explode(' ', trim($cp));
+                        $data['cp'] = trim($cp[0]);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+
+                    try{
+                        $conexion = \DB::connection('mysqlTV');
+                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
+                        \DB::disconnect('mysqlTV');
+                        if(sizeof($response) <= 0){
+                            $conexion = \DB::connection('mysqlTV');
+                                $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
+                            \DB::disconnect('mysqlTV');
+                            $return = "Código Postal desconocido: $sap_code";
+                            $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
+                            Storage::append("logValidaPDFFiscal.txt", $logExec);
+                            return "";
+                        }
+                        $data['estado'] = strtoupper($response[0]->estado);
+                        $data['municipio'] = strtoupper($response[0]->municipio);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
                     
-                    $search_term = "Nombre\tde\tlaColonia:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $colonia = explode('Colonia:', trim($textGral[$position]));
-                    $colonia = $this->delete_space($colonia[1], ' ');
-                    $data['colonia'] = trim($colonia);
+                    try{
+                        $search_term = "Nombre\tde\tlaColonia:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $colonia = explode('Colonia:', trim($textGral[$position]));
+                        $colonia = $this->delete_space($colonia[1], ' ');
+                        $data['colonia'] = trim($colonia);
+                    }
+                    catch (\Exception $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
+                    catch (\Throwable  $e) {
+                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }
 
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
@@ -783,329 +806,50 @@ class NikkenCMSController extends Controller{
                 }
                 $data2['pdfUSER'] = $data;
 
-                ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-                ConvertApi::setApiSecret('x73XwF7GsGyGeK1q');
-                $result = ConvertApi::convert('jpg', [
-                        'File' => "$PDFfile",
-                        'PageRange' => '1-1',
-                    ], 'pdf'
-                );
-                $result->saveFiles(public_path('extraido/QR.jpg'));
-                $qrcode = new QrReader(public_path('extraido/QR.jpg'));
-                $text = $qrcode->text();
-                $urlQR = explode('validadorqr.jsf', trim($text));
-                
-                $origenSAT = false;
-                $RFCfinal = false;
+                $conexion = \DB::connection('mysqlTV');
+                    $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
+                $existe = $user[0]->total;
 
-                if (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) { 
-                    $origenSAT = true;
-                }
-                
-                if($origenSAT == true){
-                    $rfcQR = explode('_', trim($urlQR[1]));
-                    if(trim($rfcQR[1]) == trim($data['RFC'])) {
-                        $RFCfinal = true;
-                    }
-                }
-
-                if($origenSAT == true && $RFCfinal == true){
-                    /*$result = ConvertApi::convert('pdf', [
-                            'Url' => $text,
-                            'PageRange' => '1-1',
-                        ], 'web'
-                    );
-                    $result->saveFiles(public_path('extraido/PDF.pdf'));
-                    $parser = new \Smalot\PdfParser\Parser();
-                    $pdf = $parser->parseFile(public_path('extraido/PDF.pdf'));
-                    $textGral = $pdf->getText();
-                    $textGral = explode("\n", $textGral);
-                    $data = [];
+                if($existe > 0){
+                    $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
+                    VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
                     
-                    $nombre = explode(':', trim($textGral[3]));
-                    $nombre = $this->delete_space($nombre, '');
-                    $data['nombre'] = trim($nombre[2]);
-                    
-                    $apellido1 = explode(':', trim($textGral[4]));
-                    $apellido1 = $this->delete_space($apellido1[2], '');
-                    $data['apellido1'] = trim($apellido1);
+                    $conexion = \DB::connection('migracion');
+                        $response = $conexion->insert("$insert");
+                    \DB::disconnect('migracion');
 
-                    $apellido2 = explode(':', trim($textGral[5]));
-                    $apellido2 = $this->delete_space($apellido2[2], '');
-                    $data['apellido2'] = trim($apellido2);
-
-                    $cp = explode(':', trim($textGral[18]));
-                    $cp = $this->delete_space($cp[2], '');
-                    $data['cp'] = trim($cp);
-
-                    $rfc = explode(':', trim($textGral[0]));
-                    $rfc = explode(',', trim($rfc[2]));
-                    $rfc = $this->delete_space($rfc[0], '');
-                    $data['RFC'] = trim($rfc);
-                    
-                    $data2['pdfSAT'] = $data;
-
-                    $nombre = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['nombre'], '')); $x++){
-                        $nombre .= $data2['pdfSAT']['nombre'][$x];
-                    }
-                    ($nombre === $this->delete_space($data2['pdfUSER']['nombre'], '')) ? $nombreValido = "valido": $nombreValido = 'invalido';
-                    
-                    $apellido1 = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido1'], '')); $x++){
-                        $apellido1 .= $data2['pdfSAT']['apellido1'][$x];
-                    }
-                    ($apellido1 === $this->delete_space($data2['pdfUSER']['apellido1'], '')) ? $apellido1 = "valido": $apellido1 = 'invalido';
-                    
-                    $apellido2 = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido2'], '')); $x++){
-                        $apellido2 .= $data2['pdfSAT']['apellido2'][$x];
-                    }
-                    ($apellido2 === $this->delete_space($data2['pdfUSER']['apellido2'], '')) ? $apellido2 = "valido": $apellido2 = 'invalido';
-                    
-                    $cp = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['cp'], '')); $x++){
-                        $cp .= $data2['pdfSAT']['cp'][$x];
-                    }
-                    ($cp === $this->delete_space($data2['pdfUSER']['cp'], '')) ? $cp = "valido": $cp = 'invalido';
-                    
-                    $RFC = "";
-                    for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['RFC'], '')); $x++){
-                        $RFC .= $data2['pdfSAT']['RFC'][$x];
-                    }
-                    ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';*/
-
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $existe = $user[0]->total;
-
-                    if($existe > 0){
-                        $insert = "INSERT INTO users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-                        VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
-                        
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->insert("$insert");
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-            
-                        $return = "PDF procesado, usuario: $sap_code";
-                    }
-                    else{
-                        $conexion = \DB::connection('mysqlTVTest');
-                            $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                        \DB::disconnect('mysqlTVTest');
-                        $return = "no existe en users: $sap_code";
-                    }
+                    $conexion = \DB::connection('mysqlTV');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTV');
+        
+                    $return = "PDF procesado, usuario: $sap_code";
                 }
                 else{
-                    $conexion = \DB::connection('mysqlTVTest');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'QR de constancia erroneo' WHERE  sap_code = $sap_code");
-                    \DB::disconnect('mysqlTVTest');
-                    $return = 'QR de constancia erroneo';
+                    $conexion = \DB::connection('mysqlTV');
+                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
+                    \DB::disconnect('mysqlTV');
+                    $return = "no existe en users: $sap_code";
                 }
+
+                $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
+                Storage::append("logValidaPDFFiscal.txt", $logExec);
             }
             else{
-                $conexion = \DB::connection('mysqlTVTest');
+                $conexion = \DB::connection('mysqlTV');
                     $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTVTest');
+                \DB::disconnect('mysqlTV');
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
-            return $logExec;
-            #Storage::append("logValidaPDFFiscal.txt", $logExec);
+            Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else{
-            $logExec = "[" . date('Y-m-d H:i:s') . "] Tipo persona: No Aplica\t";
-            return $logExec;
-            #Storage::append("logValidaPDFFiscal.txt", $logExec);
-        }
-    }
-    
-    public function getValidateInfoSAT(Request $request){
-        $sap_code =  request()->sap_code;
-        $conexion = \DB::connection('mysqlTV');
-            $response = $conexion->select("SELECT * FROM users_fiscal_update WHERE sap_code = $sap_code");
-        \DB::disconnect('mysqlTV');
-        ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
-        $PDFfile = $response[0]->fiscal_file;
-        $data2 = [];
-
-        $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile($PDFfile);
-        $data = [];
-        $textGral = $pdf->getText();
-        $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-        $validaTexto = strpos($textGral, $find);
-        return $textGral;
-        if ($validaTexto === false) {
-            $data['valido'] = false;
-        }
-        else {
-            $textGral = explode("\n", $textGral);
-            return $textGral;
-            $data['valido'] = true;
-            $data['titulo'] = trim($textGral[1]);
-
-            $nombre = explode(':', trim($textGral[13]));
-            $nombre = $this->delete_space($nombre[1], ' ');
-            $data['nombre'] = trim($nombre);
-            
-            $apellido1 = explode(':', trim($textGral[14]));
-            $apellido1 = $this->delete_space($apellido1[1], ' ');
-            $data['apellido1'] = trim($apellido1);
-            
-
-            $apellido2 = explode(':', trim($textGral[15]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $apellido2 = str_replace($order, $replace, $apellido2);
-            $data['apellido2'] = trim($apellido2[1]);
-
-            $cp = explode(':', trim($textGral[21]));
-            $order   = array("\r\n", "\n", "\r", "\t");
-            $replace = ' ';
-            $cp = str_replace($order, $replace, $cp[1]);
-            $cp = explode(' ', trim($cp));
-            $data['cp'] = trim($cp[0]);
-
-            $data['RFC'] = trim($textGral[9]);
-        }
-        $data2['pdfUSER'] = $data;
-
-        ## se procesa el archivo PDF generado a partir del QR en el archivo que adjunta el usuario desde la TV
-        ConvertApi::setApiSecret('cmurH9MLDGe0nsLE');
-        $result = ConvertApi::convert('PDF', [
-                'File' => "$PDFfile",
-                'PageRange' => '1-1',
-            ], 'pdf'
-        );
-        $result->saveFiles('extraido/pdf.pdf');
-        $qrcode = new QrReader('./extraido/QR.jpg');
-        $text = $qrcode->text();
-        $urlQR = explode('validadorqr.jsf', trim($text));
-        
-        $origenSAT = false;
-        $RFCfinal = false;
-        (trim($urlQR[0]) == trim('https://siat.sat.gob.mx/app/qr/faces/pages/mobile/')) ? $origenSAT = true : null;
-        if($origenSAT == true){
-            $rfcQR = explode('_', trim($urlQR[1]));
-            (trim($rfcQR[1]) == trim($data2['pdfUSER']['RFC'])) ? $RFCfinal = true : null;   
-        }
-
-        if($origenSAT == true && $RFCfinal == true){
-            $result = ConvertApi::convert('pdf', [
-                    'Url' => $text,
-                    'PageRange' => '1-1',
-                ], 'web'
-            );
-            $result->saveFiles('./extraido/PDF.pdf');
-            
-            $parser = new \Smalot\PdfParser\Parser();
-            $pdf = $parser->parseFile('./extraido/PDF.pdf');
-            $textGral = $pdf->getText();
-            $textGral = explode("\n", $textGral);
-            $data = [];
-            
-            $nombre = explode(':', trim($textGral[3]));
-            $nombre = $this->delete_space($nombre, '');
-            $data['nombre'] = trim($nombre[2]);
-            
-            $apellido1 = explode(':', trim($textGral[4]));
-            $apellido1 = $this->delete_space($apellido1[2], '');
-            $data['apellido1'] = trim($apellido1);
-
-            $apellido2 = explode(':', trim($textGral[5]));
-            $apellido2 = $this->delete_space($apellido2[2], '');
-            $data['apellido2'] = trim($apellido2);
-
-            $cp = explode(':', trim($textGral[18]));
-            $cp = $this->delete_space($cp[2], '');
-            $data['cp'] = trim($cp);
-
-            $rfc = explode(':', trim($textGral[0]));
-            $rfc = explode(',', trim($rfc[2]));
-            $rfc = $this->delete_space($rfc[0], '');
-            $data['RFC'] = trim($rfc);
-            
-            $data2['pdfSAT'] = $data;
-
-            $nombre = "";
-            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['nombre'], '')); $x++){
-                $nombre .= $data2['pdfSAT']['nombre'][$x];
-            }
-            ($nombre === $this->delete_space($data2['pdfUSER']['nombre'], '')) ? $nombreValido = "valido": $nombreValido = 'invalido';
-            
-            $apellido1 = "";
-            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido1'], '')); $x++){
-                $apellido1 .= $data2['pdfSAT']['apellido1'][$x];
-            }
-            ($apellido1 === $this->delete_space($data2['pdfUSER']['apellido1'], '')) ? $apellido1 = "valido": $apellido1 = 'invalido';
-            
-            $apellido2 = "";
-            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['apellido2'], '')); $x++){
-                $apellido2 .= $data2['pdfSAT']['apellido2'][$x];
-            }
-            ($apellido2 === $this->delete_space($data2['pdfUSER']['apellido2'], '')) ? $apellido2 = "valido": $apellido2 = 'invalido';
-            
-            $cp = "";
-            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['cp'], '')); $x++){
-                $cp .= $data2['pdfSAT']['cp'][$x];
-            }
-            ($cp === $this->delete_space($data2['pdfUSER']['cp'], '')) ? $cp = "valido": $cp = 'invalido';
-            
-            $RFC = "";
-            for($x = 0; $x < strlen($this->delete_space($data2['pdfUSER']['RFC'], '')); $x++){
-                $RFC .= $data2['pdfSAT']['RFC'][$x];
-            }
-            ($RFC === $this->delete_space($data2['pdfUSER']['RFC'], '')) ? $RFC = "valido": $RFC = 'invalido';
-
-            return $textGral;
-            $table = '<table border="1px" width="100%">' .
-                        '<thead>' .
-                            '<tr>' .
-                                '<td>PDF del usuario</td>' .
-                                '<td>PDF del SAT</td>' .
-                                '<td>Dato Real?</td>' .
-                            '</tr>' .
-                        '</thead>' .
-                        '<tbody>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['nombre'] . '</td>' .
-                                '<td>' . $nombreValido . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $apellido1 . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['apellido1'] . '</td>' .
-                                '<td>' . $apellido2 . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['cp'] . '</td>' .
-                                '<td>' . $cp . '</td>' .
-                            '</tr>' .
-                            '<tr>' .
-                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
-                                '<td>' . $data2['pdfUSER']['RFC'] . '</td>' .
-                                '<td>' . $RFC . '</td>' .
-                            '</tr>' .
-                        '</tbody>' .
-                    '</table>';
-
-            return $table;
-        }
-        else{
-            $conexion = \DB::connection('migracion');
-                $date = Date('Y-m-d H:i:s');
-                $response = $conexion->insert("INSERT INTO nikkenla_incorporation.error_cfi_data (sap_code, data_error, created_at, deleted_at) VALUES($sap_code, 'URL de validación al SAT invalida', '$date', '$date');");
-            \DB::disconnect('migracion');
-            return "<h5>EL PDF del usuario no corresponde al SAT</h5>";
+            $conexion = \DB::connection('mysqlTV');
+                    $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Tipo persona No Aplica' WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
+            $logExec = "[" . date('Y-m-d H:i:s') . "] Tipo persona: No Aplica: $sap_code\t";
+            Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
     }
 
