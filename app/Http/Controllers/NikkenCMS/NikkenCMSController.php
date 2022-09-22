@@ -382,10 +382,10 @@ class NikkenCMSController extends Controller{
                     $search_term = "CÉDULA DE IDENTIFICACION FISCAL";
                     $position = $this->search_array($textGralVal, $search_term);
                 }
-                return $position;
-                $rfc = explode(':', trim($textGralVal[$position]));
-                $rfc = $this->delete_space($rfc[1], ' ');
-                $data['RFC'] = trim($rfc);
+                $titulo = trim($textGralVal[$position]);
+                $titulo = $this->delete_space($titulo[1], ' ');
+                $titulo = trim($titulo);
+                return $titulo;
 
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
