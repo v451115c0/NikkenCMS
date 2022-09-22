@@ -371,8 +371,18 @@ class NikkenCMSController extends Controller{
                 $data = [];
                 $textGral = $pdf->getText();
                 //return $textGral;
+
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
                 $validaTexto = strpos($textGral, $find);
+                
+                $textGralVal = explode("\n", $textGral);
+                return $textGralVal;
+                $search_term = "CÉDULA DE IDENTIFICACIÓN FISCAL";
+                $position = $this->search_array($textGralVal, $search_term);
+                $rfc = explode(':', trim($textGralVal[$position]));
+                $rfc = $this->delete_space($rfc[1], ' ');
+                $data['RFC'] = trim($rfc);
+
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
                 $user_id = $dataUser[$x]->user_id;
