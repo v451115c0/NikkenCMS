@@ -69,17 +69,17 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia ilegible o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia ilegible o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia ilegible o no actualizada ", $sap_code);
-                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia ilegible o no actualizada : $sap_code\t";
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
 
-                $pdf = $parser->parseFile($PDFfile);
+                //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
@@ -460,7 +460,20 @@ class validateFiscalDataFile extends Command
                 $data2 = [];
 
                 $parser = new \Smalot\PdfParser\Parser();
-                $pdf = $parser->parseFile($PDFfile);
+                try{
+                    $pdf = $parser->parseFile($PDFfile);
+                } 
+                catch (\Exception $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                catch (\Throwable  $e) {
+                    $this->updateWithError("Constancia no oficial o no actualizada ", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada : $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                }
+                //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
                 $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
@@ -498,11 +511,11 @@ class validateFiscalDataFile extends Command
                     $data['sap_code'] = $sap_code;
 
                     try{
-                    $search_term = "RFC:";
-                    $position = $this->search_array($textGral, $search_term);
-                    $rfc = explode(':', trim($textGral[$position]));
-                    $rfc = $this->delete_space($rfc[1], ' ');
-                    $data['RFC'] = trim($rfc);
+                        $search_term = "RFC:";
+                        $position = $this->search_array($textGral, $search_term);
+                        $rfc = explode(':', trim($textGral[$position]));
+                        $rfc = $this->delete_space($rfc[1], ' ');
+                        $data['RFC'] = trim($rfc);
                     }
                     catch (\Exception $e) {
                         $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
