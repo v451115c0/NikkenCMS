@@ -376,9 +376,8 @@ class NikkenCMSController extends Controller{
                 $validaTexto = strpos($textGral, $find);*/
                 
                 $textGralVal = explode("\n", $textGral);
-                return $textGralVal;
                 $search_term = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-                $position = $this->search_array($textGralVal, $search_term);
+                $position = $this->search_array($textGralVal, $search_term); return $position;
                 $rfc = explode(':', trim($textGralVal[$position]));
                 $rfc = $this->delete_space($rfc[1], ' ');
                 $data['RFC'] = trim($rfc);
