@@ -388,7 +388,11 @@ class NikkenCMSController extends Controller{
                 }
                 $titulo = trim($textGralVal[$position]);
                 $titulo = trim($titulo);
-                return $titulo;
+
+                $validaTexto = false;
+                if($titulo == 'CÉDULA DE IDENTIFICACIÓN FISCAL' || $titulo == 'CÉDULA DE IDENTIFICACION FISCAL' || $titulo == 'CEDULA DE IDENTIFICACION FISCAL'){
+                    $validaTexto = true;
+                }
 
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
