@@ -13,8 +13,7 @@ use Smalot\PdfParser\Parser;
 use \ConvertApi\ConvertApi;
 use Zxing\QrReader;
 
-
-use Spatie\PdfToText\Pdf;
+use Carrooi\PdfExtractor\PdfExtractor;
 
 use File;
 use Response;
@@ -399,8 +398,9 @@ class NikkenCMSController extends Controller{
                 }
 
                 if($test >= 1){
-                    $pdf_string = Pdf::getText($PDFfile);
-                    return $pdf_string;
+                    $extractor = new PdfExtractor;
+                    $text = $extractor->extractText($PDFfile);
+                    return $text;
                 }
 
                 $sap_code = $dataUser[$x]->sap_code;
