@@ -558,7 +558,7 @@ class NikkenCMSController extends Controller{
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
                         return $logExec;
                     }
-                    
+
                     try{
                         $search_term = "Nombre\tde\tlaLocalidad";
                         $position = $this->search_array($textGral, $search_term);
@@ -666,7 +666,7 @@ class NikkenCMSController extends Controller{
                 ];
 
                 if ($validaTexto === false) {
-                    $return = 'El PDF no es un documento Oficial del SAT';
+                    $return = 'Constancia no oficial o no actualizada 2022';
                     return $return;
                 }
                 else {
