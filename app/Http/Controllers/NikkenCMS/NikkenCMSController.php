@@ -398,7 +398,7 @@ class NikkenCMSController extends Controller{
                 }
 
                 if($test >= 1){
-                    return $textGral;
+                    return $textGralVal;
                 }
 
                 $sap_code = $dataUser[$x]->sap_code;
