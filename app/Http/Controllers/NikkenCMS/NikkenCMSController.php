@@ -395,7 +395,7 @@ class NikkenCMSController extends Controller{
                     $validaTexto = true;
                 }
 
-                if($test === 1){
+                if($test >= 1){
                     return $textGralVal;
                 }
 
