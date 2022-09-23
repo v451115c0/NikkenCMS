@@ -500,6 +500,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Primer\tApellido:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Primer Apellido";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $apellido1 = explode(':', trim($textGral[$position]));
                         $apellido1 = $this->delete_space($apellido1[1], ' ');
                         $data['apellido1'] = trim($apellido1);
@@ -516,6 +520,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Segundo\tApellido:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Segundo Apellido";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $apellido2 = explode(':', trim($textGral[$position]));
                         $apellido2 = $this->delete_space($apellido2, ' ');
                         $data['apellido2'] = trim($apellido2[1]);
@@ -532,6 +540,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Código\tPostal";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Código Postal";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $cp = explode(':', trim($textGral[$position]));
                         $cp = $this->delete_space($cp[1], ' ');
                         $cp = explode(' ', trim($cp));
@@ -549,6 +561,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Entidad Federativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
                         $entidad = explode(' ', trim($entidad));
@@ -566,6 +582,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Nombre\tde\tlaLocalidad";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Localidad";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[2], ' ');
                         $data['municipio'] = trim($entidad);
