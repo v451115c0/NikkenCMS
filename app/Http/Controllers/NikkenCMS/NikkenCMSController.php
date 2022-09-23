@@ -369,14 +369,8 @@ class NikkenCMSController extends Controller{
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return $logExec;
                 }
-
-                //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
-                #return $textGral;
-
-                /*$find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-                $validaTexto = strpos($textGral, $find);*/
                 
                 $textGralVal = explode("\n", $textGral);
                 $search_term = "CÉDULA DE IDENTIFICACIÓN FISCAL";
@@ -397,8 +391,11 @@ class NikkenCMSController extends Controller{
                     $validaTexto = true;
                 }
 
-                if($test >= 1){
+                if($test >= 1 && $test <= 1){
                     return $textGralVal;
+                }
+                else if($test >= 2 && $test <= 2){
+                    return $textGral;
                 }
 
                 $sap_code = $dataUser[$x]->sap_code;
@@ -425,7 +422,7 @@ class NikkenCMSController extends Controller{
                 ];
 
                 if ($validaTexto === false) {
-                    $logExec = 'El PDF del usuario no corresponde al SAT';
+                    $logExec = 'Constancia no oficial o no actualizada 2022';
                     return $logExec;
                 }
                 else {
