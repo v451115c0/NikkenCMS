@@ -546,18 +546,34 @@ class NikkenCMSController extends Controller{
                     }
                     
                     try{
-                        $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                        \DB::disconnect('mysqlTV');
-                        $data['estado'] = strtoupper($response[0]->estado);
-                        $data['municipio'] = strtoupper($response[0]->municipio);
+                        $search_term = "Nombre\tde\tlaEntidad\tFederativa";
+                    $position = $this->search_array($textGral, $search_term);
+                    $entidad = explode(':', trim($textGral[$position]));
+                    $entidad = $this->delete_space($entidad[1], ' ');
+                    $entidad = explode(' ', trim($entidad));
+                    $data['estado'] = trim($entidad[0]);
                     }
                     catch (\Exception $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
                         return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    try{
+                        $search_term = "Nombre\tde\tlaLocalidad";
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[2], ' ');
+                        $data['municipio'] = trim($entidad);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
                         return $logExec;
                     }
                     
