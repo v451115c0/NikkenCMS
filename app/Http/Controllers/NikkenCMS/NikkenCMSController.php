@@ -331,6 +331,7 @@ class NikkenCMSController extends Controller{
     ###########################################
     public function getValidateInfoSAT(Request $request){
         $sap_code =  request()->sap_code;
+        $test = request()->test;
         date_default_timezone_set('America/Mexico_City');
 
         $conexion = \DB::connection('mysqlTV');
@@ -392,6 +393,10 @@ class NikkenCMSController extends Controller{
                 $validaTexto = false;
                 if($titulo == 'CÉDULA DE IDENTIFICACIÓN FISCAL' || $titulo == 'CÉDULA DE IDENTIFICACION FISCAL' || $titulo == 'CEDULA DE IDENTIFICACION FISCAL'){
                     $validaTexto = true;
+                }
+
+                if($test === 1){
+                    return $textGralVal;
                 }
 
                 $sap_code = $dataUser[$x]->sap_code;
@@ -588,7 +593,7 @@ class NikkenCMSController extends Controller{
                 \DB::disconnect('migracion');
 
                 $conexion = \DB::connection('mysqlTV');
-                    $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
+                    $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL, error = 0 WHERE sap_code = $sap_code");
                 \DB::disconnect('mysqlTV');
     
                 $logExec = "PDF procesado, usuario: $sap_code";
