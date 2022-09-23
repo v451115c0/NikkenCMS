@@ -398,9 +398,7 @@ class NikkenCMSController extends Controller{
                 }
 
                 if($test >= 1){
-                    $extractor = new PdfExtractor;
-                    $text = $extractor->extractText($PDFfile);
-                    return $text;
+                    return $textGral;
                 }
 
                 $sap_code = $dataUser[$x]->sap_code;
