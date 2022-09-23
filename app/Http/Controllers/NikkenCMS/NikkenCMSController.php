@@ -422,7 +422,7 @@ class NikkenCMSController extends Controller{
                 ];
 
                 if ($validaTexto === false) {
-                    $logExec = 'Constancia no oficial o no actualizada 2022';
+                    $logExec = 'Constancia no oficial o no actualizada 2022 titulo';
                     return $logExec;
                 }
                 else {
@@ -544,11 +544,11 @@ class NikkenCMSController extends Controller{
                     
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
-                    $position = $this->search_array($textGral, $search_term);
-                    $entidad = explode(':', trim($textGral[$position]));
-                    $entidad = $this->delete_space($entidad[1], ' ');
-                    $entidad = explode(' ', trim($entidad));
-                    $data['estado'] = trim($entidad[0]);
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[1], ' ');
+                        $entidad = explode(' ', trim($entidad));
+                        $data['estado'] = trim($entidad[0]);
                     }
                     catch (\Exception $e) {
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
@@ -558,6 +558,7 @@ class NikkenCMSController extends Controller{
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
                         return $logExec;
                     }
+                    
                     try{
                         $search_term = "Nombre\tde\tlaLocalidad";
                         $position = $this->search_array($textGral, $search_term);

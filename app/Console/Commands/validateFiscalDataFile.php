@@ -69,12 +69,12 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
@@ -109,9 +109,9 @@ class validateFiscalDataFile extends Command
 
                 if ($validaTexto === false) {
                     $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF no es un documento Oficial del SAT' WHERE sap_code = $sap_code");
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Constancia no oficial o no actualizada 2022' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'El PDF no es un documento Oficial del SAT';
+                    $return = 'Constancia no oficial o no actualizada 2022';
                 }
                 else {
                     $textGral = explode("\n", $textGral);
@@ -242,7 +242,7 @@ class validateFiscalDataFile extends Command
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
                     
-                    try{
+                    /*try{
                         $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                         \DB::disconnect('mysqlTV');
@@ -258,6 +258,39 @@ class validateFiscalDataFile extends Command
                         $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }*/
+
+                    try{
+                        $search_term = "Nombre\tde\tlaEntidad\tFederativa";
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[1], ' ');
+                        $entidad = explode(' ', trim($entidad));
+                        $data['estado'] = trim($entidad[0]);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    
+                    try{
+                        $search_term = "Nombre\tde\tlaLocalidad";
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[2], ' ');
+                        $data['municipio'] = trim($entidad);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
                     }
                     
                     try{
@@ -288,30 +321,18 @@ class validateFiscalDataFile extends Command
                 }
                 $data2['pdfUSER'] = $data;
 
-                $conexion = \DB::connection('mysqlTV');
-                    $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTV');
-                $existe = $user[0]->total;
-                if($existe > 0){
-                    $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-                    VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
-                    
-                    $conexion = \DB::connection('migracion');
-                        $response = $conexion->insert("$insert");
-                    \DB::disconnect('migracion');
+                $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
+                VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '" . strtoupper($data2['pdfUSER']['apellido1']) . "', '" . strtoupper($data2['pdfUSER']['apellido2']) . "', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
+                
+                $conexion = \DB::connection('migracion');
+                    $response = $conexion->insert("$insert");
+                \DB::disconnect('migracion');
 
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTV');
-        
-                    $return = "PDF procesado, usuario: $sap_code";
-                }
-                else{
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTV');
-                    $return = "no existe en users: $sap_code";
-                }
+                $conexion = \DB::connection('mysqlTV');
+                    $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
+    
+                $return = "PDF procesado, usuario: $sap_code";
             }
             else{
                 $conexion = \DB::connection('mysqlTV');
@@ -339,12 +360,12 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022 ", $sap_code);
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
                     return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
@@ -372,9 +393,9 @@ class validateFiscalDataFile extends Command
 
                 if ($validaTexto === false) {
                     $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'El PDF no es un documento Oficial del SAT' WHERE sap_code = $sap_code");
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Constancia no oficial o no actualizada 2022' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'El PDF no es un documento Oficial del SAT';
+                    $return = 'Constancia no oficial o no actualizada 2022';
                     return $return;
                 }
                 else {
@@ -460,7 +481,7 @@ class validateFiscalDataFile extends Command
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
                     }
 
-                    try{
+                    /*try{
                         $conexion = \DB::connection('mysqlTV');
                             $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
                         \DB::disconnect('mysqlTV');
@@ -485,6 +506,39 @@ class validateFiscalDataFile extends Command
                         $this->updateWithError("pospuesto, error al extraer estado y municipio", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
                         return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    }*/
+
+                    try{
+                        $search_term = "Nombre\tde\tlaEntidad\tFederativa";
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[1], ' ');
+                        $entidad = explode(' ', trim($entidad));
+                        $data['estado'] = trim($entidad[0]);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    
+                    try{
+                        $search_term = "Nombre\tde\tlaLocalidad";
+                        $position = $this->search_array($textGral, $search_term);
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[2], ' ');
+                        $data['municipio'] = trim($entidad);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
                     }
                     
                     try{
@@ -515,31 +569,18 @@ class validateFiscalDataFile extends Command
                 }
                 $data2['pdfUSER'] = $data;
 
+                $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
+                VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
+                
+                $conexion = \DB::connection('migracion');
+                    $response = $conexion->insert("$insert");
+                \DB::disconnect('migracion');
+
                 $conexion = \DB::connection('mysqlTV');
-                    $user = $conexion->select("SELECT count(sap_code) as total FROM users WHERE sap_code = $sap_code");
+                    $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
                 \DB::disconnect('mysqlTV');
-                $existe = $user[0]->total;
-
-                if($existe > 0){
-                    $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
-                    VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
-                    
-                    $conexion = \DB::connection('migracion');
-                        $response = $conexion->insert("$insert");
-                    \DB::disconnect('migracion');
-
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1, last_error_message = NULL WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTV');
-        
-                    $return = "PDF procesado, usuario: $sap_code";
-                }
-                else{
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET processed = 1 WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTV');
-                    $return = "no existe en users: $sap_code";
-                }
+    
+                $return = "PDF procesado, usuario: $sap_code";
 
                 $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
                 Storage::append("logValidaPDFFiscal.txt", $logExec);
