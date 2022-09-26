@@ -411,6 +411,7 @@ class NikkenCMSController extends Controller{
                 $user_id = $dataUser[$x]->user_id;
 
                 $arrayRegimenCode = [
+                    "Régimen General de Ley Personas Morales" => 601,
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salari os' => 605,
                     'Régimen de Arrendamiento' => 606,
