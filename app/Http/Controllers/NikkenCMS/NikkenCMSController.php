@@ -798,29 +798,58 @@ class NikkenCMSController extends Controller{
                     }
 
                     try{
-                        $conexion = \DB::connection('mysqlTV');
-                            $response = $conexion->select("SELECT campo_uno_name AS estado, campo_dos_name AS municipio FROM states_countries WHERE CP = '" . $data['cp'] . "' LIMIT 1;");
-                        \DB::disconnect('mysqlTV');
-                        if(sizeof($response) <= 0){
-                            $return = "Código Postal desconocido: $sap_code";
-                            $logExec = "[" . date('Y-m-d H:i:s') . "] $return\t";
-                            return "";
+                        $search_term = "Código\tPostal";
+                        $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Código Postal";
+                            $position = $this->search_array($textGralVal, $search_term);
                         }
-                        $data['estado'] = strtoupper($response[0]->estado);
-                        $data['municipio'] = strtoupper($response[0]->municipio);
-                    }
+                        $cp = explode(':', trim($textGral[$position]));
+                        $cp = $this->delete_space($cp[1], ' ');
+                        $cp = explode(' ', trim($cp));
+                        $data['cp'] = trim($cp[0]);
+                    } 
                     catch (\Exception $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado y municipio: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                        return $logExec;
+                    }
+                    
+                    try{
+                        $search_term = "Nombre\tde\tlaEntidad\tFederativa";
+                        $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Entidad Federativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[1], ' ');
+                        $entidad = explode(' ', trim($entidad));
+                        $data['estado'] = trim($entidad[0]);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
                         return $logExec;
                     }
                     
                     try{
                         $search_term = "Nombre\tde\tlaColonia:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tColonia:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        else if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tColonia:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $colonia = explode('Colonia:', trim($textGral[$position]));
                         $colonia = $this->delete_space($colonia[1], ' ');
                         $data['colonia'] = trim($colonia);
