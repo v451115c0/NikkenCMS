@@ -383,6 +383,14 @@ class NikkenCMSController extends Controller{
                     $search_term = "CEDULA DE IDENTIFICACION FISCAL";
                     $position = $this->search_array($textGralVal, $search_term);
                 }
+                else if(trim($position) === ''){
+                    $search_term = "CEDULA DE IDENTIFICACION FISCAL ";
+                    $position = $this->search_array($textGralVal, $search_term);
+                }
+                else if(trim($position) === ''){
+                    $search_term = "CEDULA DE IDENTIFICACION FISCAL \t";
+                    $position = $this->search_array($textGralVal, $search_term);
+                }
                 $titulo = trim($textGralVal[$position]);
                 $titulo = trim($titulo);
 
