@@ -863,6 +863,30 @@ class NikkenCMSController extends Controller{
                         return $logExec;
                     }
 
+                    try{
+                        $search_term = "Nombre\tdel\tMunicipio\toDemarcación\tTerritorial:";
+                        $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre del Municipio oDemarcación Territorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        else if(trim($position) === ''){
+                            $search_term = "Nombre\tdel\tMunicipio\toDemarcacion\tTerritorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[2], ' ');
+                        $data['municipio'] = trim($entidad);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+
                     $data['codCFDI'] = 'S01';
                     $data['descCFDI'] = 'SIN EFECTOS FISCALES';
                     $data['pdffile'] = $PDFfile;
