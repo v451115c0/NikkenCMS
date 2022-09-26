@@ -840,11 +840,11 @@ class NikkenCMSController extends Controller{
                         $data['estado'] = trim($entidad[0]);
                     }
                     catch (\Exception $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
                     
@@ -881,6 +881,10 @@ class NikkenCMSController extends Controller{
                         }
                         else if(trim($position) === ''){
                             $search_term = "Nombre\tdel\tMunicipio\toDemarcacion\tTerritorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        else if(trim($position) === ''){
+                            $search_term = "Nombre\tdel\tMunicipio\to\tDemarcación\tTerritorial:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $entidad = explode(':', trim($textGral[$position]));
