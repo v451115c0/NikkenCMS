@@ -13,6 +13,7 @@ Route::get('NikkenCMS/{view}', 'NikkenCMS\NikkenCMSController@getViwe');
 Route::get('NikkenCMSpro/getActions', 'NikkenCMS\NikkenCMSController@getActions');
 Route::get('NikkenCMS/encripytarPass/{pass}', 'NikkenCMS\NikkenCMSController@aes_sap_encrypt');
 Route::get('downloadfile', 'NikkenCMS\NikkenCMSController@downloadfile');
+Route::get('downloadfileGraph', 'NikkenCMS\NikkenCMSController@downloadfileGraph');
 
 # Material MyNIKKEN <--> NIKKEN APP
 Route::match(['get','post'],'addMicroSitio', 'MyNIKKEN\MNKController@addMicroSitio')->name('addMicroSitio');

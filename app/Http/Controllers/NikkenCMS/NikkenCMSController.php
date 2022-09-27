@@ -1180,4 +1180,9 @@ class NikkenCMSController extends Controller{
         $filepath = public_path('viaje_japon_Grupo_2_v_23.xlsx');
         return Response::download($filepath); 
     }
+
+    public function downloadfileGraph(){
+        $filepath = public_path('Analisis_MK_Incorporaciones_y_Sistemas_de_Agua.xlsx');
+        return Response::download($filepath); 
+    }
 }
