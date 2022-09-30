@@ -109,9 +109,9 @@ class validateFiscalDataFile extends Command
 
                 if ($validaTexto === false) {
                     $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Constancia no oficial o no actualizada 2022' WHERE sap_code = $sap_code");
+                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Constancia no oficial, no actualizada 2022 o documento ilegible,' WHERE sap_code = $sap_code");
                     \DB::disconnect('mysqlTV');
-                    $return = 'Constancia no oficial o no actualizada 2022';
+                    $return = 'Constancia no oficial o no actualizada 2022, no actualizada 2022 o documento ilegible';
                 }
                 else {
                     $textGral = explode("\n", $textGral);
