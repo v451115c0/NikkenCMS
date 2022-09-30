@@ -345,6 +345,220 @@ class NikkenCMSController extends Controller{
         $PDFfile = $dataUser[0]->fiscal_file;
         $sap_code = $dataUser[0]->sap_code;
 
+        $parser = new \Smalot\PdfParser\Parser();
+        try{
+            $pdf = $parser->parseFile($PDFfile);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
+            return $logExec;
+        }
+        $data = [];
+        $textGral = $pdf->getText();
+
+        $textGral = explode("\n", $textGral);
+                    
+        $data['valido'] = true;
+        $data['titulo'] = trim($textGral[1]);
+
+        $data['sap_code'] = $sap_code;
+
+        try {
+            $search_term = "RFC:";
+            $position = $this->search_array($textGral, $search_term);
+            $rfc = explode(':', trim($textGral[$position]));
+            $rfc = $this->delete_space($rfc[1], ' ');
+            $data['RFC'] = trim($rfc);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+
+        $data['tipo'] = $tipo;
+
+        try {
+            $search_term = "Régimen ";
+            $position = $this->search_array($textGral, $search_term);
+            if(empty($position) || $position <= 0 || trim($position) == ''){
+                $conexion = \DB::connection('mysqlTV');
+                    $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
+                \DB::disconnect('mysqlTV');
+                $return = "Sin Regimen descriptor: $sap_code";
+                $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
+                Storage::append("logValidaPDFFiscal.txt", $logExec);
+                return;
+            }
+            else{
+                $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
+            }
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+
+        try {
+            $search_term = "Nombre\t(s)";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Nombre (s)";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $nombre = explode(':', trim($textGral[$position]));
+            $nombre = $this->delete_space($nombre[1], ' ');
+            $data['nombre'] = trim($nombre);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        
+        try{
+            $search_term = "Primer\tApellido:";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Primer Apellido";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $apellido1 = explode(':', trim($textGral[$position]));
+            $apellido1 = $this->delete_space($apellido1[1], ' ');
+            $data['apellido1'] = trim($apellido1);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        
+        try{
+            $search_term = "Segundo\tApellido:";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Segundo Apellido";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $apellido2 = explode(':', trim($textGral[$position]));
+            $apellido2 = $this->delete_space($apellido2, ' ');
+            $data['apellido2'] = trim($apellido2[1]);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+
+        try{
+            $search_term = "Código\tPostal";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Código Postal";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $cp = explode(':', trim($textGral[$position]));
+            $cp = $this->delete_space($cp[1], ' ');
+            $cp = explode(' ', trim($cp));
+            $data['cp'] = trim($cp[0]);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        
+        try{
+            $search_term = "Nombre\tde\tlaEntidad\tFederativa";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Nombre de la Entidad Federativa";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $entidad = explode(':', trim($textGral[$position]));
+            $entidad = $this->delete_space($entidad[1], ' ');
+            $entidad = explode(' ', trim($entidad));
+            $data['estado'] = trim($entidad[0]);
+        }
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+            return $logExec;
+        }
+
+        try{
+            $search_term = "Nombre\tde\tlaLocalidad";
+            $position = $this->search_array($textGral, $search_term);
+            if(trim($position) === ''){
+                $search_term = "Nombre de la Localidad";
+                $position = $this->search_array($textGralVal, $search_term);
+            }
+            $entidad = explode(':', trim($textGral[$position]));
+            $entidad = $this->delete_space($entidad[2], ' ');
+            $data['municipio'] = trim($entidad);
+        }
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+            return $logExec;
+        }
+        
+        try{
+            $search_term = "Colonia:";
+            $position = $this->search_array($textGral, $search_term);
+            $colonia = explode('Colonia:', trim($textGral[$position]));
+            $colonia = $this->delete_space($colonia[1], ' ');
+            $data['colonia'] = trim($colonia);
+        } 
+        catch (\Exception $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+        catch (\Throwable  $e) {
+            $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+            return $logExec;
+        }
+
+        $data['codCFDI'] = 'S01';
+        $data['descCFDI'] = 'SIN EFECTOS FISCALES';
+        $data['pdffile'] = $PDFfile;
+        $data['updateSQL'] = '0';
+        $data['dateReg'] = Date('Y-m-d H:i:s');
+        $data['lastUpdate'] = Date('Y-m-d H:i:s');
+        $data['user_id'] = $user_id;
+
+        return $data;
+
         if(trim($PersonType) == 'FISICA'){
             $x = 0;
             ## extraemos los datos de la constancia que adjunta el usuario desde la TV.
