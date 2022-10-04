@@ -245,10 +245,19 @@ class validateFiscalDataFile extends Command
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Entidad Federativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
+                        
+                        $fl = array('Entre', 'Calle');
+                        $entidad = str_replace($fl, '', "$entidad");
+                        $data['estado'] = trim($entidad);
+                        /*return $entidad;
                         $entidad = explode(' ', trim($entidad));
-                        $data['estado'] = trim($entidad[0]);
+                        $data['estado'] = trim($entidad[0]);*/
                     }
                     catch (\Exception $e) {
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";

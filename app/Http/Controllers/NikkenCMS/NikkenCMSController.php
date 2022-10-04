@@ -573,22 +573,6 @@ class NikkenCMSController extends Controller{
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
-                    $search_term = "Nombre\tde\tlaEntidad\tFederativa";
-                        $position = $this->search_array($textGral, $search_term);
-                        if(trim($position) === ''){
-                            $search_term = "Nombre de la Entidad Federativa";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        $entidad = explode(':', trim($textGral[$position]));
-                        $entidad = $this->delete_space($entidad[1], ' ');
-                        
-                        $fl = array('Entre', 'Calle');
-                        $entidad = str_replace($fl, '', "$entidad");
-                        return $entidad;
-
-                        $entidad = explode(' ', trim($entidad));
-                        
-                        $data['estado'] = trim($entidad[0]);
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
@@ -598,12 +582,13 @@ class NikkenCMSController extends Controller{
                         }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
-                        $entidad = explode(' ', trim($entidad));
-
+                        
                         $fl = array('Entre', 'Calle');
                         $entidad = str_replace($fl, '', "$entidad");
-                        return $entidad;
-                        $data['estado'] = trim($entidad[0]);
+                        $data['estado'] = trim($entidad);
+                        /*return $entidad;
+                        $entidad = explode(' ', trim($entidad));
+                        $data['estado'] = trim($entidad[0]);*/
                     }
                     catch (\Exception $e) {
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
