@@ -581,11 +581,13 @@ class NikkenCMSController extends Controller{
                         }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
-                        $entidad = explode(' ', trim($entidad));
-
+                        
                         $fl = array('Entre', 'Calle');
                         $entidad = str_replace($fl, '', "$entidad");
                         return $entidad;
+
+                        $entidad = explode(' ', trim($entidad));
+                        
                         $data['estado'] = trim($entidad[0]);
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
