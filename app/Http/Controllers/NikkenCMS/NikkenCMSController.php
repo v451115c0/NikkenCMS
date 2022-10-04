@@ -583,6 +583,9 @@ class NikkenCMSController extends Controller{
                         }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
+                        return $entidad;
+                        $entidad = explode(' ', trim($entidad));
+                        
                         $data['estado'] = trim($entidad[0]);
                     }
                     catch (\Exception $e) {
