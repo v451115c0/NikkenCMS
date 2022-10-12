@@ -271,6 +271,7 @@ class validateFiscalDataFile extends Command
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
+
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
