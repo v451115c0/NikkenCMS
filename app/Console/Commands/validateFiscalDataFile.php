@@ -168,6 +168,10 @@ class validateFiscalDataFile extends Command
                     try {
                         $search_term = "Régimen ";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Regímenes";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         if(empty($position) || $position <= 0 || trim($position) == ''){
                             $conexion = \DB::connection('mysqlTV');
                                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
