@@ -747,6 +747,7 @@ class NikkenCMSController extends Controller{
                     "Sin obligaciones Fiscales" => 616,
                     "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
+                    "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras PM" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
                     "Regimen Simplificado de Confianza" => 626,

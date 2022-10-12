@@ -115,6 +115,7 @@ class validateFiscalDataFile extends Command
                 $user_id = $dataUser[$x]->user_id;
 
                 $arrayRegimenCode = [
+                    "Régimen General de Ley Personas Morales" => 601,
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios' => 605,
                     'Régimen de Sueldos y Salarios e Ingresos Asimilados a Salari os' => 605,
                     'Régimen de Arrendamiento' => 606,
@@ -123,6 +124,7 @@ class validateFiscalDataFile extends Command
                     'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
                     'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
                     'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
+                    'Régimen de los demás ingresos' => 612,
                     'Régimen de Incorporación Fiscal' => 612,
                     'Régimen de los ingresos por intereses' => 614,
                     'Régimen de los ingresos por obtencion de premios' => 615,
@@ -168,12 +170,6 @@ class validateFiscalDataFile extends Command
                     try {
                         $search_term = "Régimen ";
                         $position = $this->search_array($textGral, $search_term);
-                        if(trim($position) === ''){
-                            $search_term = "Regímenes";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        $search_term = "Regímenes:";
-                        $position = $this->search_array($textGral, $search_term);
                         if(empty($position) || $position <= 0 || trim($position) == ''){
                             $conexion = \DB::connection('mysqlTV');
                                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
@@ -184,9 +180,6 @@ class validateFiscalDataFile extends Command
                             return;
                         }
                         else{
-                            $regimen = $textGral[($position + 2)];
-                            $regimen = $this->delete_space($regimen, ' ');
-                            $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
                             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                             $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                         }
@@ -429,6 +422,7 @@ class validateFiscalDataFile extends Command
                     "Sin obligaciones Fiscales" => 616,
                     "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
+                    "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras PM" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
                     "Regimen Simplificado de Confianza" => 626,
