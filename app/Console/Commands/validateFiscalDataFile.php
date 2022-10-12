@@ -172,6 +172,8 @@ class validateFiscalDataFile extends Command
                             $search_term = "Regímenes";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
+                        $search_term = "Regímenes:";
+                        $position = $this->search_array($textGral, $search_term);
                         if(empty($position) || $position <= 0 || trim($position) == ''){
                             $conexion = \DB::connection('mysqlTV');
                                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
@@ -182,6 +184,9 @@ class validateFiscalDataFile extends Command
                             return;
                         }
                         else{
+                            $regimen = $textGral[($position + 2)];
+                            $regimen = $this->delete_space($regimen, ' ');
+                            $regimen = $this->deleteNumbersSepecialChar($regimen, ' ');
                             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                             $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                         }
