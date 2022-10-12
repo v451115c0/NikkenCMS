@@ -581,6 +581,7 @@ class NikkenCMSController extends Controller{
                         $position = $this->search_array($textGralVal, $search_term);
                     }
                     $entidad = explode(':', trim($textGral[$position]));
+                    return $entidad;
                     $entidad = $this->delete_space($entidad[1], ' ');
                     
                     $fl = array('Entre', 'Calle');
