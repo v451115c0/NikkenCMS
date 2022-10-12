@@ -580,6 +580,7 @@ class NikkenCMSController extends Controller{
                         $search_term = "Nombre de la Entidad Federativa";
                         $position = $this->search_array($textGralVal, $search_term);
                     }
+                    return $position;
                     $entidad = explode(':', trim($textGral[$position]));
                     return $entidad;
                     $entidad = $this->delete_space($entidad[1], ' ');
