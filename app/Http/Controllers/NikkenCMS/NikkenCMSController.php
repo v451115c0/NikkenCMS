@@ -427,6 +427,7 @@ class NikkenCMSController extends Controller{
                     'Residentes en el Extranjero sin Establecimiento Permanente en Mexico' => 610,
                     'Régimen de Ingresos por Dividendos (socios y accionistas)' => 611,
                     'Régimen de las Personas Físicas con Actividades Empresariales y Profesionales' => 612,
+                    'Régimen de los demás ingresos' => 612,
                     'Régimen de Incorporación Fiscal' => 612,
                     'Régimen de los ingresos por intereses' => 614,
                     'Régimen de los ingresos por obtencion de premios' => 615,
