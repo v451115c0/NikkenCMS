@@ -574,36 +574,19 @@ class NikkenCMSController extends Controller{
                         return $logExec;
                     }
 
-                    $search_term = "Nombre\tde\tlaEntidad\tFederativa";
-                    $position = $this->search_array($textGral, $search_term);
-                    if(trim($position) === ''){
-                        $search_term = "Nombre de la Entidad Federativa";
-                        $position = $this->search_array($textGralVal, $search_term);
-                    }
-                    if(trim($position) === ''){
-                        $search_term = "Nombre\tde\tla\tEntidad\tFederativa";
-                        $position = $this->search_array($textGralVal, $search_term);
-                    }
-                    if(trim($position) === ''){
-                        $search_term = "Federativa:";
-                        $position = $this->search_array($textGralVal, $search_term);
-                    }
-                    return $position;
-                    $entidad = explode(':', trim($textGral[$position]));
-                    return $entidad;
-                    $entidad = $this->delete_space($entidad[1], ' ');
-                    
-                    $fl = array('Entre', 'Calle');
-                    $entidad = str_replace($fl, '', "$entidad");
-                    $data['estado'] = trim($entidad);
-                    return $entidad;
-                    /*$entidad = explode(' ', trim($entidad));
-                    $data['estado'] = trim($entidad[0]);*/
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
                         if(trim($position) === ''){
                             $search_term = "Nombre de la Entidad Federativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tEntidad\tFederativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Federativa:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $entidad = explode(':', trim($textGral[$position]));
