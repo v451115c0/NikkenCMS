@@ -470,16 +470,7 @@ class NikkenCMSController extends Controller{
                     try {
                         $search_term = "Régimen ";
                         $position = $this->search_array($textGral, $search_term);
-                        if(trim($position) === ''){
-                            $search_term = "Régimen";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        if(trim($position) === ''){
-                            $search_term = "Régimen";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        $search_term = "Regímenes:";
-                        $position = $this->search_array($textGral, $search_term);
+                        return $position;
                         if(empty($position) || $position <= 0 || trim($position) == ''){
                             $conexion = \DB::connection('mysqlTV');
                                 $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Sin Regimen descriptor' WHERE  sap_code = $sap_code");
@@ -496,7 +487,6 @@ class NikkenCMSController extends Controller{
                             $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
                             $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                         }
-                        return $data['regimen'];
                     } 
                     catch (\Exception $e) {
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
