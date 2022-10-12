@@ -575,14 +575,9 @@ class NikkenCMSController extends Controller{
                     }
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
-                        $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
                         if(trim($position) === ''){
                             $search_term = "Nombre de la Entidad Federativa";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        if(trim($position) === ''){
-                            $search_term = "Federativa";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $entidad = explode(':', trim($textGral[$position]));
@@ -609,6 +604,10 @@ class NikkenCMSController extends Controller{
                         $position = $this->search_array($textGral, $search_term);
                         if(trim($position) === ''){
                             $search_term = "Nombre de la Localidad";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tLocalidad";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $entidad = explode(':', trim($textGral[$position]));
