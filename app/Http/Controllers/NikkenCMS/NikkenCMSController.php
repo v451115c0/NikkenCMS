@@ -750,6 +750,7 @@ class NikkenCMSController extends Controller{
                     "Régimen de Actividades Agrícolas Ganaderas Silvícolas y Pesqueras PM" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
+                    "Régimen de los Coordinados" => 624,
                     "Regimen Simplificado de Confianza" => 626,
                     'Régimen Simplificado de Confianza' => 626,
                 ];
