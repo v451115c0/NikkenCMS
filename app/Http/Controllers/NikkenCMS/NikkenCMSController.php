@@ -743,7 +743,7 @@ class NikkenCMSController extends Controller{
                 $arrayRegimenCode = [
                     "Régimen General de Ley Personas Morales" => 601,
                     "Personas Morales con Fines no Lucrativos" => 603,
-                    "Residentes en el Extranjero sin Establecimiento Permanente en Mexico" => 610,
+                    "Régimen residentes en el Extranjero sin Establecimiento Permanente en México" => 610,
                     "Sin obligaciones Fiscales" => 616,
                     "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
