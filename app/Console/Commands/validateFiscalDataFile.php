@@ -427,13 +427,6 @@ class validateFiscalDataFile extends Command
                     $validaTexto = true;
                 }
 
-                if($test >= 1 && $test <= 1){
-                    return $textGralVal;
-                }
-                else if($test >= 2 && $test <= 2){
-                    return $textGral;
-                }
-
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
                 $user_id = $dataUser[$x]->user_id;
@@ -658,10 +651,6 @@ class validateFiscalDataFile extends Command
                     $data['user_id'] = $user_id;
                 }
                 $data2['pdfUSER'] = $data;
-
-                if($test >= 3 && $test <= 3){
-                    return $data2;
-                }
 
                 $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
                 VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
