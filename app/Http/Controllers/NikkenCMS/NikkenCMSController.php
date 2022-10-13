@@ -926,12 +926,16 @@ class NikkenCMSController extends Controller{
                             $search_term = "Nombre del Municipio oDemarcación Territorial:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
-                        else if(trim($position) === ''){
+                        if(trim($position) === ''){
                             $search_term = "Nombre\tdel\tMunicipio\toDemarcacion\tTerritorial:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
-                        else if(trim($position) === ''){
+                        if(trim($position) === ''){
                             $search_term = "Nombre\tdel\tMunicipio\to\tDemarcación\tTerritorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre del Municipio o Demarcación Territorial";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $entidad = explode(':', trim($textGral[$position]));
