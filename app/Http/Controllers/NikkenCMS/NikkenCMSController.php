@@ -898,11 +898,11 @@ class NikkenCMSController extends Controller{
                             $search_term = "Nombre\tde\tla\tColonia:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
-                        else if(trim($position) === ''){
+                        if(trim($position) === ''){
                             $search_term = "Nombre\tde\tla\tColonia:";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
-                        else if(trim($position) === ''){
+                        if(trim($position) === ''){
                             $search_term = "Nombre de la Colonia";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
