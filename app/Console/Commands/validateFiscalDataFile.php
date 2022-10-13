@@ -397,20 +397,43 @@ class validateFiscalDataFile extends Command
                     $pdf = $parser->parseFile($PDFfile);
                 } 
                 catch (\Exception $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
-                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    return $logExec;
                 }
                 catch (\Throwable  $e) {
-                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
                     $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
-                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                    return $logExec;
                 }
                 //$pdf = $parser->parseFile($PDFfile);
                 $data = [];
                 $textGral = $pdf->getText();
-                $find = "CÉDULA DE IDENTIFICACIÓN FISCAL";
-                $validaTexto = strpos($textGral, $find);
+
+                $textGralVal = explode("\n", $textGral);
+                $search_term = "CÉDULA DE IDENTIFICACIÓN FISCAL";
+                $position = $this->search_array($textGralVal, $search_term);
+                if(trim($position) === ''){
+                    $search_term = "CÉDULA DE IDENTIFICACION FISCAL";
+                    $position = $this->search_array($textGralVal, $search_term);
+                }
+                else if(trim($position) === ''){
+                    $search_term = "CEDULA DE IDENTIFICACION FISCAL";
+                    $position = $this->search_array($textGralVal, $search_term);
+                }
+                $titulo = trim($textGralVal[$position]);
+                $titulo = trim($titulo);
+
+                $validaTexto = false;
+                if($titulo == 'CÉDULA DE IDENTIFICACIÓN FISCAL' || $titulo == 'CÉDULA DE IDENTIFICACION FISCAL' || $titulo == 'CEDULA DE IDENTIFICACION FISCAL'){
+                    $validaTexto = true;
+                }
+
+                if($test >= 1 && $test <= 1){
+                    return $textGralVal;
+                }
+                else if($test >= 2 && $test <= 2){
+                    return $textGral;
+                }
+
                 $sap_code = $dataUser[$x]->sap_code;
                 $tipo = $dataUser[$x]->person_type;
                 $user_id = $dataUser[$x]->user_id;
@@ -418,21 +441,19 @@ class validateFiscalDataFile extends Command
                 $arrayRegimenCode = [
                     "Régimen General de Ley Personas Morales" => 601,
                     "Personas Morales con Fines no Lucrativos" => 603,
-                    "Residentes en el Extranjero sin Establecimiento Permanente en Mexico" => 610,
+                    "Régimen residentes en el Extranjero sin Establecimiento Permanente en México" => 610,
                     "Sin obligaciones Fiscales" => 616,
                     "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
-                    "Régimen de Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras PM" => 622,
+                    "Régimen de Actividades Agrícolas Ganaderas Silvícolas y Pesqueras PM" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
+                    "Régimen de los Coordinados" => 624,
                     "Regimen Simplificado de Confianza" => 626,
                     'Régimen Simplificado de Confianza' => 626,
                 ];
 
                 if ($validaTexto === false) {
-                    $conexion = \DB::connection('mysqlTV');
-                        $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Constancia no oficial o no actualizada 2022' WHERE sap_code = $sap_code");
-                    \DB::disconnect('mysqlTV');
                     $return = 'Constancia no oficial o no actualizada 2022';
                     return $return;
                 }
@@ -452,14 +473,12 @@ class validateFiscalDataFile extends Command
                         $data['RFC'] = trim($rfc);
                     }
                     catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
 
                     $data['tipo'] = $tipo;
@@ -468,110 +487,166 @@ class validateFiscalDataFile extends Command
                         $search_term = "Regímenes";
                         $position = $this->search_array($textGral, $search_term);
                         $position = (intval($position) + 2);
-                        $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                        $regimen = $textGral[$position];
+                        $regimen = $this->delete_space($textGral[$position], ' ');
+                        $regimen = $this->deleteNumbersSepecialChar($regimen, '');
+                        $data['regimenDescriptor'] = trim($regimen, ' ');
                         $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                     }
                     catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
 
                     try{
                         $search_term = "Denominación/Razón\tSocial:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Denominación/Razón Social";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $nombre = explode(':', trim($textGral[$position]));
                         $nombre = $this->delete_space($nombre[1], ' ');
                         $data['nombre'] = trim($nombre);
                     }
                     catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
 
                     try{
                         $search_term = "Código\tPostal";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Código Postal";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $cp = explode(':', trim($textGral[$position]));
                         $cp = $this->delete_space($cp[1], ' ');
                         $cp = explode(' ', trim($cp));
                         $data['cp'] = trim($cp[0]);
                     }
                     catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
+
+                    // try{
+                    //     $search_term = "Código\tPostal";
+                    //     $position = $this->search_array($textGral, $search_term);
+                    //     if(trim($position) === ''){
+                    //         $search_term = "Código Postal";
+                    //         $position = $this->search_array($textGralVal, $search_term);
+                    //     }
+                    //     $cp = explode(':', trim($textGral[$position]));
+                    //     $cp = $this->delete_space($cp[1], ' ');
+                    //     $cp = explode(' ', trim($cp));
+                    //     $data['cp'] = trim($cp[0]);
+                    // } 
+                    // catch (\Exception $e) {
+                    //     $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                    //     return $logExec;
+                    // }
+                    // catch (\Throwable  $e) {
+                    //     $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                    //     return $logExec;
+                    // }
+                    
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Entidad Federativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tEntidad\tFederativa";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $entidad = explode(':', trim($textGral[$position]));
                         $entidad = $this->delete_space($entidad[1], ' ');
                         $entidad = explode(' ', trim($entidad));
                         $data['estado'] = trim($entidad[0]);
                     }
                     catch (\Exception $e) {
-                        
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer estado: $sap_code\t";
-                        return $logExec;
-                    }
-                    
-                    try{
-                        $search_term = "Nombre\tde\tlaLocalidad";
-                        $position = $this->search_array($textGral, $search_term);
-                        $entidad = explode(':', trim($textGral[$position]));
-                        $entidad = $this->delete_space($entidad[2], ' ');
-                        $data['municipio'] = trim($entidad);
-                    }
-                    catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer municipio", $sap_code);
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
-                        return $logExec;
-                    }
-                    catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer municipio", $sap_code);
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
                         return $logExec;
                     }
                     
                     try{
                         $search_term = "Nombre\tde\tlaColonia:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tColonia:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tde\tla\tColonia:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre de la Colonia";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $colonia = explode('Colonia:', trim($textGral[$position]));
                         $colonia = $this->delete_space($colonia[1], ' ');
                         $data['colonia'] = trim($colonia);
                     }
                     catch (\Exception $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
                     }
                     catch (\Throwable  $e) {
-                        $this->updateWithError("pospuesto, error al extraer $search_term", $sap_code);
                         $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return Storage::append("logValidaPDFFiscal.txt", $logExec);
+                        return $logExec;
+                    }
+
+                    try{
+                        $search_term = "Nombre\tdel\tMunicipio\toDemarcación\tTerritorial:";
+                        $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Nombre del Municipio oDemarcación Territorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tdel\tMunicipio\toDemarcacion\tTerritorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre\tdel\tMunicipio\to\tDemarcación\tTerritorial:";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        if(trim($position) === ''){
+                            $search_term = "Nombre del Municipio o Demarcación Territorial";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
+                        $entidad = explode(':', trim($textGral[$position]));
+                        $entidad = $this->delete_space($entidad[2], ' ');
+                        $data['municipio'] = trim($entidad);
+                    }
+                    catch (\Exception $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
+                    }
+                    catch (\Throwable  $e) {
+                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer municipio: $sap_code\t";
+                        return $logExec;
                     }
 
                     $data['codCFDI'] = 'S01';
@@ -583,6 +658,10 @@ class validateFiscalDataFile extends Command
                     $data['user_id'] = $user_id;
                 }
                 $data2['pdfUSER'] = $data;
+
+                if($test >= 3 && $test <= 3){
+                    return $data2;
+                }
 
                 $insert = "INSERT INTO nikkenla_incorporation.users_fiscal_update(user_id,sap_code,rfc,person_type,regimen_code,regimen_description,business_name,name,last_name,second_last_name,cp,estado,municipio,colonia,cfdi_code,cfdi_description,fiscal_file,comments,updated_on_sql_server,existeSap,created_at,updated_at)
                 VALUES ('" . $data2['pdfUSER']['user_id'] . "', '" . $data2['pdfUSER']['sap_code'] . "', '" . strtoupper($data2['pdfUSER']['RFC']) . "', '" . $data2['pdfUSER']['tipo'] . "', '" . $data2['pdfUSER']['regimen'] . "', '" . strtoupper($data2['pdfUSER']['regimenDescriptor']) . "', '" . strtoupper($data2['pdfUSER']['nombre']) . "', '', '', '', '" . $data2['pdfUSER']['cp'] . "', '" . $data2['pdfUSER']['estado'] . "', '" . $data2['pdfUSER']['municipio'] . "', '" . $data2['pdfUSER']['colonia'] . "', '" . $data2['pdfUSER']['codCFDI'] . "', '" . $data2['pdfUSER']['descCFDI'] . "', '" . $data2['pdfUSER']['pdffile'] . "', '', '0', '0', '" . $data2['pdfUSER']['dateReg'] . "', '" . $data2['pdfUSER']['lastUpdate'] . "')";
@@ -598,13 +677,9 @@ class validateFiscalDataFile extends Command
                 $return = "PDF procesado, usuario: $sap_code";
 
                 $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
-                Storage::append("logValidaPDFFiscal.txt", $logExec);
             }
             else{
-                $conexion = \DB::connection('mysqlTV');
-                    $response = $conexion->update("UPDATE users_fiscal_files SET error = 1, last_error_message = 'Formato de constancia incorrecto' WHERE sap_code = $sap_code");
-                \DB::disconnect('mysqlTV');
-                $return = "Formato de constancia incorrecto: $sap_code";
+                $logExec = "Formato de constancia incorrecto: $sap_code";
             }
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
             Storage::append("logValidaPDFFiscal.txt", $logExec);
