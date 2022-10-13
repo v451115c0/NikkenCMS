@@ -827,6 +827,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Código\tPostal";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Código Postal";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $cp = explode(':', trim($textGral[$position]));
                         $cp = $this->delete_space($cp[1], ' ');
                         $cp = explode(' ', trim($cp));
@@ -841,26 +845,26 @@ class NikkenCMSController extends Controller{
                         return $logExec;
                     }
 
-                    try{
-                        $search_term = "Código\tPostal";
-                        $position = $this->search_array($textGral, $search_term);
-                        if(trim($position) === ''){
-                            $search_term = "Código Postal";
-                            $position = $this->search_array($textGralVal, $search_term);
-                        }
-                        $cp = explode(':', trim($textGral[$position]));
-                        $cp = $this->delete_space($cp[1], ' ');
-                        $cp = explode(' ', trim($cp));
-                        $data['cp'] = trim($cp[0]);
-                    } 
-                    catch (\Exception $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return $logExec;
-                    }
-                    catch (\Throwable  $e) {
-                        $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
-                        return $logExec;
-                    }
+                    // try{
+                    //     $search_term = "Código\tPostal";
+                    //     $position = $this->search_array($textGral, $search_term);
+                    //     if(trim($position) === ''){
+                    //         $search_term = "Código Postal";
+                    //         $position = $this->search_array($textGralVal, $search_term);
+                    //     }
+                    //     $cp = explode(':', trim($textGral[$position]));
+                    //     $cp = $this->delete_space($cp[1], ' ');
+                    //     $cp = explode(' ', trim($cp));
+                    //     $data['cp'] = trim($cp[0]);
+                    // } 
+                    // catch (\Exception $e) {
+                    //     $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                    //     return $logExec;
+                    // }
+                    // catch (\Throwable  $e) {
+                    //     $logExec = "[" . date('Y-m-d H:i:s') . "] pospuesto, error al extraer $search_term: $sap_code\t";
+                    //     return $logExec;
+                    // }
                     
                     try{
                         $search_term = "Nombre\tde\tlaEntidad\tFederativa";
