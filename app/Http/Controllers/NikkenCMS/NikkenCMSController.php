@@ -903,7 +903,7 @@ class NikkenCMSController extends Controller{
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         else if(trim($position) === ''){
-                            $search_term = "Nombre de la Colonia:";
+                            $search_term = "Nombre de la Colonia";
                             $position = $this->search_array($textGralVal, $search_term);
                         }
                         $colonia = explode('Colonia:', trim($textGral[$position]));
