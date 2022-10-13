@@ -747,7 +747,7 @@ class NikkenCMSController extends Controller{
                     "Sin obligaciones Fiscales" => 616,
                     "Sociedades Cooperativas de Produccion que optan por diferir sus ingresos" => 620,
                     "Actividades Agricolas, Ganaderas, Silvicolas y Pesqueras" => 622,
-                    "Régimen de Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras PM" => 622,
+                    "Régimen de Actividades Agrícolas Ganaderas Silvícolas y Pesqueras PM" => 622,
                     "Opcional para Grupos de Sociedades" => 623,
                     "Coordinados" => 624,
                     "Regimen Simplificado de Confianza" => 626,
@@ -784,20 +784,14 @@ class NikkenCMSController extends Controller{
 
                     $data['tipo'] = $tipo;
 
-                    $search_term = "Regímenes";
-                    $position = $this->search_array($textGral, $search_term);
-                    $position = (intval($position) + 2);
-                    $regimen = $textGral[$position];
-                    $regimen = $this->delete_space($textGral[$position], ' ');
-                    $regimen = $this->deleteNumbersSepecialChar($regimen, '');
-                    return $regimen;
-                    //$data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar(, ''));
-                    $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                     try{
                         $search_term = "Regímenes";
                         $position = $this->search_array($textGral, $search_term);
                         $position = (intval($position) + 2);
-                        $data['regimenDescriptor'] = trim($this->deleteNumbersSepecialChar($this->delete_space($textGral[$position], ' '), ''));
+                        $regimen = $textGral[$position];
+                        $regimen = $this->delete_space($textGral[$position], ' ');
+                        $regimen = $this->deleteNumbersSepecialChar($regimen, '');
+                        $data['regimenDescriptor'] = trim($regimen, ' ');
                         $data['regimen'] = $arrayRegimenCode[trim($data['regimenDescriptor'])];
                     }
                     catch (\Exception $e) {
