@@ -807,6 +807,10 @@ class NikkenCMSController extends Controller{
                     try{
                         $search_term = "Denominación/Razón\tSocial:";
                         $position = $this->search_array($textGral, $search_term);
+                        if(trim($position) === ''){
+                            $search_term = "Denominación/Razón Social";
+                            $position = $this->search_array($textGralVal, $search_term);
+                        }
                         $nombre = explode(':', trim($textGral[$position]));
                         $nombre = $this->delete_space($nombre[1], ' ');
                         $data['nombre'] = trim($nombre);
