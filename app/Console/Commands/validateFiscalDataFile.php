@@ -467,8 +467,9 @@ class validateFiscalDataFile extends Command
                 ];
 
                 if ($validaTexto === false) {
-                    $return = 'Constancia no oficial o no actualizada 2022';
-                    return $return;
+                    $this->updateWithError("Constancia no oficial o no actualizada 2022", $sap_code);
+                    $logExec = "[" . date('Y-m-d H:i:s') . "] Constancia no oficial o no actualizada 2022: $sap_code\t";
+                    return Storage::append("logValidaPDFFiscal.txt", $logExec);
                 }
                 else {
                     $textGral = explode("\n", $textGral);
