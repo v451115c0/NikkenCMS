@@ -25,7 +25,7 @@ class GoogleStorageServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot() 
     {
         \Storage::extend('gcs', function($app, $config){
             $storageClient = new StorageClient([
