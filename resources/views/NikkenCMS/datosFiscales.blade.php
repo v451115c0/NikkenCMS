@@ -75,7 +75,7 @@
                             <a class="btn dark-icon btn-primary rounded-pill text-white mr-3 ml-3" onclick="getTotalNoAplicaDates();">Actualizar</a>
                         </div>
                     </div>
-                    <p class="text-dark">Usuarios (No aplica) desde <b><span id="dateInitText"></span></b> hasta <b><span id="dateEndText"></span></b>: <b><span class="badge badge-info ml-3"><span id="totalNoAplicaDatesText">0</span></span></b></p>
+                    <p class="text-dark">Usuarios (No aplica) desde <b><span id="dateInitText"></span></b> hasta <b><span id="dateEndText"></span></b>: <b><span class="badge badge-info"><span id="totalNoAplicaDatesText">0</span></span></b></p>
                 </div>
                 <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_update">
                     <thead>
