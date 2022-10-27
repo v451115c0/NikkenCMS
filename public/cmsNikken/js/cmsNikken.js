@@ -1305,6 +1305,7 @@ function getTotalNoAplica(){
         }
     });
 }
+getTotalNoAplica();
 
 function loadDataFisData(id, sap_code){
     $.ajax({
