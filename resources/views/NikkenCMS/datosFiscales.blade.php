@@ -54,7 +54,7 @@
             </div>
             <div class="iq-card-body">
                 <div class="col-lg-12">
-                    <span id="log"></span>
+                    <p>Usuarios (No aplica): <span id="totalNoAplica">0</span></p>
                 </div>
                 <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_update">
                     <thead>
