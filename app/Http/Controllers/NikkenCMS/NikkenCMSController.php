@@ -137,6 +137,9 @@ class NikkenCMSController extends Controller{
             case 'get_users_fiscal_updateError':
                 return $this->get_users_fiscal_updateError();
                 break;
+            case 'getTotalNoAplica':
+                return $this->getTotalNoAplica();
+                break;
             case 'depClient':
                 return $this->depClient($parameters);
                 break;
@@ -1235,5 +1238,22 @@ class NikkenCMSController extends Controller{
     public function downloadfileGraph(){
         $filepath = public_path('Analisis_MK_Incorporaciones_y_Sistemas_de_Agua.xlsx');
         return Response::download($filepath); 
+    }
+
+    public function getTotalNoAplica(){
+        $conexion = \DB::connection('mysqlTV');
+            $data = $conexion->select("SELECT COUNT(*) AS noAplica FROM users_fiscal_files WHERE users_fiscal_files.person_type = 'NO APLICA'");
+        \DB::disconnect('mysqlTV');
+        return number_format($data[0]->noAplica);
+    }
+
+    public function getTotalNoAplicaDates($parameters){
+        $dateInit = $parameters['dateInit'];
+        $dateEnd = $parameters['dateEnd'];
+
+        $conexion = \DB::connection('mysqlTV');
+            $data = $conexion->select("SELECT COUNT(*) AS noAplica FROM users_fiscal_files WHERE users_fiscal_files.person_type = 'NO APLICA' AND created_at BETWEEN '$dateInit' AND '$dateEnd'");
+        \DB::disconnect('mysqlTV');
+        return number_format($data[0]->noAplica);
     }
 }

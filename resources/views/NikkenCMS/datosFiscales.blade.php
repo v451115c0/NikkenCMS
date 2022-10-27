@@ -54,7 +54,24 @@
             </div>
             <div class="iq-card-body">
                 <div class="col-lg-12">
+                    <span id="log"></span>
+                    <br>
                     <p>Usuarios (No aplica): <span id="totalNoAplica">0</span></p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Fecha inicio</label>
+                                <input type="date" class="form-control" id="dateInit">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Fecha Final:</label>
+                                <input type="date" class="form-control" id="dateEnd">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_update">
                     <thead>

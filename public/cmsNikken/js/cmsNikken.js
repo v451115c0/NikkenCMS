@@ -1279,6 +1279,33 @@ function get_users_fiscal_update(){
 }
 get_users_fiscal_update();
 
+function getTotalNoAplica(){
+    $.ajax({
+        type: "get",
+        url: "/NikkenCMSpro/getActions",
+        data: {
+            action: 'getTotalNoAplica',
+        },
+        beforeSend: function(){
+            $("#log").empty();
+            $("#log").text("cargando...");
+        },
+        success: function (response) {
+            $("#totalNoAplica").text(response);
+        },
+        error: function(){
+            $("#log").text("");
+            var html = '<div class="alert text-white bg-danger" role="alert">' +
+                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
+                            '<button type="button" class="close" onclick="loadDataWSTVuser(' + id + ',' + sap_code + ')">' +
+                                'Reintentar' +
+                            '</button>' +
+                        '</div>';
+            $("#log").html(html);
+        }
+    });
+}
+
 function loadDataFisData(id, sap_code){
     $.ajax({
         type: "get",
