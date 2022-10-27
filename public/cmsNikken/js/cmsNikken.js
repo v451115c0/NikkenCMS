@@ -1291,6 +1291,7 @@ function getTotalNoAplica(){
             $("#log").text("cargando...");
         },
         success: function (response) {
+            $("#log").empty();
             $("#totalNoAplica").text(response);
         },
         error: function(){
@@ -1327,6 +1328,7 @@ function getTotalNoAplicaDates(){
             $("#log").text("cargando...");
         },
         success: function (response) {
+            $("#log").empty();
             $("#totalNoAplicaDatesText").text(response);
         },
         error: function(){
