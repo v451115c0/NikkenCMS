@@ -1307,6 +1307,41 @@ function getTotalNoAplica(){
 }
 getTotalNoAplica();
 
+function getTotalNoAplicaDates(){
+    var dateInit = $("#dateInit").val();
+    var dateEnd = $("#dateEnd").val();
+    $("#dateInitText").text(dateInit);
+    $("#dateEndText").text(dateEnd);
+    $.ajax({
+        type: "get",
+        url: "/NikkenCMSpro/getActions",
+        data: {
+            action: 'getTotalNoAplicaDates',
+            parameters: {
+                dateInit: dateInit,
+                dateEnd: dateEnd,
+            }
+        },
+        beforeSend: function(){
+            $("#log").empty();
+            $("#log").text("cargando...");
+        },
+        success: function (response) {
+            $("#totalNoAplicaDatesText").text(response);
+        },
+        error: function(){
+            $("#log").text("");
+            var html = '<div class="alert text-white bg-danger" role="alert">' +
+                            '<div class="iq-alert-text">No se pudieron cargar datos</div>' +
+                            '<button type="button" class="close" onclick="loadDataWSTVuser(' + id + ',' + sap_code + ')">' +
+                                'Reintentar' +
+                            '</button>' +
+                        '</div>';
+            $("#log").html(html);
+        }
+    });
+}
+
 function loadDataFisData(id, sap_code){
     $.ajax({
         type: "get",

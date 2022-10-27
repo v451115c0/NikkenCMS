@@ -56,22 +56,26 @@
                 <div class="col-lg-12">
                     <span id="log"></span>
                     <br>
-                    <p>Usuarios (No aplica): <span id="totalNoAplica">0</span></p>
+                    <p class="text-dark">Usuarios (No aplica): <span id="totalNoAplica">0</span></p>
                     <hr>
                     <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12 col-md-6 col-lg-5">
                             <div class="form-group">
                                 <label>Fecha inicio</label>
                                 <input type="date" class="form-control" id="dateInit">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12 col-md-6 col-lg-5">
                             <div class="form-group">
                                 <label>Fecha Final:</label>
                                 <input type="date" class="form-control" id="dateEnd">
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-6 col-lg-2">
+                            <a class="btn dark-icon btn-primary rounded-pill text-white mr-3 ml-3" onclick="getTotalNoAplicaDates();">Actualizar</a>
+                        </div>
                     </div>
+                    <p class="text-dark">Usuarios (No aplica) desde <span id="dateInitText"></span> hasta <span id="dateEndText"></span> <span id="totalNoAplicaDatesText">0</span></p>
                 </div>
                 <table class="table table-sm table-striped w-100 table-responsive" id="users_fiscal_update">
                     <thead>

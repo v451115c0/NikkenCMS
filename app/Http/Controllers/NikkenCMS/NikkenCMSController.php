@@ -143,6 +143,9 @@ class NikkenCMSController extends Controller{
             case 'depClient':
                 return $this->depClient($parameters);
                 break;
+            case 'getTotalNoAplicaDates':
+                return $this->getTotalNoAplicaDates($parameters);
+                break;
         }
     }
 
