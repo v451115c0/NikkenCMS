@@ -71,7 +71,7 @@
                                 <input type="date" class="form-control" id="dateEnd">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-2">
+                        <div class="col-sm-12 col-md-6 col-lg-2 pt-5">
                             <a class="btn dark-icon btn-primary rounded-pill text-white mr-3 ml-3" onclick="getTotalNoAplicaDates();">Actualizar</a>
                         </div>
                     </div>
