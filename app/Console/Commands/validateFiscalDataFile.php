@@ -703,6 +703,7 @@ class validateFiscalDataFile extends Command
             else{
                 $return = "Formato de constancia incorrecto: $sap_code";
             }
+            $this->updateWithError("$return", $sap_code);
             $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
             Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
