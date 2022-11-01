@@ -699,13 +699,11 @@ class validateFiscalDataFile extends Command
                 \DB::disconnect('mysqlTV');
     
                 $return = "PDF procesado, usuario: $sap_code";
-
-                $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
             }
             else{
-                $logExec = "Formato de constancia incorrecto: $sap_code";
+                $return = "Formato de constancia incorrecto: $sap_code";
             }
-            $logExec = "[" . date('Y-m-d H:i:s') . "] PDF procesado, usuario: $sap_code" . "\t";
+            $logExec = "[" . date('Y-m-d H:i:s') . "] " . $return . "\t";
             Storage::append("logValidaPDFFiscal.txt", $logExec);
         }
         else{
