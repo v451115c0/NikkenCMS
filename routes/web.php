@@ -50,3 +50,13 @@ Route::get('killprocess', 'MyNIKKEN\MNKController@killprocess');
 Route::get('pendientes_pago',[IwebController::class, 'pendientes_pago'])->name('pendientes_pago');
 Route::get('pendientes_asignar',[IwebController::class, 'pendientes_asignar'])->name('pendientes_asignar');
 Route::get('pendientes_contrato',[IwebController::class, 'pendientes_contrato'])->name('pendientes_contrato');
+Route::get('contrato_with_file',[IwebController::class, 'contrato_with_file'])->name('contrato_with_file');
+Route::get('contrato_without_file',[IwebController::class, 'contrato_without_file'])->name('contrato_without_file');
+Route::POST('upload_payment',[IwebController::class, 'upload_payment'])->name('upload_payment');
+Route::post('upload_documents',[IwebController::class, 'upload_documents'])->name('upload_documents');
+Route::POST('save_log_pending',[IwebController::class, 'save_log_pending'])->name('save_log_pending');
+Route::get('test',[IwebController::class, 'test'])->name('test');
+
+
+Route::get('upload', 'FileController@index');
+Route::post('store', 'FileController@store');

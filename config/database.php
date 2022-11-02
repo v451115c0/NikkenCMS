@@ -177,6 +177,21 @@ return [
             // 'strict' => true,
             // 'engine' => null,
         ],
+        // 'incorporacion_test' => [
+        //     'driver' => 'mysql',
+        //     'host' => env('DB_HOST_INCORPORACION_TEST', '127.0.0.1'),
+        //     'port' => env('DB_PORT_INCORPORACION_TEST', '3306'),
+        //     'database' => env('DB_DATABASE_INCORPORACION_TEST', 'forge'),
+        //     'username' => env('DB_USERNAME_INCORPORACION_TEST', 'forge'),
+        //     'password' => env('DB_PASSWORD_INCORPORACION_TEST', ''),
+        //     'unix_socket' => env('DB_SOCKET_INCORPORACION_TEST', ''),
+        //     // 'charset' => 'utf8mb4',
+        //     // 'collation' => 'utf8mb4_unicode_ci',
+        //     // 'prefix' => '',
+        //     // 'prefix_indexes' => true,
+        //     // 'strict' => true,
+        //     // 'engine' => null,
+        // ],
     ],
 
     /*

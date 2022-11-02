@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contracts extends Model
+class LogsIncorporation extends Model
 {
     use HasFactory;
-
     protected $connection = 'incorporacion';
-    protected $table = 'contracts_test';
+    protected $table = 'logs';
     protected $guarded = []; 
     public $timestamps = false;
-    protected $primaryKey = "id_contract";
-
-
 }

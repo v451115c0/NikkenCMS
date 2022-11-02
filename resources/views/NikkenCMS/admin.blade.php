@@ -14,12 +14,13 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link rel="stylesheet" href="{{ asset('cmsNikken/css/cmsNikken.css') }}">
         <link rel="stylesheet" href="{{ asset('cmsNikken/css/IWCustom.css') }}">
+        <link rel="stylesheet" href="{{ asset('cmsNikken/css/sweetalert2.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/datatables.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_zero_config.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_html5.css') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
-		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/>
+        {{-- <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/> --}}
 
         <link rel="stylesheet" href="{{ asset('fpro/css/dropify/dropify.css') }}">
     </head>
@@ -272,6 +273,8 @@
         <script src="{{ asset('fpro/js/dropify/dropify.js') }}"></script>
         <script src="{{ asset('cmsNikken/js/cmsNikken.js') }}"></script>
         <script src="{{ asset('cmsNikken/js/IWCustom.js') }}"></script>
+        <script src="{{ asset('cmsNikken/js/sweetalert2.all.min.js') }}"></script>
+
         <script src="https://kit.fontawesome.com/8a719f5845.js" crossorigin="anonymous"></script>
     </body>
 </html>
