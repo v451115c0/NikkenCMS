@@ -6,7 +6,7 @@
     <li class="breadcrumb-item active text-white" aria-current="page">Incorporaciones sin pago</li>
 </ol>
 <div class="row">
-    {{-- <div class="col-lg-12 col-md-12">
+    <div class="col-lg-12 col-md-12">
         <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                 <div class="iq-header-title">
@@ -24,7 +24,7 @@
                 <button type="button" class="btn btn-primary" onclick="depClient($('#clientMail').val());">Validar y depurar</button>
             </div>
         </div>
-    </div> --}}
+    </div>
     <div class="col-lg-12 col-md-12">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
         <div class="iq-card">

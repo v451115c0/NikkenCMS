@@ -13,14 +13,12 @@
         <link rel="stylesheet" href="{{ asset('cmsNikken/css/responsive.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link rel="stylesheet" href="{{ asset('cmsNikken/css/cmsNikken.css') }}">
-        <link rel="stylesheet" href="{{ asset('cmsNikken/css/IWCustom.css') }}">
-        <link rel="stylesheet" href="{{ asset('cmsNikken/css/sweetalert2.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/datatables.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_zero_config.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/table/datatable/custom_dt_html5.css') }}">
 
-        {{-- <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
-		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/> --}}
+        <link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('fpro/plugins/sweetalerts/sweetalert.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('fpro/css/dropify/dropify.css') }}">
     </head>
@@ -74,7 +72,6 @@
                                 </ul>
                             </li>
                             <li><a href="{{ url('NikkenCMS/dep7day') }}" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Incorporación sin pago</span></a></li>
-                            <li><a href="{{ url('NikkenCMS/IncorporacionWeb') }}" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Incorporación Web</span></a></li>
                             <li><a href="todo.html" class="iq-waves-effect" aria-expanded="false"><i class="ri-chat-check-line"></i><span>Todo</span></a></li>
                             <li class="iq-menu-title"><i class="ri-subtract-line"></i><span>Components</span></li>
                             <li>
@@ -272,9 +269,5 @@
 	    <script src="{{ asset('fpro/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
         <script src="{{ asset('fpro/js/dropify/dropify.js') }}"></script>
         <script src="{{ asset('cmsNikken/js/cmsNikken.js') }}"></script>
-        <script src="{{ asset('cmsNikken/js/IWCustom.js') }}"></script>
-        <script src="{{ asset('cmsNikken/js/sweetalert2.all.min.js') }}"></script>
-
-        <script src="https://kit.fontawesome.com/8a719f5845.js" crossorigin="anonymous"></script>
     </body>
 </html>
