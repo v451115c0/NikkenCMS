@@ -12,7 +12,7 @@
             <div class="iq-card">
                 <div class="iq-card-header d-flex justify-content-between">
                     <div class="iq-header-title">
-                        <h4 class="card-title">Depurar Correo de CLIENTE TV</h4>
+                        <h4 class="card-title">Depurar Correo de Cliente</h4>
                     </div>
                 </div>
                 <div class="iq-card-body">
@@ -253,7 +253,7 @@
                             @csrf
                             <div class="row">
                                 <div class="form-group">
-                                    <label for="view_documents_contract"><a href=""
+                                    <label for="view_documents_contract"><a href="" target="_blank"
                                             id="view_documents_contract">Revisar Documentos</a></label>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                                 <div class="form-group">
                                     <p class="font-weight-bold mb-1 mt-4">Comentarios adicional para aprobar el contrato:
                                     </p>
-                                    <textarea class="form-control input-message" name="message_update_contract" rows="6"
+                                    <textarea class="form-control input-message" name="message_update_contract" id="message_update_contract" rows="6"
                                         placeholder="Ingresa tu mensaje aquí..."></textarea>
                                 </div>
                             </div>

@@ -388,7 +388,8 @@ function upload_payment(){
                 contentType: false,
                 processData: false,
                 beforeSend: function(){
-                    
+                    $('#btn_update_payment').text('Subiendo Pago....');
+                    $('#btn_update_payment').prop('disabled', true);
                 },
                 success: function(response){
                     // console.log(response);
@@ -402,6 +403,9 @@ function upload_payment(){
                             timer: 1500,
                         });
                         Pendientes_Pago();
+                        Pendientes_Contrato();
+                        Pendientes_Contrato_with_file();
+                        Pendientes_Contrato_without_file();
                     }
                     else{
                         $("#upload_modal").modal("hide");
@@ -435,9 +439,10 @@ function upload_documents(){
     // number_payment = $('#number_payment').val();
 
     // console.log(fileName);
-     console.log(parametros);
-
-   if (parametros){
+    //  console.log(parametros);
+    $val = $('#message_update_contract').val();
+    
+   if ($val != ''){
          Swal.fire({
         title: '¿Estás segur@?',    
         text: "Estás apunto de aprobar el pago de una incorporación, asegurate de haber seleccionado los documentos correctos.",
@@ -456,6 +461,7 @@ function upload_documents(){
                 processData: false,
                 beforeSend: function(){
                     $('#btn_aprobar_contrato').text('Enviando...');
+                    $('#btn_aprobar_contrato').prop('disabled', true);
                 },
                 success: function(response){
                     //  console.log(response);
@@ -464,7 +470,7 @@ function upload_documents(){
                           Swal.fire({
                             position: "center",
                             icon: "success",
-                            title: "El pago fue guardado correctamente",
+                            title: "El contrato fue aprobado correctamente",
                             showConfirmButton: false,
                             timer: 1500,
                         });
